@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Tendencias en Agricultura Inteligente 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- NARRATIVE_STRUCTURE_PLAN:
+        1. Introducción: El Auge de la Agricultura Inteligente (Visión general del mercado y la importancia de la tecnología).
+        2. Tecnologías Disruptivas: Motores del Cambio (IoT, IA/ML, Robótica, Sensores - con métricas de rendimiento como adopción/precisión).
+        3. Aplicaciones Transformadoras (Clasificación de semillas, Detección de crecimiento, Fenotipado, Clasificación F&H, Cosecha Robótica - con ejemplos y tasas de éxito).
+        4. Estándares y Métricas Clave: Midiendo el Progreso (Visualización de los estándares de la industria).
+        5. Desafíos y Hoja de Ruta Futura (SWOT implícito, tendencias emergentes como Blockchain, 5G).
+        6. Conclusión: Hacia una Agricultura Sostenible e Impulsada por Datos.
+    -->
+    <!-- VISUALIZATION_CHOICES:
+        - Sección Introducción:
+            - Dato: Creciente demanda de alimentos y necesidad de eficiencia.
+            - Meta: Informar.
+            - Visualización: Texto introductorio.
+            - Justificación: Establecer el contexto. HTML/CSS. (NO SVG)
+        - Sección Tecnologías Disruptivas:
+            - Dato: Precisión de IA en reconocimiento de semillas (ej. 98.1% maíz).
+            - Meta: Comparar/Informar.
+            - Visualización: Bar Chart (Chart.js Canvas) para comparar precisiones.
+            - Justificación: Mostrar el impacto cuantitativo de la IA. (NO SVG)
+            - Dato: Adopción de IoT (conceptual).
+            - Meta: Informar.
+            - Visualización: Icono Unicode + Texto descriptivo. (NO SVG)
+        - Sección Aplicaciones Transformadoras:
+            - Dato: Estructura de un Robot de Cosecha (Ojo-Cerebro-Mano-Pies).
+            - Meta: Organizar.
+            - Visualización: Flow Chart (HTML/CSS con Tailwind).
+            - Justificación: Mostrar un proceso complejo. (NO SVG)
+            - Dato: Tasas de detección de defectos en tomates (ej. 96.3% YOLOv8).
+            - Meta: Informar.
+            - Visualización: Donut Chart (Chart.js Canvas).
+            - Justificación: Destacar la eficacia. (NO SVG)
+        - Sección Estándares y Métricas:
+            - Dato: Humedad del Suelo (Estándar: 20-30%).
+            - Meta: Informar.
+            - Visualización: Donut Chart (Chart.js Canvas) mostrando el rango óptimo.
+            - Justificación: Presentar un estándar clave. (NO SVG)
+            - Dato: Múltiples estándares (pH, LAI, etc.).
+            - Meta: Organizar.
+            - Visualización: Table (HTML/Tailwind).
+            - Justificación: Presentar una variedad de métricas. (NO SVG)
+        - Sección Desafíos y Futuro:
+            - Dato: Desafíos (grandes datasets, costo).
+            - Meta: Organizar.
+            - Visualización: List (HTML/Tailwind).
+            - Justificación: Resumir obstáculos. (NO SVG)
+            - Dato: Tendencias Futuras (Blockchain, 5G).
+            - Meta: Informar.
+            - Visualización: Iconos Unicode + List (HTML/Tailwind).
+            - Justificación: Destacar innovaciones. (NO SVG)
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray-blue background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width for charts */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px; /* Max height */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem; /* 12px */
+            padding: 1.5rem; /* 24px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem; /* 32px */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .flowchart-step {
+            background-color: #118AB2; /* Strong Blue from palette */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #118AB2; /* Strong Blue */
+            text-align: center;
+            margin: 0.25rem 0;
+        }
+        .section-title {
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            color: #073B4C; /* Dark Blue/Teal */
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .card-title {
+            font-size: 1.5rem; /* 24px */
+            font-weight: 600;
+            color: #118AB2; /* Strong Blue */
+            margin-bottom: 1rem;
+        }
+        .card-text {
+            color: #073B4C; /* Dark Blue/Teal */
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .highlight-stat {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF6B6B; /* Vibrant Red/Coral */
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .unicode-icon {
+            font-size: 2.5rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <header class="bg-[#073B4C] text-white py-8 shadow-lg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">Agricultura Inteligente: Tendencias y Avances 2025</h1>
+            <p class="text-lg md:text-xl text-[#FFD166]">Una mirada profunda a la transformación digital del campo.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduccion" class="mb-16">
+            <h2 class="section-title">El Auge de la Agricultura Inteligente</h2>
+            <div class="stat-card">
+                <p class="card-text">
+                    El sector agrícola enfrenta el desafío de alimentar a una población mundial creciente mientras optimiza recursos y promueve la sostenibilidad. La Agricultura Inteligente, impulsada por la tecnología, emerge como una solución clave, transformando las prácticas tradicionales en operaciones eficientes, precisas y basadas en datos. Este cambio paradigmático no solo busca aumentar la productividad, sino también mejorar la calidad, reducir el impacto ambiental y fortalecer la resiliencia del sector.
+                </p>
+                <p class="card-text">
+                    Comprender las tecnologías subyacentes, sus aplicaciones y los estándares emergentes es crucial para navegar esta revolución agrícola y capitalizar su vasto potencial.
+                </p>
+            </div>
+        </section>
+
+        <section id="tecnologias" class="mb-16">
+            <h2 class="section-title">Tecnologías Disruptivas: Motores del Cambio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">🧠</span>Inteligencia Artificial y Machine Learning</h3>
+                    <p class="card-text">La IA y el ML son fundamentales para analizar grandes volúmenes de datos agrícolas, permitiendo desde la identificación precisa de variedades de semillas hasta la detección temprana de enfermedades y la predicción de rendimientos. Los modelos de aprendizaje profundo, como las Redes Neuronales Convolucionales (CNN), están logrando precisiones notables.</p>
+                    <div class="chart-container">
+                        <canvas id="iaPrecisionChart"></canvas>
+                    </div>
+                    <p class="card-text mt-4">Por ejemplo, en la clasificación de calidad del maíz, modelos como Inception-ResNet alcanzan un 96.27% de precisión, y en la detección de daños en semillas de algodón, YOLOv5 mejorado llega al 99.2% mAP_0.5.</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">📡</span>IoT y Sensores Avanzados</h3>
+                    <p class="card-text">El Internet de las Cosas (IoT) conecta una multitud de sensores en el campo, recopilando datos en tiempo real sobre humedad del suelo, condiciones climáticas, salud de los cultivos y más. La teledetección mediante drones y satélites, junto con tecnologías como LiDAR e imágenes espectrales, proporciona información detallada para una gestión precisa.</p>
+                     <div class="bg-[#06D6A0] p-6 rounded-lg text-white text-center my-4">
+                        <p class="text-xl font-semibold">El IoAT (Internet de las Cosas Agrícolas) permite:</p>
+                        <ul class="list-disc list-inside mt-2 text-left ml-4">
+                            <li>Monitoreo continuo y remoto.</li>
+                            <li>Automatización de procesos (riego, fertilización).</li>
+                            <li>Recopilación de datos granulares para análisis predictivo.</li>
+                        </ul>
+                    </div>
+                    <p class="card-text">Las imágenes hiperespectrales, por ejemplo, pueden identificar variedades de soja con una precisión del 99.8-100%.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="aplicaciones" class="mb-16">
+            <h2 class="section-title">Aplicaciones Transformadoras</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">🤖</span>Robots de Cosecha Inteligentes</h3>
+                    <p class="card-text">Los robots agrícolas están revolucionando la cosecha, integrando sistemas de percepción ('ojo'), toma de decisiones ('cerebro'), ejecución ('mano') y navegación ('pies').</p>
+                    <div class="mt-4">
+                        <div class="flowchart-step">👁️ Ojo: Percepción (Cámaras, LiDAR, Fusión Multisensor)</div>
+                        <div class="flowchart-arrow">⬇️</div>
+                        <div class="flowchart-step">🧠 Cerebro: Decisión (IA, Planificación de Trayectoria)</div>
+                        <div class="flowchart-arrow">⬇️</div>
+                        <div class="flowchart-step">🖐️ Mano: Ejecución (Brazos Robóticos, Efectores Finales)</div>
+                        <div class="flowchart-arrow">⬇️</div>
+                        <div class="flowchart-step">👣 Pies: Navegación (GPS-RTK, SLAM, Visión)</div>
+                    </div>
+                    <p class="card-text mt-4">Estos sistemas utilizan Deep Learning (ej. YOLO, Mask R-CNN) para detectar frutos con alta precisión (>90-95%) y velocidad (>30 FPS).</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">🍎</span>Clasificación Inteligente de Frutas y Hortalizas</h3>
+                    <p class="card-text">Los sistemas de visión artificial automatizan la clasificación de frutas y hortalizas (F&H) por tamaño, forma, color y defectos, mejorando la calidad y eficiencia.</p>
+                    <div class="chart-container">
+                        <canvas id="deteccionDefectosChart"></canvas>
+                    </div>
+                    <p class="card-text mt-4">En tomates, modelos como YOLOv8 alcanzan un 96.3% de precisión en la detección de defectos. En manzanas, YOLOv5s mejorado muestra un 94.46% de precisión.</p>
+                </div>
+            </div>
+             <div class="stat-card mt-8 md:col-span-2">
+                <h3 class="card-title"><span class="unicode-icon">🌱</span>Reconocimiento de Semillas y Detección de Crecimiento</h3>
+                <p class="card-text">La calidad de las semillas es vital. La visión artificial y las imágenes espectrales (NIRS, hiperespectral) permiten la identificación de variedades y la evaluación de calidad con alta precisión (ej. 98.1% en maíz, 99.44% en arroz). Para el monitoreo del crecimiento del maíz, se utilizan indicadores como LAI, contenido de clorofila y altura, medidos con sensores portátiles y teledetección (UAVs), alcanzando precisiones de detección de estrés o deficiencias superiores al 85-90% con modelos de IA.</p>
+            </div>
+        </section>
+
+        <section id="estandares" class="mb-16">
+            <h2 class="section-title">Estándares y Métricas Clave en Agricultura Inteligente</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="stat-card text-center">
+                    <h3 class="card-title">💧 Humedad del Suelo</h3>
+                    <div class="chart-container mx-auto" style="height: 200px; max-height:250px;">
+                        <canvas id="humedadSueloChart"></canvas>
+                    </div>
+                    <p class="card-text mt-4">Estándar: <strong>20-30%</strong> para la mayoría de los cultivos.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="card-title">🌿 pH del Suelo</h3>
+                     <div class="highlight-stat" style="color: #06D6A0;">6.0 - 7.5</div>
+                    <p class="card-text">Rango óptimo para la disponibilidad de nutrientes en la mayoría de los cultivos.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="card-title">🍃 Índice de Área Foliar (LAI)</h3>
+                    <div class="highlight-stat" style="color: #118AB2;">2.0 - 6.0</div>
+                    <p class="card-text">Indica alta capacidad fotosintética en cultivos de alto rendimiento.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="card-title">🌟 Detección de Defectos (Clasificación)</h3>
+                     <div class="chart-container mx-auto" style="height: 200px; max-height:250px;">
+                        <canvas id="tasaDeteccionDefectosChart"></canvas>
+                    </div>
+                    <p class="card-text mt-4">Estándar: Superior al <strong>90%</strong> en sistemas automatizados.</p>
+                </div>
+                 <div class="stat-card text-center">
+                    <h3 class="card-title">💚 Contenido de Clorofila (SPAD)</h3>
+                    <div class="highlight-stat" style="color: #06D6A0;">40 - 60</div>
+                    <p class="card-text">Unidades SPAD indican un cultivo saludable y con buena capacidad fotosintética.</p>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="card-title">🎯 Eficiencia de Cosecha Robótica</h3>
+                     <div class="highlight-stat" style="color: #FF6B6B;">80-90%</div>
+                    <p class="card-text">Eficiencia en la recolección automatizada comparada con métodos manuales.</p>
+                </div>
+            </div>
+            <div class="stat-card mt-8 overflow-x-auto">
+                <h3 class="card-title">Otros Estándares Relevantes</h3>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#118AB2] text-white">
+                            <th class="p-3 border border-slate-300">Métrica</th>
+                            <th class="p-3 border border-slate-300">Estándar/Valor Objetivo</th>
+                            <th class="p-3 border border-slate-300">Tecnología de Medición Común</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-100">
+                            <td class="p-3 border border-slate-300">NDVI (Salud Vegetal)</td>
+                            <td class="p-3 border border-slate-300">0.2 - 0.9</td>
+                            <td class="p-3 border border-slate-300">Imágenes Satelitales/Drones (Multiespectral)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="p-3 border border-slate-300">Detección de Enfermedades</td>
+                            <td class="p-3 border border-slate-300">> 85% (Sistemas Automatizados)</td>
+                            <td class="p-3 border border-slate-300">Visión Artificial, Deep Learning</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="p-3 border border-slate-300">Eficiencia de Riego (Goteo)</td>
+                            <td class="p-3 border border-slate-300">70-90%</td>
+                            <td class="p-3 border border-slate-300">Sensores de Humedad, Monitoreo de Flujo</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="p-3 border border-slate-300">Calidad de Semillas (Pureza)</td>
+                            <td class="p-3 border border-slate-300">> 95%</td>
+                            <td class="p-3 border border-slate-300">Visión Artificial, Análisis Espectral</td>
+                        </tr>
+                         <tr class="hover:bg-gray-100">
+                            <td class="p-3 border border-slate-300">Sostenibilidad (Reducción Químicos)</td>
+                            <td class="p-3 border border-slate-300">20-30%</td>
+                            <td class="p-3 border border-slate-300">Agricultura de Precisión, Sensores</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="futuro" class="mb-16">
+            <h2 class="section-title">Desafíos y Hoja de Ruta Futura</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">🚧</span>Desafíos Actuales</h3>
+                    <ul class="list-disc list-inside card-text space-y-2">
+                        <li>Necesidad de grandes conjuntos de datos etiquetados para IA.</li>
+                        <li>Alto costo inicial de algunas tecnologías y complejidad de implementación.</li>
+                        <li>Manejo de la variabilidad natural (iluminación, oclusiones, diversidad de cultivos).</li>
+                        <li>Procesamiento de datos en tiempo real y conectividad en zonas rurales.</li>
+                        <li>Estandarización de protocolos y formatos de datos.</li>
+                        <li>Brecha de habilidades y necesidad de capacitación.</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3 class="card-title"><span class="unicode-icon">🚀</span>Tendencias Emergentes y Perspectivas</h3>
+                     <ul class="list-disc list-inside card-text space-y-2">
+                        <li><strong>Mayor integración de IA y Deep Learning:</strong> Modelos más robustos y eficientes.</li>
+                        <li><strong>Fusión Multisensorial:</strong> Combinar datos de visión, hiperespectral, LiDAR, etc.</li>
+                        <li><strong>Robótica Colaborativa (Cobots):</strong> Humanos y robots trabajando juntos.</li>
+                        <li><strong>Edge Computing:</strong> Procesamiento de datos en el dispositivo para menor latencia.</li>
+                        <li><strong>Conectividad 5G:</strong> Habilitador clave para transferencia masiva de datos.</li>
+                        <li><strong>Blockchain:</strong> Para trazabilidad y transparencia en la cadena de suministro.</li>
+                        <li><strong>Biotecnología y Edición Genética:</strong> Cultivos más resilientes.</li>
+                        <li><strong>Enfoque en Sostenibilidad:</strong> Reducción de insumos y huella ambiental.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="text-center">
+             <div class="stat-card">
+                <h2 class="section-title">Hacia una Agricultura Sostenible e Impulsada por Datos</h2>
+                <p class="card-text max-w-3xl mx-auto">
+                    La Agricultura Inteligente está redefiniendo el futuro del sector. La convergencia de IA, IoT, robótica y análisis avanzado de datos ofrece herramientas sin precedentes para optimizar cada faceta de la producción agrícola. Si bien los desafíos persisten, la innovación continua y la adopción de estas tecnologías son cruciales para construir un sistema alimentario global más eficiente, productivo, resiliente y sostenible, capaz de satisfacer las demandas del mañana.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#073B4C] text-white text-center py-6 mt-12">
+        <p>&copy; 2025 Infografía de Agricultura Inteligente. Creado con base en investigación actualizada.</p>
+    </footer>
+
+    <script>
+        const CHART_COLORS = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C',
+            lightGray: '#E2E8F0'
+        };
+
+        function processLabel(label, maxLength = 16) {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: CHART_COLORS.darkBlue
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: CHART_COLORS.darkBlue,
+                    titleColor: CHART_COLORS.yellow,
+                    bodyColor: CHART_COLORS.lightGray,
+                    borderColor: CHART_COLORS.blue,
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: CHART_COLORS.darkBlue },
+                    grid: { color: CHART_COLORS.lightGray }
+                },
+                y: {
+                    ticks: { color: CHART_COLORS.darkBlue },
+                    grid: { color: CHART_COLORS.lightGray },
+                    beginAtZero: true
+                }
+            }
+        };
+
+
+        // Gráfico de Precisión de IA
+        const iaPrecisionCtx = document.getElementById('iaPrecisionChart').getContext('2d');
+        new Chart(iaPrecisionCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    processLabel('Maíz Calidad (Inception-ResNet)'), 
+                    processLabel('Algodón Daños (YOLOv5+)'),
+                    processLabel('Soja Variedad (MSC-CARS-EL)'),
+                    processLabel('Arroz Variedad (Fusión+AFSA-SVM)'),
+                    processLabel('Madreselva (YOLOv5s Mejorado)')
+                ],
+                datasets: [{
+                    label: 'Precisión de Modelos IA (%)',
+                    data: [96.27, 99.2, 99.9, 99.44, 86.88],
+                    backgroundColor: [
+                        CHART_COLORS.green,
+                        CHART_COLORS.blue,
+                        CHART_COLORS.yellow,
+                        CHART_COLORS.red,
+                        CHART_COLORS.green
+                    ],
+                    borderColor: CHART_COLORS.darkBlue,
+                    borderWidth: 1
+                }]
+            },
+            options: { ...commonChartOptions, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, suggestedMax: 100}}}
+        });
+
+        // Gráfico Detección de Defectos F&H
+        const deteccionDefectosCtx = document.getElementById('deteccionDefectosChart').getContext('2d');
+        new Chart(deteccionDefectosCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Precisión Detección Tomates (YOLOv8)', 'Restante para 100%'],
+                datasets: [{
+                    data: [96.3, 100 - 96.3],
+                    backgroundColor: [CHART_COLORS.red, CHART_COLORS.lightGray],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: CHART_COLORS.darkBlue } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback }, backgroundColor: CHART_COLORS.darkBlue }
+                }
+            }
+        });
+        
+        // Gráfico Humedad del Suelo
+        const humedadSueloCtx = document.getElementById('humedadSueloChart').getContext('2d');
+        new Chart(humedadSueloCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Rango Óptimo (20-30%)', 'Fuera de Rango'],
+                datasets: [{
+                    label: 'Humedad del Suelo',
+                    data: [10, 90], // Representa el 10% del rango (30-20)
+                    backgroundColor: [CHART_COLORS.blue, CHART_COLORS.lightGray],
+                    hoverOffset: 4,
+                    circumference: 360 * (10/100), // Para mostrar el 10% del total
+                    rotation: 270 + (360 * (20/100)) // Inicia en 20%
+                }]
+            },
+             options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { 
+                        callbacks: { 
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                return 'Rango Óptimo: 20-30%';
+                            }
+                        }, 
+                        backgroundColor: CHART_COLORS.darkBlue 
+                    },
+                     title: {
+                        display: true,
+                        text: '20-30% Óptimo',
+                        color: CHART_COLORS.darkBlue,
+                        font: { size: 14, weight: 'bold' },
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+
+        // Gráfico Tasa Detección Defectos Estándar
+        const tasaDeteccionCtx = document.getElementById('tasaDeteccionDefectosChart').getContext('2d');
+        new Chart(tasaDeteccionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tasa de Detección (>90%)', 'Restante para 100%'],
+                datasets: [{
+                    data: [90, 10],
+                    backgroundColor: [CHART_COLORS.green, CHART_COLORS.lightGray],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                     tooltip: { 
+                        callbacks: { 
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                return 'Estándar: >90%';
+                            }
+                        }, 
+                        backgroundColor: CHART_COLORS.darkBlue 
+                    },
+                    title: {
+                        display: true,
+                        text: '>90% Detección',
+                        color: CHART_COLORS.darkBlue,
+                        font: { size: 14, weight: 'bold' },
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+    </script>
+</body>
+</html>
