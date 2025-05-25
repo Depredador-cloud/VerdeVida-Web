@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerdeVida: Transformando el Agro Salvadoreño con AgriTech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Application Structure Plan:
+        Narrative Flow:
+        1. Hero: El Futuro del Agro es Digital - VerdeVida Lidera el Camino.
+        2. El Desafío Salvadoreño: Un Mercado AgriTech Fragmentado y MIPYMES con Necesidades. (Stats: % baja adopción digital, fragmentación)
+        3. La Oportunidad: Tamaño del Mercado y Segmentos Clave. (Stats: # MIPYMES objetivo)
+        4. VerdeVida: La Solución Integradora. (Diagrama simple del ecosistema: MIPYMES - VerdeVida - Socios AgriTech)
+        5. Propuesta de Valor Diferenciada: ¿Por Qué VerdeVida? (Beneficios clave para MIPYMES y Socios)
+        6. Proyecciones de Crecimiento e Impacto: Visualizando el Futuro. (Gráficos: Inversión, Ingresos, MIPYMES Atendidas)
+        7. Alineación Estratégica Nacional: Impulsando la Agenda Digital y los ODS. (Iconos/Stats clave)
+        8. Conclusión: Únete a la Revolución AgriTech.
+        This structure tells a story from problem to solution to impact, suitable for an infographic.
+    -->
+    <!-- Visualization & Content Choices:
+        - Data Point: Baja adopción digital MIPYMES (15%). Goal: Inform. Viz: Single Big Number. Justification: Impactful stat. Library: HTML/CSS.
+        - Data Point: Fragmentación oferta AgriTech. Goal: Inform. Viz: Simple illustrative text/icon. Justification: Conceptual problem. Library: HTML/CSS.
+        - Data Point: Mercado objetivo MIPYMES (70,544). Goal: Inform. Viz: Single Big Number. Justification: Key market size. Library: HTML/CSS.
+        - Data Point: Modelo VerdeVida (Integrador). Goal: Organize. Viz: HTML/CSS Flowchart-like diagram. Justification: Explains the core model. Library: HTML/CSS (NO SVG/MERMAID).
+        - Data Point: Distribución Inversión ($532,908). Goal: Inform. Viz: Donut Chart. Justification: Shows allocation. Library: Chart.js (Canvas).
+        - Data Point: Proyección Ingresos (5 años). Goal: Change. Viz: Bar Chart. Justification: Shows growth. Library: Chart.js (Canvas).
+        - Data Point: Proyección MIPYMES Atendidas. Goal: Change. Viz: Bar Chart. Justification: Shows reach. Library: Chart.js (Canvas).
+        - Data Point: Alineación ODS/Agenda Digital. Goal: Inform. Viz: Icon-based list/Key stats. Justification: Shows strategic fit. Library: HTML/CSS (Unicode Icons).
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* Adjusted for infographic sections */
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px; /* Adjusted for infographic sections */
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px;
+                max-height: 400px;
+            }
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            padding: 1.5rem; /* p-6 */
+            text-align: center;
+            border-left: 5px solid #4ECDC4; /* Secondary color accent */
+        }
+        .stat-number {
+            font-size: 3rem; /* text-5xl */
+            font-weight: 800; /* font-extrabold */
+            color: #047857; /* emerald-700 */
+        }
+        .stat-label {
+            font-size: 1rem; /* text-base */
+            color: #374151; /* text-gray-700 */
+            margin-top: 0.5rem; /* mt-2 */
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #047857; /* emerald-700 */
+            margin-bottom: 2rem; /* mb-8 */
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.25rem; /* text-xl */
+            color: #4B5563; /* text-gray-600 */
+            margin-bottom: 2.5rem; /* mb-10 */
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .flowchart-step {
+            background-color: #FFFFFF;
+            border: 2px solid #4ECDC4; /* Secondary color */
+            color: #1F2937;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #4ECDC4; /* Secondary color */
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .sticky-nav a {
+            transition: color 0.3s ease;
+        }
+        .sticky-nav a:hover, .sticky-nav a.active {
+            color: #FF6B6B; /* Primary color */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-fuchsia-50 text-slate-800">
+
+    <nav id="navbar" class="sticky-nav hidden md:block">
+        <ul class="container mx-auto flex justify-center space-x-6 py-2">
+            <li><a href="#hero-section">Inicio</a></li>
+            <li><a href="#challenge-section">Desafío</a></li>
+            <li><a href="#opportunity-section">Oportunidad</a></li>
+            <li><a href="#solution-section">Solución VerdeVida</a></li>
+            <li><a href="#value-prop-section">Propuesta de Valor</a></li>
+            <li><a href="#impact-section">Impacto y Crecimiento</a></li>
+            <li><a href="#alignment-section">Alineación Estratégica</a></li>
+        </ul>
+    </nav>
+
+    <header id="hero-section" class="bg-gradient-to-r from-emerald-600 to-teal-500 text-white py-16 sm:py-24">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">El Futuro del Agro es Digital</h1>
+            <p class="text-xl sm:text-2xl mb-4">VerdeVida lidera la transformación AgriTech en El Salvador.</p>
+            <p class="text-lg sm:text-xl max-w-3xl mx-auto">
+                Integramos tecnología, conocimiento y alianzas para potenciar a las MIPYMES agrícolas y fortalecer el ecosistema AgriTech nacional.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="challenge-section" class="py-12">
+            <h2 class="section-title">El Desafío Salvadoreño en AgriTech</h2>
+            <p class="section-subtitle">Un mercado con enorme potencial pero enfrentando obstáculos significativos para la modernización y la competitividad.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="stat-card p-8">
+                    <div class="stat-number">15%</div>
+                    <div class="stat-label">De MIPYMES agrícolas utilizan herramientas digitales. Una brecha digital que limita la eficiencia y el acceso a mercados.</div>
+                    <p class="text-sm text-slate-500 mt-3">(Fuente: Plan de Empresa VerdeVida)</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-xl p-8 text-center border-l-5 border-red-500">
+                    <div class="text-6xl mb-4">🧩</div>
+                    <h3 class="text-2xl font-bold text-emerald-700 mb-2">Mercado AgriTech Fragmentado</h3>
+                    <p class="text-slate-600">La oferta de soluciones tecnológicas locales está dispersa, dificultando que las MIPYMES encuentren soluciones integrales y que los proveedores compitan eficazmente contra grandes conglomerados como Disagro.</p>
+                    <p class="text-slate-600 mt-2">Las MIPYMES necesitan soluciones adaptadas, no productos aislados, y enfrentan dificultades para acceder, adoptar y financiar tecnología.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="opportunity-section" class="py-12 bg-emerald-50 rounded-xl my-12 p-8">
+            <h2 class="section-title">La Oportunidad AgriTech</h2>
+            <p class="section-subtitle">A pesar de los desafíos, existe un vasto mercado para la innovación y el crecimiento en el sector agrícola salvadoreño.</p>
+            <div class="text-center">
+                <div class="stat-card inline-block p-10">
+                    <div class="stat-number">70,544</div>
+                    <div class="stat-label">Unidades de agricultura familiar comercial en El Salvador.</div>
+                    <p class="text-sm text-slate-500 mt-3">Un mercado objetivo significativo para soluciones AgriTech integradas y personalizadas que ofrece VerdeVida.
+                    <br>(Fuente: Plan de Empresa VerdeVida)</p>
+                </div>
+                <p class="mt-6 text-lg text-slate-700 max-w-2xl mx-auto">
+                    VerdeVida se enfoca en segmentos clave como caficultores, horticultores y productores de granos básicos, adaptando soluciones a sus necesidades específicas para maximizar el impacto.
+                </p>
+            </div>
+        </section>
+
+        <section id="solution-section" class="py-12">
+            <h2 class="section-title">VerdeVida: La Solución Integradora</h2>
+            <p class="section-subtitle">Actuamos como el nexo estratégico que une a productores, tecnólogos y oportunidades de financiamiento.</p>
+            <div class="bg-white rounded-xl shadow-xl p-8">
+                <h3 class="text-2xl font-bold text-emerald-700 mb-6 text-center">El Ecosistema Colaborativo VerdeVida</h3>
+                <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flowchart-step">
+                        <span class="text-3xl block mb-2">🚜</span>
+                        MIPYMES Agrícolas
+                        <p class="text-xs font-normal mt-1">Buscando productividad y sostenibilidad</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="md:hidden text-3xl text-center my-2">&darr;</div>
+                    <div class="flowchart-step bg-emerald-500 text-white border-emerald-700">
+                        <span class="text-3xl block mb-2">💡</span>
+                        VERDEVIDA
+                        <p class="text-xs font-normal mt-1">Integrador, Desarrollador de Negocios, Facilitador</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                     <div class="md:hidden text-3xl text-center my-2">&darr;</div>
+                    <div class="flowchart-step">
+                        <span class="text-3xl block mb-2">💻</span>
+                        Socios AgriTech
+                        <p class="text-xs font-normal mt-1">Proveedores de tecnología especializada</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-slate-700 max-w-3xl mx-auto">
+                    VerdeVida ofrece diagnóstico, diseño de soluciones a medida, gestión de proyectos, capacitación y acceso a financiamiento, simplificando la adopción de AgriTech para las MIPYMES y generando demanda para nuestros socios.
+                </p>
+            </div>
+        </section>
+
+        <section id="value-prop-section" class="py-12 bg-teal-50 rounded-xl my-12 p-8">
+            <h2 class="section-title">Propuesta de Valor Diferenciada</h2>
+            <p class="section-subtitle">Beneficios tangibles para cada actor del ecosistema agrícola.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-emerald-500">
+                    <h3 class="text-2xl font-semibold text-emerald-700 mb-3">Para MIPYMES Agrícolas:</h3>
+                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                        <li><span class="font-semibold">Mayor Productividad y Rentabilidad:</span> Optimización de recursos y procesos.</li>
+                        <li><span class="font-semibold">Reducción de Costos:</span> Uso eficiente de agua, fertilizantes, etc.</li>
+                        <li><span class="font-semibold">Soluciones a Medida:</span> Tecnología adaptada, no genérica.</li>
+                        <li><span class="font-semibold">Acceso Simplificado:</span> Un solo punto de contacto para soluciones integrales.</li>
+                        <li><span class="font-semibold">Soporte y Capacitación:</span> Acompañamiento para el éxito.</li>
+                        <li><span class="font-semibold">Mejora de Resiliencia:</span> Adaptación al cambio climático.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-amber-500">
+                    <h3 class="text-2xl font-semibold text-amber-700 mb-3">Para Socios AgriTech:</h3>
+                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                        <li><span class="font-semibold">Acceso Estratégico al Mercado:</span> Conexión con red de MIPYMES.</li>
+                        <li><span class="font-semibold">Desarrollo de Negocios:</span> Impulso de demanda para sus soluciones.</li>
+                        <li><span class="font-semibold">Inteligencia de Mercado Local:</span> Insights para adaptar productos.</li>
+                        <li><span class="font-semibold">Plataforma de Colaboración:</span> Integración y promoción conjunta.</li>
+                        <li><span class="font-semibold">Reducción de Riesgos:</span> Superación de barreras de mercado.</li>
+                        <li><span class="font-semibold">Fortalecimiento del Tejido Nacional:</span> Crecimiento del sector AgriTech local.</li>
+                    </ul>
+                </div>
+            </div>
+             <p class="mt-8 text-center text-slate-700 text-lg">
+                VerdeVida se posiciona como un <span class="font-semibold text-emerald-600">asesor objetivo y confiable</span>, enfocándose en la adopción exitosa y el crecimiento del negocio, no solo en la venta de tecnología.
+            </p>
+        </section>
+
+        <section id="impact-section" class="py-12">
+            <h2 class="section-title">Proyecciones de Crecimiento e Impacto</h2>
+            <p class="section-subtitle">Visualizando un futuro próspero para el agro salvadoreño a través de la inversión estratégica y la expansión de servicios.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold text-emerald-700 mb-3 text-center">Distribución de Inversión</h3>
+                    <p class="text-xs text-slate-500 text-center mb-2">Total: $532,908 USD</p>
+                    <div class="chart-container" style="height: 250px; max-height: 280px;">
+                        <canvas id="inversionChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-3">Inversión enfocada en desarrollo tecnológico, capital humano y expansión de mercado para asegurar un crecimiento sólido.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold text-emerald-700 mb-3 text-center">Proyección de Ingresos</h3>
+                     <p class="text-xs text-slate-500 text-center mb-2">(Próximos 5 Años)</p>
+                    <div class="chart-container" style="height: 250px; max-height: 280px;">
+                        <canvas id="ingresosChart"></canvas>
+                    </div>
+                     <p class="text-sm text-slate-600 mt-3">Crecimiento sostenido basado en la adopción de soluciones y la consolidación de la alianza AgriTech.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold text-emerald-700 mb-3 text-center">MIPYMES Atendidas</h3>
+                     <p class="text-xs text-slate-500 text-center mb-2">(Proyección Anual)</p>
+                    <div class="chart-container" style="height: 250px; max-height: 280px;">
+                        <canvas id="mipymesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-3">Expansión del alcance para beneficiar a un número creciente de productores en todo el país.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="alignment-section" class="py-12 bg-sky-50 rounded-xl my-12 p-8">
+            <h2 class="section-title">Alineación Estratégica Nacional</h2>
+            <p class="section-subtitle">VerdeVida no solo impulsa negocios, sino que contribuye activamente a las metas de desarrollo de El Salvador.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3 flex items-center">
+                        <span class="text-3xl mr-3">🇸🇻</span> Agenda Digital El Salvador 2020-2030
+                    </h3>
+                    <p class="text-slate-600">Somos un actor clave en el <span class="font-semibold">Compromiso 2.1.7:</span> "Acompañar en la formulación e implementación de un plan nacional de innovación para la agricultura mediante el uso de nuevas tecnologías."</p>
+                    <p class="text-slate-600 mt-2">Contribuimos al <span class="font-semibold">Compromiso 2.1.9:</span> "Aumentar la productividad derivada de bienes y servicios TIC en sectores estratégicos como la agricultura."</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3 flex items-center">
+                       <span class="text-3xl mr-3">🌍</span> Objetivos de Desarrollo Sostenible (ODS)
+                    </h3>
+                    <p class="text-slate-600">Nuestro trabajo impacta directamente en:</p>
+                    <ul class="list-none space-y-1 text-slate-600 mt-2">
+                        <li><span class="font-semibold text-green-600">ODS 1:</span> Fin de la Pobreza</li>
+                        <li><span class="font-semibold text-orange-500">ODS 2:</span> Hambre Cero</li>
+                        <li><span class="font-semibold text-red-500">ODS 8:</span> Trabajo Decente y Crecimiento Económico</li>
+                        <li><span class="font-semibold text-purple-500">ODS 9:</span> Industria, Innovación e Infraestructura</li>
+                        <li><span class="font-semibold text-yellow-500">ODS 12:</span> Producción y Consumo Responsables</li>
+                        <li><span class="font-semibold text-blue-500">ODS 13:</span> Acción por el Clima</li>
+                    </ul>
+                </div>
+            </div>
+             <p class="mt-8 text-center text-slate-700 text-lg">
+                Esta alineación estratégica fortalece nuestra credibilidad y abre puertas a colaboraciones público-privadas y financiamiento orientado al impacto.
+            </p>
+        </section>
+
+        <section class="text-center py-12">
+            <h2 class="text-3xl font-bold text-emerald-700 mb-4">Únete a la Revolución AgriTech con VerdeVida</h2>
+            <p class="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">Juntos, podemos construir un sector agrícola más productivo, sostenible e innovador para El Salvador.</p>
+            <a href="mailto:info@verdevida.com.sv?subject=Interesado%20en%20VerdeVida" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-10 rounded-lg shadow-lg transition duration-300 text-lg">Contáctanos</a>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; <span id="currentYear"></span> VerdeVida. Transformando el agro salvadoreño.</p>
+            <p class="text-sm">Infografía basada en el Plan de Empresa VerdeVida.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const processLabels = (labels) => {
+                return labels.map(label => {
+                    if (typeof label === 'string' && label.length > 16) {
+                        const words = label.split(' ');
+                        const lines = [];
+                        let currentLine = '';
+                        words.forEach(word => {
+                            if ((currentLine + word).length > 16 && currentLine.length > 0) {
+                                lines.push(currentLine.trim());
+                                currentLine = word + ' ';
+                            } else {
+                                currentLine += word + ' ';
+                            }
+                        });
+                        lines.push(currentLine.trim());
+                        return lines;
+                    }
+                    return label;
+                });
+            };
+
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 10 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed.y !== null && context.chart.config.type !== 'pie' && context.chart.config.type !== 'doughnut') {
+                                    label += new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(context.parsed.y);
+                                } else if (context.parsed !== null && (context.chart.config.type === 'pie' || context.chart.config.type === 'doughnut')) {
+                                     label += new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(context.parsed);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const investmentOriginalLabels = ['Desarrollo Tecnológico/Activos', 'Capital Humano', 'Marketing y Ventas'];
+            const investmentData = {
+                labels: processLabels(investmentOriginalLabels),
+                datasets: [{
+                    label: 'Distribución de Inversión',
+                    data: [180000, 232908, 120000],
+                    backgroundColor: ['#4ECDC4', '#FFE66D', '#FF6B6B'], // Secondary, Accent, Primary
+                    hoverOffset: 4,
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            };
+            new Chart(document.getElementById('inversionChart'), {
+                type: 'doughnut',
+                data: investmentData,
+                options: {...commonChartOptions}
+            });
+
+            const revenueOriginalLabels = ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'];
+            const revenueData = {
+                labels: processLabels(revenueOriginalLabels),
+                datasets: [{
+                    label: 'Ingresos Proyectados',
+                    data: [250000, 450000, 750000, 1000000, 1250000],
+                    backgroundColor: '#4ECDC4', // Secondary
+                    borderColor: '#3AAFA9',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+            new Chart(document.getElementById('ingresosChart'), {
+                type: 'bar',
+                data: revenueData,
+                options: {
+                    ...commonChartOptions,
+                    scales: { y: { beginAtZero: true, ticks: { callback: value => '$' + (value/1000) + 'K' } } },
+                     plugins: { ...commonChartOptions.plugins, legend: { display: false } }
+                }
+            });
+
+            const mipymesOriginalLabels = ['Año 1 (Piloto)', 'Año 2', 'Año 3', 'Año 4', 'Año 5'];
+            const mipymesData = {
+                labels: processLabels(mipymesOriginalLabels),
+                datasets: [{
+                    label: 'MIPYMES Atendidas',
+                    data: [15, 40, 75, 120, 180],
+                    backgroundColor: '#FF6B6B', // Primary
+                    borderColor: '#E05252',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+            new Chart(document.getElementById('mipymesChart'), {
+                type: 'bar',
+                data: mipymesData,
+                options: {
+                    ...commonChartOptions,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { ...commonChartOptions.plugins, legend: { display: false }, tooltip: {
+                        callbacks: {
+                             title: tooltipTitleCallback,
+                             label: function(context) { return `MIPYMES: ${context.parsed.y}`; }
+                        }
+                    }}
+                }
+            });
+
+            const nav = document.getElementById('navbar');
+            if (nav) {
+                const navLinks = nav.querySelectorAll('a');
+                const sections = document.querySelectorAll('main section[id]');
+
+                function changeNav() {
+                    let index = sections.length;
+                    while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+
+                    navLinks.forEach((link) => link.classList.remove('active'));
+                    if (index >= 0 && index < navLinks.length) { // Ensure index is within bounds
+                       navLinks[index].classList.add('active');
+                    } else if (index < 0 && navLinks.length > 0) { // Default to first if before all sections
+                        navLinks[0].classList.add('active');
+                    }
+                }
+                if(sections.length > 0 && navLinks.length > 0) { // Only run if sections and links exist
+                    changeNav();
+                    window.addEventListener('scroll', changeNav);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
