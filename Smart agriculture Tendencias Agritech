@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Tendencias de la Industria y Panorama del Mercado de la Agricultura Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FAFC; /* Tailwind gray-100 */
+            color: #073B4C; /* Dark Blue from palette */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .stat-number {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #118AB2; /* Blue from palette */
+        }
+        .section-title {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #073B4C; /* Dark Blue */
+            margin-bottom: 1rem; /* mb-4 */
+            border-bottom: 3px solid #FF6B6B; /* Coral accent */
+            padding-bottom: 0.5rem; /* pb-2 */
+        }
+        .subsection-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #118AB2; /* Blue */
+            margin-top: 1rem; /* mt-4 */
+            margin-bottom: 0.5rem; /* mb-2 */
+        }
+        .accent-coral { color: #FF6B6B; }
+        .accent-yellow { color: #FFD166; }
+        .accent-turquoise { color: #06D6A0; }
+        .accent-blue { color: #118AB2; }
+        .bg-accent-coral { background-color: #FF6B6B; }
+        .bg-accent-yellow { background-color: #FFD166; }
+        .bg-accent-turquoise { background-color: #06D6A0; }
+        .bg-accent-blue { background-color: #118AB2; }
+        .text-dark-blue { color: #073B4C; }
+
+        .flow-item {
+            background-color: #E0F2FE; /* light blue bg for items */
+            border-left: 5px solid #118AB2; /* Blue border */
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .flow-connector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .flow-connector::after {
+            content: '▼';
+            font-size: 1.5rem;
+            color: #118AB2; /* Blue */
+        }
+        .grid-item-full {
+            grid-column: span 1 / span 1;
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .grid-item-full {
+                grid-column: span 2 / span 2;
+            }
+        }
+        .icon-style {
+            font-size: 2rem; /* text-3xl */
+            margin-right: 0.5rem; /* mr-2 */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-accent-blue text-white py-8 px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold">Agricultura Inteligente:</h1>
+        <p class="text-xl md:text-2xl mt-2">Tendencias de la Industria y Panorama del Mercado</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="mb-12">
+            <div class="card text-center">
+                <h2 class="section-title text-center mx-auto">La Revolución de la Agricultura Inteligente</h2>
+                <p class="mt-4 text-lg">
+                    La agricultura global enfrenta desafíos sin precedentes: alimentar a una población mundial que alcanzará los <strong class="accent-coral">9.7 mil millones para 2050</strong> requiere un aumento estimado del <strong class="accent-coral">60-70%</strong> en la producción de alimentos. El cambio climático, la escasez de recursos como el agua y la tierra cultivable, y la necesidad de prácticas sostenibles impulsan la adopción de la Agricultura Inteligente (AI). Este enfoque, que integra tecnologías como IoT, IA, Big Data y Robótica, no es solo una mejora incremental, sino una transformación fundamental hacia una agricultura más eficiente, productiva y respetuosa con el medio ambiente.
+                </p>
+                <p class="mt-4 text-lg">
+                    Este informe visualiza las tendencias clave, los impulsores del mercado, el impacto económico, los desafíos y las oportunidades emergentes en el dinámico sector de la Agricultura Inteligente, basándose en un análisis exhaustivo de investigaciones recientes.
+                </p>
+            </div>
+        </section>
+
+        <section id="mercado-global" class="mb-12">
+            <h2 class="section-title">El Mercado Global de la Agricultura Inteligente</h2>
+            <p class="mb-6 text-md">La Agricultura Inteligente está experimentando un crecimiento significativo a nivel mundial, impulsada por la urgente necesidad de optimizar la producción de alimentos y gestionar los recursos de manera más sostenible. Diversos factores convergen para modelar un mercado dinámico y en expansión.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="subsection-title">Impulsores Clave del Mercado</h3>
+                    <p class="mb-4 text-sm">Factores críticos que aceleran la adopción de soluciones de agricultura inteligente.</p>
+                    <div class="chart-container h-80 md:h-96 max-h-[400px]">
+                        <canvas id="marketDriversChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Estos impulsores subrayan la necesidad de soluciones innovadoras para garantizar la seguridad alimentaria y la sostenibilidad agrícola a largo plazo.</p>
+                </div>
+                <div class="card">
+                    <h3 class="subsection-title">Proyecciones de Crecimiento del Mercado (Ejemplo: Biofertilizantes)</h3>
+                    <p class="mb-4 text-sm">El mercado de componentes de la agricultura inteligente, como los biofertilizantes, muestra un crecimiento robusto, reflejando la tendencia general.</p>
+                    <div class="chart-container h-80 md:h-96 max-h-[400px]">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Se proyecta que el mercado global de biofertilizantes alcance los <strong class="accent-turquoise">$4.5 mil millones USD para 2026</strong>, con una Tasa de Crecimiento Anual Compuesta (CAGR) del 11.9% desde 2021 (Cap. 13). Este es un indicador de la expansión en tecnologías agrícolas sostenibles.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tecnologias" class="mb-12">
+            <h2 class="section-title">Tecnologías Disruptivas y su Adopción</h2>
+            <p class="mb-6 text-md">La Agricultura Inteligente se sustenta en un ecosistema de tecnologías interconectadas que están transformando cada faceta de la producción agrícola, desde la siembra hasta la post-cosecha.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="subsection-title">Adopción de Tecnologías Clave (Estimación Conceptual)</h3>
+                    <p class="mb-4 text-sm">Visualización del nivel de adopción estimado para diferentes tecnologías en el sector.</p>
+                    <div class="chart-container h-80 md:h-96 max-h-[400px]">
+                        <canvas id="techAdoptionChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">La adopción varía, pero tecnologías como IoT y la agricultura de precisión están ganando tracción rápidamente.</p>
+                </div>
+                <div class="card">
+                    <h3 class="subsection-title">Casos Destacados de Aplicación Tecnológica</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-dark-blue"><span class="icon-style accent-blue">🛰️</span>Drones (UAVs) en Agricultura (Cap. 3)</h4>
+                            <p class="text-sm ml-10">Superan limitaciones de imágenes satelitales, ofreciendo alta resolución para monitoreo, detección de estrés, mapeo y pulverización precisa. Marut Drone Tech cubrió <strong class="accent-coral">2000 ha</strong> con pulverización autónoma.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark-blue"><span class="icon-style accent-turquoise">💧</span>IoT de Bajo Costo para Riego (Cap. 5, 8)</h4>
+                            <p class="text-sm ml-10">Sistemas como el propuesto en Myanmar (costo <strong class="accent-coral">~27,200 kyats</strong>) y el AIAS en India (ahorro de agua del <strong class="accent-coral">35%</strong>) demuestran la viabilidad de soluciones asequibles para pequeños agricultores.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark-blue"><span class="icon-style accent-yellow">🤖</span>Robótica y Automatización (Cap. 1, 4)</h4>
+                            <p class="text-sm ml-10">Desde pulverizadores uniformes (294-298 l/ha logrados) hasta líneas de empaque automatizadas (eficiencia 88-92%) y robots cosechadores, la automatización reduce la mano de obra y mejora la precisión.</p>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-dark-blue"><span class="icon-style accent-blue">🌿</span>Cultivo en Ambiente Controlado (Cap. 4, 6)</h4>
+                            <p class="text-sm ml-10">Fábricas de plantas e invernaderos inteligentes (ej. tomate cherry en Java Occidental: <strong class="accent-coral">22 kg/m²</strong> vs 3 kg/m² en campo) aumentan la productividad drásticamente y permiten el cultivo durante todo el año.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto-economico" class="mb-12">
+            <h2 class="section-title">Impacto Económico y Retorno de la Inversión</h2>
+            <p class="mb-6 text-md">La adopción de la Agricultura Inteligente no solo impulsa la sostenibilidad, sino que también ofrece beneficios económicos significativos a través del aumento de la eficiencia, la reducción de costos y la mejora de los rendimientos.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="subsection-title">Aumento de Rendimiento y Eficiencia de Recursos</h3>
+                     <p class="mb-4 text-sm">Ejemplos de cómo la tecnología mejora la productividad y optimiza el uso de insumos.</p>
+                    <div class="chart-container h-96 md:h-[450px] max-h-[500px]">
+                        <canvas id="yieldEfficiencyChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">La aeroponía para papas puede multiplicar por 3-4 la producción de minitubérculos (Cap. 1). Los sistemas de riego inteligentes pueden ahorrar hasta un 35% de agua (Cap. 8).</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="subsection-title">Reducción de Costos y Mejora de Rentabilidad</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <span class="stat-number accent-turquoise mr-4">26%</span>
+                            <p class="text-md">Ahorro en pesticidas con sistemas de pulverización automática en huertos de granados (Cap. 1).</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="stat-number accent-yellow mr-4">7x</span>
+                            <p class="text-md">Aumento aproximado del rendimiento de tomate cherry en invernaderos inteligentes comparado con campo abierto (22 kg/m² vs 3 kg/m²) (Cap. 6).</p>
+                        </div>
+                        <div class="flex items-center">
+                             <span class="stat-number accent-coral mr-4">80%</span>
+                            <p class="text-md">Ahorro potencial de herbicida con pulverizadores inteligentes de aplicación selectiva (spot spraying) (Cap. 11).</p>
+                        </div>
+                        <div class="flex items-center">
+                            <p class="text-md"><strong class="accent-blue">Mecanización:</strong> La trasplantadora de piña de MARDI realiza el trabajo de 1 ha en <strong class="accent-coral">20 horas</strong> vs 80 horas manuales (Cap. 4).</p>
+                        </div>
+                         <p class="mt-4 text-sm text-gray-600">Estos ejemplos ilustran cómo la tecnología puede reducir significativamente los costos de insumos y mano de obra, mejorando la rentabilidad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="desafios" class="mb-12">
+            <h2 class="section-title">Desafíos del Mercado y Barreras para la Adopción</h2>
+            <p class="mb-6 text-md">A pesar del enorme potencial, la adopción generalizada de la Agricultura Inteligente enfrenta varios obstáculos que deben ser abordados para democratizar el acceso a estas tecnologías.</p>
+            <div class="card grid-item-full">
+                <h3 class="subsection-title text-center">Principales Barreras Identificadas</h3>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">💰 Alto Costo Inicial</h4>
+                        <p class="text-sm">La inversión en hardware, software y capacitación puede ser prohibitiva, especialmente para pequeños agricultores y en países en desarrollo (Caps. 4, 6, 11, 18).</p>
+                    </div>
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">📡 Infraestructura y Conectividad</h4>
+                        <p class="text-sm">Acceso limitado a internet de banda ancha y suministro eléctrico fiable en zonas rurales es un gran impedimento para tecnologías IoT (Caps. 1, 2, 6, 18).</p>
+                    </div>
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">🎓 Brecha de Conocimiento y Habilidades</h4>
+                        <p class="text-sm">Falta de alfabetización digital y personal capacitado para operar y mantener sistemas avanzados. Resistencia al cambio y mentalidad tradicional (Caps. 1, 6, 9, 18).</p>
+                    </div>
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">📊 Gestión y Seguridad de Datos</h4>
+                        <p class="text-sm">Preocupaciones sobre la privacidad, propiedad, seguridad de los datos ante ciberataques y la necesidad de analizar grandes volúmenes de información (Caps. 1, 2, 18).</p>
+                    </div>
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">⚙️ Interoperabilidad y Estándares</h4>
+                        <p class="text-sm">Falta de compatibilidad entre diferentes dispositivos, software y plataformas. Necesidad de estándares para datos y métricas (Caps. 1, 2).</p>
+                    </div>
+                    <div class="flow-item">
+                        <h4 class="font-semibold text-dark-blue mb-1">📜 Políticas y Apoyo Institucional</h4>
+                        <p class="text-sm">Políticas agrícolas no siempre alineadas con los avances tecnológicos. Necesidad de mayor apoyo gubernamental e institucional (Caps. 6, 9, 18).</p>
+                    </div>
+                </div>
+                <p class="mt-6 text-center text-sm text-gray-600">Superar estos desafíos requiere un esfuerzo concertado de gobiernos, industria, instituciones de investigación y los propios agricultores.</p>
+            </div>
+        </section>
+
+        <section id="oportunidades" class="mb-12">
+            <h2 class="section-title">Oportunidades Emergentes y Estrategias Futuras</h2>
+            <p class="mb-6 text-md">El futuro de la Agricultura Inteligente es prometedor, con innovaciones continuas y estrategias enfocadas en la sostenibilidad, la inclusión y la resiliencia.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="subsection-title">Áreas Clave de Oportunidad</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li><strong class="text-dark-blue">Soluciones Asequibles y Escalables:</strong> Desarrollo de tecnologías de bajo costo para pequeños agricultores y PEID (Caps. 5, 7, 8, 11, 17). Ejemplo: App Maucrop en Mauricio.</li>
+                        <li><strong class="text-dark-blue">Agricultura Sostenible y Regenerativa:</strong> Énfasis en biofertilizantes (Cap. 13), uso de algas marinas como bioestimulantes y enmiendas (Cap. 12), y agricultura de conservación (Cap. 11).</li>
+                        <li><strong class="text-dark-blue">Integración de IA Avanzada:</strong> Mejora en la detección de plagas/enfermedades (precisión >95% con Deep Learning, Cap. 10), predicción de rendimiento y optimización de insumos.</li>
+                        <li><strong class="text-dark-blue">Economía Circular y Manejo de Residuos:</strong> Tecnologías para el manejo de residuos de cultivos (Cap. 4) y remediación de suelos (Cap. 15).</li>
+                        <li><strong class="text-dark-blue">Plataformas Digitales y Ecosistemas Colaborativos:</strong> Fomento de plataformas de datos, aplicaciones móviles y modelos de agricultura como servicio (Caps. 1, 7, 18).</li>
+                         <li><strong class="text-dark-blue">Técnicas de Cultivo Innovadoras:</strong> Expansión de hidroponía, aeroponía (Cap. 1) y cultivo de tejidos para producción eficiente y resistente (Cap. 14).</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="subsection-title">Estrategias Futuras Fundamentales</h3>
+                    <p class="mb-4 text-sm">Lineamientos para impulsar la próxima ola de innovación y adopción en Agricultura Inteligente.</p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <h5 class="font-semibold text-dark-blue">🤝 Fomentar I+D y Colaboración</h5>
+                            <p class="text-xs">Invertir en investigación específica para contextos locales, promoviendo la colaboración público-privada y académica (Caps. 1, 17, 18).</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <h5 class="font-semibold text-dark-blue">💵 Apoyo Financiero y Modelos de Negocio</h5>
+                            <p class="text-xs">Facilitar acceso a créditos, subsidios y desarrollar modelos de alquiler o servicios para tecnologías costosas (Caps. 1, 18).</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <h5 class="font-semibold text-dark-blue">🌐 Plataformas Digitales y Acceso a Datos</h5>
+                            <p class="text-xs">Establecer plataformas interactivas para información climática, asesoramiento técnico y datos de mercado (Caps. 1, 18).</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                            <h5 class="font-semibold text-dark-blue">🧑‍🏫 Desarrollo de Capital Humano</h5>
+                            <p class="text-xs">Programas de capacitación y transferencia tecnológica para agricultores, jóvenes y técnicos (Caps. 1, 6, 18).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mt-12">
+            <div class="card text-center bg-accent-blue text-white">
+                <h2 class="section-title text-center mx-auto !text-white !border-white">Un Futuro Conectado, Eficiente y Sostenible</h2>
+                <p class="mt-4 text-lg">
+                    La Agricultura Inteligente es más que una tendencia; es una transformación esencial para el futuro de la producción alimentaria global. Al aprovechar el poder de los datos, la conectividad y la automatización, podemos construir sistemas agrícolas que no solo sean más productivos y rentables, sino también más resilientes al cambio climático y más respetuosos con nuestro planeta.
+                </p>
+                <p class="mt-4 text-lg">
+                    La colaboración entre gobiernos, la industria tecnológica, instituciones de investigación y, fundamentalmente, los agricultores, es clave para superar los desafíos existentes y desbloquear todo el potencial de esta revolución agrícola. El camino hacia una agricultura verdaderamente inteligente requiere una visión compartida y un compromiso continuo con la innovación y la sostenibilidad.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 text-sm text-gray-500 border-t mt-12">
+        Infografía generada el 25 de mayo de 2025, basada en el análisis de investigación sobre Agricultura Inteligente.
+    </footer>
+
+<script>
+    const chartColors = {
+        coral: '#FF6B6B',
+        yellow: '#FFD166',
+        turquoise: '#06D6A0',
+        blue: '#118AB2',
+        darkBlue: '#073B4C',
+        lightGray: '#E2E8F0' // Tailwind gray-300 for grid lines
+    };
+
+    function wrapLabels(label, maxWidth) {
+        if (typeof label !== 'string') return label;
+        const words = label.split(' ');
+        let currentLine = '';
+        const lines = [];
+        words.forEach(word => {
+            if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    }
+
+    const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: chartColors.darkBlue,
+                    font: { size: 12 }
+                }
+            },
+            tooltip: {
+                backgroundColor: chartColors.darkBlue,
+                titleColor: chartColors.yellow,
+                bodyColor: 'white',
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        } else {
+                          return label;
+                        }
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: chartColors.darkBlue,
+                    font: { size: 11 },
+                    callback: function(value, index, values) {
+                        const label = this.getLabelForValue(value);
+                        return wrapLabels(label, 10); // Shorter wrap for x-axis for better fit
+                    }
+                },
+                grid: { color: chartColors.lightGray }
+            },
+            y: {
+                ticks: { color: chartColors.darkBlue, font: { size: 11 } },
+                grid: { color: chartColors.lightGray },
+                beginAtZero: true
+            }
+        }
+    };
+
+    // Market Drivers Chart
+    const marketDriversCtx = document.getElementById('marketDriversChart')?.getContext('2d');
+    if (marketDriversCtx) {
+        new Chart(marketDriversCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapLabels('Crecimiento Poblacional Global', 16), 
+                    wrapLabels('Impacto del Cambio Climático', 16), 
+                    wrapLabels('Necesidad de Seguridad Alimentaria', 16), 
+                    wrapLabels('Escasez de Recursos Naturales', 16)
+                ],
+                datasets: [{
+                    label: 'Nivel de Impacto (Escala Conceptual 1-10)',
+                    data: [9, 8, 9, 7],
+                    backgroundColor: [chartColors.coral, chartColors.yellow, chartColors.turquoise, chartColors.blue],
+                    borderColor: chartColors.darkBlue,
+                    borderWidth: 1
+                }]
+            },
+            options: {...commonChartOptions}
+        });
+    }
+
+    // Market Growth Chart (Biofertilizers Example)
+    const marketGrowthCtx = document.getElementById('marketGrowthChart')?.getContext('2d');
+    if (marketGrowthCtx) {
+        new Chart(marketGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'Mercado de Biofertilizantes (Miles de Millones USD)',
+                    data: [2.6, 2.9, 3.2, 3.6, 4.0, 4.5], // CAGR ~11.9%
+                    borderColor: chartColors.turquoise,
+                    backgroundColor: 'rgba(6, 214, 160, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {...commonChartOptions, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, title: { display: true, text: 'Miles de Millones USD', color: chartColors.darkBlue}}}}
+        });
+    }
+
+    // Tech Adoption Chart
+    const techAdoptionCtx = document.getElementById('techAdoptionChart')?.getContext('2d');
+    if (techAdoptionCtx) {
+        new Chart(techAdoptionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    wrapLabels('IoT (Sensores, Conectividad)', 16), 
+                    wrapLabels('Agricultura de Precisión (GPS, VRT)', 16), 
+                    wrapLabels('IA y Big Data (Análisis)', 16), 
+                    wrapLabels('Drones (Monitoreo, Pulverización)', 16),
+                    wrapLabels('Robótica (Automatización Tareas)', 16)
+                ],
+                datasets: [{
+                    label: 'Nivel de Adopción Estimado',
+                    data: [75, 70, 55, 50, 30], // Conceptual percentages
+                    backgroundColor: [chartColors.blue, chartColors.turquoise, chartColors.yellow, chartColors.coral, chartColors.darkBlue],
+                    hoverOffset: 4
+                }]
+            },
+            options: {...commonChartOptions, scales: {x: {display:false}, y: {display:false}}}
+        });
+    }
+
+    // Yield and Efficiency Chart
+    const yieldEfficiencyCtx = document.getElementById('yieldEfficiencyChart')?.getContext('2d');
+    if (yieldEfficiencyCtx) {
+        new Chart(yieldEfficiencyCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapLabels('Aeroponía Papa (Prod. x Planta)', 16), 
+                    wrapLabels('Ahorro Agua Riego TIC (%)', 16), 
+                    wrapLabels('Ahorro Pesticidas Pulv. Autom. (%)', 16),
+                    wrapLabels('Rend. Tomate Invernadero Inteligente (kg/m²)',16)
+                ],
+                datasets: [{
+                    label: 'Mejora / Valor',
+                    data: [3.5, 35, 26, 22], // 3.5 representa "3-4 veces más", 22 kg/m2
+                    backgroundColor: [chartColors.turquoise, chartColors.blue, chartColors.yellow, chartColors.coral],
+                }]
+            },
+            options: {...commonChartOptions, plugins: {...commonChartOptions.plugins, legend: {display: false}}, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, title: { display: true, text: 'Valor / % Mejora', color: chartColors.darkBlue}}}}
+        });
+    }
+
+</script>
+</body>
+</html>
