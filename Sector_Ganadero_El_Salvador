@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Sector Ganadero de El Salvador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Gris azulado muy claro */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* max-w-xl aprox */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px; /* md:h-80 */
+                max-height: 400px;
+            }
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem; /* Ajustado para mejor visualización */
+            font-weight: 700;
+            color: #007BA7; /* Azul Medio */
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #4A5568; /* Gris oscuro */
+            margin-top: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0A4C6A; /* Azul Profundo */
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .icon-placeholder { /* Para representar iconos sin usar SVG */
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+            color: #20C997; /* Turquesa Brillante */
+        }
+        /* Estilos para diagrama de flujo simple con HTML/CSS */
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .flow-step {
+            background-color: #E0F2FE; /* Azul muy claro, parte de la paleta Ocean Breeze */
+            border: 2px solid #007BA7; /* Azul Medio */
+            color: #0A4C6A; /* Azul Profundo */
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            width: 80%;
+            max-width: 350px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #007BA7; /* Azul Medio */
+            margin-bottom: 0.5rem;
+        }
+
+        /* Paleta de Colores: Ocean Breeze
+           Azul Profundo: #0A4C6A
+           Azul Medio: #007BA7
+           Turquesa Brillante: #20C997
+           Arena Claro: #F0E68C (usado con moderación para acentos si es necesario)
+           Coral Suave: #FF7F50 (usado con moderación para acentos si es necesario)
+           Fondo Principal: #f0f4f8 (Gris Azulado muy claro)
+           Texto Principal: #1A202C (Gris muy oscuro, casi negro)
+           Texto Secundario: #4A5568 (Gris oscuro)
+        */
+
+        /* Confirmación NO SVG / NO MERMAID:
+           Se confirma que NO se utilizó SVG en ninguna parte de esta infografía. 
+           Todos los gráficos se renderizan en Canvas a través de Chart.js. 
+           Los diagramas y elementos visuales se crean con HTML/CSS y Tailwind.
+           Se confirma que NO se utilizó Mermaid JS.
+        */
+
+        /* Plan de Narrativa y Estructura:
+           Título: Infografía del Sector Ganadero de El Salvador
+           Secciones: 
+           1. Introducción (Importancia y %PIB)
+           2. Panorama General (Producción Carne y Lácteos)
+           3. Desafíos Económicos (Costos, Crédito)
+           4. Dinámicas de Mercado e Importaciones
+           5. Impacto Climático y Emisiones GEI
+           6. Brechas Políticas e Institucionales
+           7. Potencial de AgriTech (Oportunidades y Barreras)
+           8. Iniciativas Gubernamentales Clave
+           9. Recomendaciones Estratégicas
+           10. Conclusión
+        */
+
+        /* Selección de Visualizaciones (Data Point -> Goal -> Chosen Visualization -> Justification/Library/Method - Confirming NO SVG):
+            - % Contribución del Sector al PIB -> Informar -> Single Big Number -> Dato clave y único -> HTML/Tailwind. (NO SVG)
+            - % Empleo del Sector -> Informar -> Single Big Number -> Dato clave y único -> HTML/Tailwind. (NO SVG)
+            - Producción Carne Bovina y Porcina (2023/24 vs 2024/25) -> Comparar -> Bar Chart -> Comparar valores -> Chart.js (Canvas). (NO SVG)
+            - Tendencia Producción Láctea (proyección 2021-2026) -> Cambio -> Line Chart -> Mostrar tendencia -> Chart.js (Canvas). (NO SVG)
+            - Caída del Crédito Agrícola (2019 vs 2023) -> Comparar/Cambio -> Bar Chart -> Mostrar reducción -> Chart.js (Canvas). (NO SVG)
+            - Salario Agrícola vs Canasta Básica -> Comparar -> Bar Chart -> Comparar valores monetarios -> Chart.js (Canvas). (NO SVG)
+            - Cuota de Supermercados en Ventas de Alimentos -> Comparar (Composición) -> Donut Chart -> Mostrar proporción -> Chart.js (Canvas). (NO SVG)
+            - Aumento Importaciones Agrícolas (Valor 2019 vs 2023) -> Cambio/Informar -> Bar Chart -> Mostrar incremento -> Chart.js (Canvas). (NO SVG)
+            - Emisiones GEI del Ganado (% del total agrícola) -> Informar/Comparar (Composición) -> Donut Chart -> Mostrar proporción -> Chart.js (Canvas). (NO SVG)
+            - Pérdidas Económicas por Cambio Climático (% PIB) -> Informar -> Single Big Number -> Dato de impacto -> HTML/Tailwind. (NO SVG)
+            - Potencial AgriTech (Aumento Productividad, Reducción Costos) -> Informar -> Single Big Numbers -> Datos de impacto -> HTML/Tailwind. (NO SVG)
+            - Iniciativas Gubernamentales -> Organizar -> Lista HTML estilizada -> Presentar acciones -> HTML/Tailwind. (NO SVG)
+            - Barreras para AgriTech -> Organizar -> Lista HTML estilizada -> Resumir obstáculos -> HTML/Tailwind. (NO SVG)
+            - Flujo de Recomendaciones (simplificado) -> Organizar -> Diagrama HTML/CSS -> Mostrar relación -> HTML/CSS/Tailwind. (NO SVG)
+        */
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-0A4C6A text-white py-8 shadow-lg">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">Sector Ganadero de El Salvador</h1>
+            <p class="text-lg md:text-xl mt-2">Desafíos, Oportunidades y el Potencial de AgriTech</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <section class="mb-12">
+            <h2 class="section-title">Importancia Estratégica del Sector</h2>
+            <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">
+                El sector agrícola, incluyendo la ganadería, es vital para la estructura socioeconómica de El Salvador, jugando un papel crucial en el empleo y la seguridad alimentaria, a pesar de una modesta contribución directa al PIB.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="stat-card">
+                    <div class="stat-number">4.88%</div>
+                    <div class="stat-label">Contribución al PIB Nacional</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">18.49%</div>
+                    <div class="stat-label">De la Fuerza Laboral Nacional Empleada</div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">Fuente: Informe Sector Ganadero El Salvador (Refs. 1, 2)</p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">Producción Ganadera: Tendencias Actuales</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-007BA7">Producción de Carne Bovina y Porcina</h3>
+                    <p class="text-gray-600 mb-4 text-sm">Se proyecta una baja en la producción de carne bovina, mientras que la porcina se mantiene estable. Estos datos reflejan desafíos persistentes en el sector.</p>
+                    <div class="chart-container mx-auto h-[300px] md:h-[350px]">
+                        <canvas id="produccionCarneChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Fuente: USDA FAS (Ref. 8). Proyecciones 2023/24 vs 2024/25 en TM.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-007BA7">Sector Lácteo: Un Panorama Complejo</h3>
+                    <p class="text-gray-600 mb-4 text-sm">La producción láctea enfrenta una tendencia general a la baja, aunque existen informes contradictorios sobre aumentos puntuales debido a incentivos. Los altos costos de producción son una barrera principal.</p>
+                    <div class="chart-container mx-auto h-[300px] md:h-[350px]">
+                        <canvas id="produccionLacteaChart"></canvas>
+                    </div>
+                     <p class="text-center mt-4"><span class="stat-number text-2xl text-FF7F50">-15%</span><br/><span class="stat-label">Disminución en producción láctea atribuida a altos costos (Asileche).</span></p>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 11, 14). Proyección de disminución interanual.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">Desafíos Económicos y de Rentabilidad</h2>
+            <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">
+                Altos costos de insumos, acceso limitado al crédito y baja rentabilidad generalizada dificultan la sostenibilidad y el crecimiento del sector ganadero.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="stat-card">
+                    <div class="stat-number text-FF7F50">79% &#x2193;</div>
+                    <div class="stat-label">Caída del Crédito Agrícola (2019-2023)</div>
+                    <p class="text-xs text-gray-500 mt-1">Solo 2% del crédito bancario nacional se destina a agricultura.</p>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Ref. 15)</p>
+                </div>
+                <div class="stat-card">
+                     <canvas id="salarioCanastaChart" class="h-[200px] w-full"></canvas>
+                    <div class="stat-label mt-2">Salario Agrícola Promedio ($129.7) vs. Canasta Básica Rural ($137.5)</div>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Ref. 17)</p>
+                </div>
+                 <div class="stat-card">
+                    <span class="icon-placeholder">💰</span>
+                    <div class="text-lg font-semibold text-007BA7">Costos de Insumos Disparados</div>
+                    <p class="text-sm text-gray-600 mt-1">Aumento significativo entre 2019-2023, especialmente en alimentos importados como maíz y soya.</p>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 15, 16)</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-12">
+            <h2 class="section-title">Mercado, Consumo y Dependencia de Importaciones</h2>
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-007BA7">Canales de Venta y Consumo</h3>
+                    <p class="text-gray-600 mb-4 text-sm">Los supermercados dominan una parte importante de las ventas, con una creciente demanda de conveniencia. Iniciativas como "Agromercados" buscan mejorar el acceso para productores locales.</p>
+                    <div class="chart-container mx-auto h-[280px] md:h-[320px]">
+                        <canvas id="canalVentasChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 7, 13)</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-007BA7">Creciente Dependencia de Importaciones</h3>
+                    <p class="text-gray-600 mb-4 text-sm">El Salvador es un importador neto de productos cárnicos y lácteos. El valor de las importaciones agrícolas aumentó un 37% entre 2019 y 2023.</p>
+                    <div class="chart-container mx-auto h-[280px] md:h-[320px]">
+                        <canvas id="importacionesChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 12, 15, 20)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 bg-007BA7/10 p-6 rounded-lg">
+            <h2 class="section-title">Impacto Climático y Huella Ambiental</h2>
+            <p class="text-center text-gray-700 mb-6 max-w-3xl mx-auto">
+                El Salvador es altamente vulnerable al cambio climático, sufriendo pérdidas económicas significativas. El sector ganadero, a su vez, es un contribuyente importante a las emisiones de GEI.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="stat-card">
+                    <div class="stat-number text-FF7F50">2.5%</div>
+                    <div class="stat-label">Pérdidas Económicas Anuales del PIB por Cambio Climático</div>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Ref. 23)</p>
+                </div>
+                <div class="stat-card">
+                    <div class="chart-container mx-auto h-[200px] w-full">
+                        <canvas id="emisionesGeiChart"></canvas>
+                    </div>
+                    <div class="stat-label mt-2">Emisiones GEI del Ganado</div>
+                    <p class="text-xs text-gray-500 mt-1">10.4% del total nacional y 48.4% de las emisiones agrícolas.</p>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 3, 4)</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-12">
+            <h2 class="section-title">Brechas Políticas e Institucionales</h2>
+            <div class="card max-w-3xl mx-auto">
+                <p class="text-gray-600 mb-4">
+                    La negligencia histórica, la falta de políticas coherentes y un apoyo gubernamental inadecuado han limitado el desarrollo del sector. La ausencia de un instituto de investigación estatal y servicios de extensión con recursos insuficientes son impedimentos críticos.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li><span class="icon-placeholder">📉</span>Abandono sistemático de la agricultura reportado por organizaciones campesinas.</li>
+                    <li><span class="icon-placeholder">🏛️</span>Falta de un instituto de investigación agrícola financiado por el estado.</li>
+                    <li><span class="icon-placeholder">👨‍🌾</span>Servicio de extensión (CENTA) con recursos y personal insuficientes.</li>
+                    <li><span class="icon-placeholder">😟</span>Crecientes preocupaciones por la seguridad alimentaria proyectadas para 2025.</li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-4 text-right">Fuente: Informe Sector Ganadero (Refs. 1, 3, 4, 5, 15, 16, 23)</p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">El Potencial Transformador de AgriTech</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-007BA7">Oportunidades con AgriTech</h3>
+                    <p class="text-gray-600 mb-4">La tecnología puede mejorar la utilización de recursos y aumentar la productividad significativamente.</p>
+                    <div class="space-y-4">
+                        <div class="stat-card p-4">
+                            <div class="stat-number text-2xl text-20C997">~20%</div>
+                            <div class="stat-label text-sm">Aumento Potencial de Productividad General</div>
+                        </div>
+                        <div class="stat-card p-4">
+                            <div class="stat-number text-2xl text-20C997">20-40%</div>
+                            <div class="stat-label text-sm">Reducción de Costos (proyectos piloto en LatAm)</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 5, 24)</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-3 text-FF7F50">Barreras para la Implementación</h3>
+                    <p class="text-gray-600 mb-4">A pesar de los beneficios, existen obstáculos importantes para la adopción generalizada de AgriTech.</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><span class="icon-placeholder">💲</span>Altos costos de implementación (equipos, conectividad).</li>
+                        <li><span class="icon-placeholder">📶</span>Conectividad a internet limitada en zonas rurales (59% penetración en 2019).</li>
+                        <li><span class="icon-placeholder">🎓</span>Falta de capacitación y educación técnica para agricultores.</li>
+                        <li><span class="icon-placeholder">📉</span>Histórica falta de inversión privada y apoyo gubernamental inadecuado.</li>
+                    </ul>
+                     <p class="text-xs text-gray-500 mt-3 text-center">Fuente: Informe Sector Ganadero (Refs. 1, 3, 4, 5, 24)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 bg-007BA7/10 p-6 rounded-lg">
+            <h2 class="section-title">Iniciativas Gubernamentales Clave</h2>
+            <p class="text-center text-gray-700 mb-6 max-w-3xl mx-auto">
+                El gobierno ha lanzado programas para fomentar el desarrollo agroindustrial, la mejora genética y el acceso a mercados, señalando un cambio hacia un apoyo más activo al sector.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow">
+                    <h4 class="font-semibold text-0A4C6A"><span class="icon-placeholder">🧬</span>Mejora Genética Nacional</h4>
+                    <p class="text-sm text-gray-600">Inseminación artificial gratuita, genética de élite, atención veterinaria y asistencia técnica.</p>
+                </div>
+                <div class="bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow">
+                    <h4 class="font-semibold text-0A4C6A"><span class="icon-placeholder">🛒</span>Agromercados</h4>
+                    <p class="text-sm text-gray-600">Mejoran acceso al mercado para productores y ofrecen alimentos asequibles.</p>
+                </div>
+                <div class="bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow">
+                    <h4 class="font-semibold text-0A4C6A"><span class="icon-placeholder">🚚</span>Fortalecimiento Logístico</h4>
+                    <p class="text-sm text-gray-600">Subvención del BCIE para vehículos de transporte, reduciendo pérdidas poscosecha.</p>
+                </div>
+                 <div class="bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow">
+                    <h4 class="font-semibold text-0A4C6A"><span class="icon-placeholder">🌿</span>Sistemas de Acuaponía</h4>
+                    <p class="text-sm text-gray-600">Cultivo de hortalizas y tilapia en comunidades, promoviendo maíz de alto rendimiento.</p>
+                </div>
+                 <div class="bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow">
+                    <h4 class="font-semibold text-0A4C6A"><span class="icon-placeholder">📄</span>Ley de Zona Franca</h4>
+                    <p class="text-sm text-gray-600">Exenciones fiscales para atraer inversión en fabricación de alimentos.</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-4 text-center">Fuente: Informe Sector Ganadero (Refs. 7, 25, 26)</p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">Recomendaciones Estratégicas Interconectadas</h2>
+            <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">
+                Para un crecimiento sostenible, se requiere un enfoque holístico que aborde políticas de inversión, resiliencia climática y la adopción de AgriTech de manera coordinada.
+            </p>
+            <div class="flow-diagram card">
+                <div class="flow-step">
+                    <h4 class="font-semibold">1. Políticas de Inversión y Crédito</h4>
+                    <p class="text-sm">Asignación obligatoria de crédito, fondo de desarrollo agrícola, fortalecer Agromercados, revisión política comercial.</p>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <h4 class="font-semibold">2. Resiliencia Climática y Sostenibilidad</h4>
+                    <p class="text-sm">Adopción de Agricultura Climáticamente Inteligente (ACI), infraestructura de agua, I+D en ganadería resiliente.</p>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <h4 class="font-semibold">3. Impulso a la Adopción de AgriTech</h4>
+                    <p class="text-sm">Acceso subvencionado, infraestructura digital, capacitación técnica, asociaciones público-privadas.</p>
+                </div>
+                 <div class="flow-arrow">🔄</div>
+                 <p class="text-sm text-center text-007BA7 font-semibold mt-2">Estas áreas se refuerzan mutuamente para un sector ganadero productivo y sostenible.</p>
+            </div>
+             <p class="text-xs text-gray-500 mt-4 text-center">Fuente: Síntesis de Recomendaciones del Informe.</p>
+        </section>
+
+    </main>
+
+    <footer class="bg-0A4C6A text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2025 Infografía del Sector Ganadero de El Salvador. Basada en el Informe de Investigación Profunda.</p>
+            <p class="text-xs mt-1">Visualización de datos con fines informativos.</p>
+        </div>
+    </footer>
+
+    <script>
+        const CHART_COLORS = {
+            blue1: '#0A4C6A', // Azul Profundo
+            blue2: '#007BA7', // Azul Medio
+            turquoise: '#20C997', // Turquesa Brillante
+            sand: '#F0E68C', // Arena Claro
+            coral: '#FF7F50', // Coral Suave
+            gray: '#CBD5E0' // Gris claro para ejes/texto
+        };
+
+        function wrapLabels(labels, maxWidth) {
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxWidth) {
+                    const words = label.split(' ');
+                    let currentLine = '';
+                    const newLabel = [];
+                    words.forEach(word => {
+                        if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                            newLabel.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    });
+                    newLabel.push(currentLine.trim());
+                    return newLabel;
+                }
+                return label;
+            });
+        }
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        // Gráfico Producción de Carne
+        const produccionCarneCtx = document.getElementById('produccionCarneChart').getContext('2d');
+        new Chart(produccionCarneCtx, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Carne Bovina', 'Carne Porcina'], 16),
+                datasets: [
+                    {
+                        label: 'Producción 2023/2024 (TM)',
+                        data: [18000, 8000],
+                        backgroundColor: CHART_COLORS.blue2,
+                        borderColor: CHART_COLORS.blue1,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Producción Proyectada 2024/2025 (TM)',
+                        data: [17000, 8000],
+                        backgroundColor: CHART_COLORS.turquoise,
+                        borderColor: CHART_COLORS.blue2,
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Toneladas Métricas (TM)' },
+                        ticks: { color: CHART_COLORS.gray }
+                    },
+                    x: { ticks: { color: CHART_COLORS.gray } }
+                },
+                plugins: {
+                    legend: { labels: { color: CHART_COLORS.gray } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Gráfico Producción Láctea
+        const produccionLacteaCtx = document.getElementById('produccionLacteaChart').getContext('2d');
+        new Chart(produccionLacteaCtx, {
+            type: 'line',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'Proyección Disminución Producción Láctea (% interanual)',
+                    data: [0, -2.7, -2.7*2, -2.7*3, -2.7*4, -2.7*5], // Simulación de tendencia acumulada
+                    borderColor: CHART_COLORS.coral,
+                    backgroundColor: CHART_COLORS.coral + '33', // Opacidad
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        title: { display: true, text: 'Cambio Acumulado (%)' },
+                        ticks: { color: CHART_COLORS.gray, callback: function(value) { return value + '%';} }
+                    },
+                    x: { ticks: { color: CHART_COLORS.gray } }
+                },
+                plugins: {
+                    legend: { labels: { color: CHART_COLORS.gray } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Gráfico Salario vs Canasta
+        const salarioCanastaCtx = document.getElementById('salarioCanastaChart').getContext('2d');
+        new Chart(salarioCanastaCtx, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Salario Agrícola Promedio', 'Canasta Básica Rural'], 16),
+                datasets: [{
+                    label: 'Monto en USD',
+                    data: [129.737, 137.546],
+                    backgroundColor: [CHART_COLORS.turquoise, CHART_COLORS.coral],
+                    borderColor: [CHART_COLORS.blue2, CHART_COLORS.blue1],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'USD' },
+                        ticks: { color: CHART_COLORS.gray }
+                    },
+                    y: { ticks: { color: CHART_COLORS.gray, autoSkip: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+        
+        // Gráfico Canal de Ventas (Supermercados)
+        const canalVentasCtx = document.getElementById('canalVentasChart').getContext('2d');
+        new Chart(canalVentasCtx, {
+            type: 'doughnut',
+            data: {
+                labels: wrapLabels(['Supermercados', 'Otros Canales (Mayoristas, Tiendas Indep.)'], 16),
+                datasets: [{
+                    label: 'Distribución de Ventas de Alimentos',
+                    data: [40, 60],
+                    backgroundColor: [CHART_COLORS.blue2, CHART_COLORS.turquoise],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: CHART_COLORS.gray } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Gráfico Importaciones Agrícolas (Valor)
+        const importacionesCtx = document.getElementById('importacionesChart').getContext('2d');
+        new Chart(importacionesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2019', '2023'],
+                datasets: [{
+                    label: 'Valor de Importaciones Agrícolas (Millones USD)',
+                    data: [591, 811], // Aumento del 37% (811 es aprox 591 * 1.37)
+                    backgroundColor: [CHART_COLORS.coral, CHART_COLORS.FF7F50 + 'AA'],
+                    borderColor: CHART_COLORS.blue1,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Millones USD' },
+                        ticks: { color: CHART_COLORS.gray }
+                    },
+                    x: { ticks: { color: CHART_COLORS.gray } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+        
+        // Gráfico Emisiones GEI
+        const emisionesGeiCtx = document.getElementById('emisionesGeiChart').getContext('2d');
+        new Chart(emisionesGeiCtx, {
+            type: 'doughnut',
+            data: {
+                labels: wrapLabels(['Ganadería (% de emisiones agrícolas)', 'Resto Agrícola'], 16),
+                datasets: [{
+                    label: 'Emisiones GEI del Sector Agrícola',
+                    data: [48.4, 51.6],
+                    backgroundColor: [CHART_COLORS.coral, CHART_COLORS.sand],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: CHART_COLORS.gray } },
+                    tooltip: { 
+                        callbacks: { 
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
