@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva: Establecimiento de VerdeVida en El Salvador (con IA)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: Proceso de Incorporación (Pasos, Plazos Estimados de Tabla 2.3). Goal: Informar. Viz/Presentation: Gráfico de Barras (Chart.js). Interaction: Hover. Justification: Comparación visual. Library: Chart.js (Canvas).
+        - Report Info: Requisitos para S.A. de C.V. (Sección 2.1). Goal: Informar. Viz/Presentation: Lista HTML expandible. Interaction: Clic. Justification: Detalle conciso. Library/Method: HTML/CSS/JS.
+        - Report Info: Lista de Verificación Registros (Tabla 3.7). Goal: Organizar. Viz/Presentation: Checklist HTML interactiva. Interaction: Clic. Justification: Seguimiento. Library/Method: HTML/CSS/JS.
+        - Report Info: Costos Estimados (Tabla 2.3). Goal: Informar. Viz/Presentation: Tabla HTML. Interaction: Ninguna. Justification: Datos tabulares. Library/Method: HTML/Tailwind.
+        - Gemini Feature 1: Generar Objeto Social (Constitución). Goal: Asistir en redacción. Viz/Presentation: Input + Botón + Área de resultado. Interaction: Clic en botón, muestra resultado de Gemini. Justification: Ayuda práctica en un paso legal clave. Library/Method: JS (fetch Gemini API), HTML.
+        - Gemini Feature 2: Identificar Apoyos Relevantes (Apoyos). Goal: Filtrar/sugerir. Viz/Presentation: Input + Botón + Área de resultado. Interaction: Clic en botón, muestra sugerencias de Gemini. Justification: Personaliza la búsqueda de incentivos. Library/Method: JS (fetch Gemini API), HTML.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .bg-beige-50 { background-color: #f5f5f0; }
+        .bg-stone-100 { background-color: #f5f5f4; }
+        .text-stone-800 { color: #292524; }
+        .border-stone-300 { border-color: #d6d3d1; }
+        .bg-green-100 { background-color: #dcfce7; }
+        .text-green-700 { color: #15803d; }
+        .border-green-600 { border-color: #16a34a; }
+        .hover-bg-green-200:hover { background-color: #bbf7d0; }
+        .sidebar-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            color: #374151;
+        }
+        .sidebar-link:hover {
+            background-color: #e5e7eb;
+            color: #111827;
+        }
+        .sidebar-link.active {
+            background-color: #10b981;
+            color: white;
+            font-weight: 600;
+        }
+        .expand-button::after {
+            content: ' ▼';
+            font-size: 0.7em;
+            margin-left: 5px;
+        }
+        .expand-button.expanded::after {
+            content: ' ▲';
+        }
+        .expandable-content {
+            display: none;
+            padding-left: 1rem;
+            border-left: 2px solid #d1d5db;
+            margin-left: 0.5rem;
+        }
+        .expandable-content.expanded {
+            display: block;
+        }
+        .checklist-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        .checklist-item label {
+            cursor: pointer;
+        }
+        .checklist-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+        .modal-close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .gemini-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            box-sizing: border-box;
+        }
+        .gemini-button {
+            background-color: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .gemini-button:hover {
+            background-color: #059669;
+        }
+        .gemini-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+        .gemini-result-area {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            min-height: 100px;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #10b981;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-beige-50 text-stone-800">
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessageText" class="text-stone-700"></p>
+        </div>
+    </div>
+
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-64 bg-stone-100 p-4 md:p-6 shadow-lg md:sticky md:top-0 md:h-screen overflow-y-auto">
+            <h1 class="text-2xl font-bold text-green-700 mb-6 border-b-2 border-green-600 pb-2">VerdeVida en El Salvador</h1>
+            <nav id="sidebarNav">
+                <a href="#inicio" class="sidebar-link active">Inicio</a>
+                <a href="#constitucion" class="sidebar-link">Constitución de Empresa</a>
+                <a href="#registros" class="sidebar-link">Registros Post-Incorporación</a>
+                <a href="#adaptacion" class="sidebar-link">Adaptación Personal</a>
+                <a href="#apoyos" class="sidebar-link">Apoyos e Incentivos</a>
+                <a href="#networking" class="sidebar-link">Networking y Ecosistema</a>
+                <a href="#conclusiones_recursos" class="sidebar-link">Conclusiones y Recursos</a>
+            </nav>
+        </aside>
+
+
+        <main class="flex-1 p-4 md:p-8 lg:p-10 overflow-y-auto">
+            <section id="inicio" class="content-section active">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Bienvenido a la Guía Interactiva de VerdeVida</h2>
+                <p class="mb-4 text-lg leading-relaxed">
+                    Este espacio está diseñado para facilitar la comprensión del proceso de establecimiento de VerdeVida, una Sociedad Anónima de Capital Variable (S.A. de C.V.) con enfoque AgriTech, en El Salvador. Aquí encontrará un resumen interactivo de los aspectos legales, trámites administrativos y consideraciones para la adaptación personal del equipo, especialmente para ciudadanos canadienses.
+                </p>
+                <p class="mb-4 text-lg leading-relaxed">
+                    Navegue a través de las secciones utilizando el menú lateral para explorar los pasos clave. Hemos incorporado herramientas con IA ✨ para asistirte en tareas como la redacción del objeto social y la identificación de apoyos gubernamentales relevantes.
+                </p>
+                <div class="bg-green-100 border-l-4 border-green-600 text-green-700 p-4 rounded-md shadow-md">
+                    <p class="font-semibold">Objetivo Principal:</p>
+                    <p>Transformar la información detallada del informe en una experiencia de usuario intuitiva, permitiendo una fácil exploración y síntesis de los datos cruciales para el éxito de VerdeVida en El Salvador, ahora con asistencia de IA.</p>
+                </div>
+            </section>
+
+
+            <section id="constitucion" class="content-section">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Constitución de VerdeVida S.A. de C.V.</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    Esta sección detalla el marco jurídico para establecer VerdeVida en El Salvador, centrándose en la Sociedad Anónima de Capital Variable (S.A. de C.V.). Cubriremos la elección de esta estructura, el proceso de incorporación paso a paso, y un resumen de los requisitos y costos iniciales.
+                </p>
+
+
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'constitucion_estructura')">2.1. Elección de la Estructura Jurídica: S.A. de C.V.</h3>
+                    <div id="constitucion_estructura" class="expandable-content">
+                        <p class="mb-3">Para VerdeVida, la estructura jurídica más recomendable es la Sociedad Anónima de Capital Variable (S.A. de C.V.), que ofrece responsabilidad limitada a los accionistas y flexibilidad en el capital social.</p>
+                        <h4 class="text-xl font-medium text-stone-700 mt-4 mb-2">Características y Ventajas Clave:</h4>
+                        <ul class="list-disc list-inside space-y-2 mb-3">
+                            <li><strong>Responsabilidad Limitada:</strong> Los accionistas responden solo hasta el monto de sus aportaciones.</li>
+                            <li><strong>Capital Variable:</strong> Permite aumentar o disminuir el capital social con mayor facilidad.</li>
+                            <li><strong>Personalidad Jurídica Propia:</strong> La empresa actúa en su propio nombre.</li>
+                            <li><strong>Transferibilidad de Acciones:</strong> Facilita la entrada y salida de socios.</li>
+                        </ul>
+                        <h4 class="text-xl font-medium text-stone-700 mt-4 mb-2">Requisitos Fundamentales:</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Accionistas:</strong> Mínimo dos (personas naturales o jurídicas, nacionales o extranjeras).</li>
+                            <li><strong>Denominación Social:</strong> Única, seguida de "S.A." o "Sociedad Anónima". Verificar disponibilidad en CNR.</li>
+                            <li><strong>Objeto Social:</strong> Definir claramente las actividades comerciales.
+                                <div class="mt-3 p-4 border border-green-200 rounded-md bg-green-50">
+                                    <label for="objetoSocialKeywords" class="block text-sm font-medium text-stone-700 mb-1">Palabras clave para el Objeto Social (ej: tecnología agrícola, software, IoT, consultoría sostenible):</label>
+                                    <input type="text" id="objetoSocialKeywords" class="gemini-input" placeholder="Ingrese palabras clave aquí...">
+                                    <button id="btnGenerarObjetoSocial" onclick="generarObjetoSocial()" class="gemini-button">✨ Generar Borrador de Objeto Social</button>
+                                    <div id="loadingObjetoSocial" class="loading-spinner"></div>
+                                    <div id="objetoSocialResult" class="gemini-result-area">
+                                        <p class="text-xs text-gray-500">Ingrese palabras clave y haga clic en generar para obtener un borrador.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><strong>Domicilio:</strong> Dirección física en El Salvador.</li>
+                            <li><strong>Capital Social Mínimo:</strong> USD 2,000.00.
+                                <ul class="list-circle list-inside ml-4 mt-1">
+                                    <li>Pago Inicial: Mínimo 5% en efectivo (USD 100 para capital de USD 2,000).</li>
+                                    <li>Pago Total: Saldo restante en un plazo no mayor a un año desde la inscripción.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Administración:</strong> Administrador Único o Junta Directiva.</li>
+                            <li><strong>Representante Legal:</strong> Obligatorio.</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 2.1</em></p>
+                    </div>
+                </div>
+
+
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'constitucion_proceso')">2.2. El Proceso de Incorporación: Guía Paso a Paso</h3>
+                    <div id="constitucion_proceso" class="expandable-content">
+                        <ol class="list-decimal list-inside space-y-3">
+                            <li><strong>Decisiones Preliminares y Recopilación de Documentos:</strong> Identificar accionistas, capital, nombre (3 opciones), objeto social, domicilio, administración.</li>
+                            <li><strong>Verificación de Disponibilidad del Nombre (CNR):</strong> Altamente recomendable.</li>
+                            <li><strong>Obtención de Cheque Certificado para Pago Inicial del Capital:</strong> Mínimo 5% del capital suscrito.</li>
+                            <li><strong>Contratación de un Notario Público Salvadoreño:</strong> Para redactar la Escritura Pública de Constitución.</li>
+                            <li><strong>Emisión del Testimonio de la Escritura de Constitución:</strong> Copia certificada oficial.</li>
+                            <li><strong>Elaboración del Balance Inicial:</strong> Por Contador Público autorizado.</li>
+                            <li><strong>Inscripción Integral en el Registro de Comercio (CNR):</strong> Presentar Testimonio, Balance Inicial, formularios, IDs, pago de derechos. Adquiere personalidad jurídica.</li>
+                        </ol>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 2.2</em></p>
+                    </div>
+                </div>
+
+
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4">2.3. Tabla: Resumen de Requisitos y Costos Estimados Iniciales</h3>
+                     <p class="mb-4">La siguiente tabla resume los pasos, requisitos, costos y plazos estimados para la constitución inicial de VerdeVida S.A. de C.V. con un capital mínimo de USD 2,000.00. Los honorarios de notarios y contadores son variables y deben cotizarse directamente.</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fase/Paso</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo Estimado (USD)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plazo Estimado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr><td class="px-6 py-4 whitespace-nowrap">1. Verificación de Nombre</td><td class="px-6 py-4 whitespace-nowrap">Variable (mínimo/gratuito)</td><td class="px-6 py-4 whitespace-nowrap">1-2 días</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">2. Obtención de Cheque Certificado (5% capital)</td><td class="px-6 py-4 whitespace-nowrap">USD 100 + comisión</td><td class="px-6 py-4 whitespace-nowrap">1 día</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">3. Servicios Notariales (Escritura)</td><td class="px-6 py-4 whitespace-nowrap">Variable (cotizar)</td><td class="px-6 py-4 whitespace-nowrap">3-5 días</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">4. Elaboración de Balance Inicial</td><td class="px-6 py-4 whitespace-nowrap">Variable (cotizar)</td><td class="px-6 py-4 whitespace-nowrap">1-2 días</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">5. Inscripción Reg. Comercio (CNR)</td><td class="px-6 py-4 whitespace-nowrap">USD 10.00 - 11.43</td><td rowspan="3" class="px-6 py-4 whitespace-nowrap align-middle">Parte de 4-8 días hábiles (Inscripción Integral)</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">6. Inscripción Balance Inicial (CNR)</td><td class="px-6 py-4 whitespace-nowrap">USD 17.14</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap">7. Obtención de NIT (Hacienda/CNR)</td><td class="px-6 py-4 whitespace-nowrap">USD 1.67 - 2.00</td></tr>
+                                <tr class="bg-gray-50 font-semibold"><td class="px-6 py-4 whitespace-nowrap">Costos Gubernamentales Totales Estimados (Inscripción Integral)</td><td class="px-6 py-4 whitespace-nowrap">~ USD 184.25</td><td class="px-6 py-4 whitespace-nowrap">Total: 4-8 días hábiles</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Tabla 2.3</em></p>
+
+
+                    <h4 class="text-xl font-semibold text-stone-700 mt-8 mb-4">Visualización de Plazos Estimados (Días Hábiles)</h4>
+                    <div class="chart-container bg-white p-4 rounded-lg shadow">
+                        <canvas id="plazosChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="registros" class="content-section">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Registros y Obligaciones Esenciales Post-Incorporación</h2>
+                 <p class="mb-6 text-lg leading-relaxed">
+                    Una vez constituida VerdeVida S.A. de C.V. e inscrita en el Registro de Comercio, existen varias inscripciones y obligaciones adicionales mandatorias para operar legalmente en El Salvador. Esta sección las detalla.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_fiscal')">3.1. Identificación Fiscal (Ministerio de Hacienda)</h3>
+                        <div id="reg_fiscal" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>NIT de la Sociedad:</strong> Indispensable. Formulario F-210V4. Costo: USD 1.67-2.00.</li>
+                                <li><strong>NRC para IVA:</strong> Obligatorio para operaciones gravadas. Formulario F-210V4.</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.1</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_municipal')">3.2. Registro Municipal (Alcaldía)</h3>
+                        <div id="reg_municipal" class="expandable-content">
+                            <p>Requerido en el municipio del domicilio social. Necesario para licencia de funcionamiento y pago de tasas municipales.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.2</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_onec')">3.3. Registro Estadístico (ONEC)</h3>
+                        <div id="reg_onec" class="expandable-content">
+                            <p>Inscripción para fines estadísticos. Solvencia necesaria para Matrícula de Comercio.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.3</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_matricula')">3.4. Licencia Comercial (Matrícula de Empresa - CNR)</h3>
+                        <div id="reg_matricula" class="expandable-content">
+                            <p>Licencia formal para ejercer actividades comerciales. Costo variable según activo (desde USD 91.43).</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.4</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_seguridad_social')">3.5. Registros de Seguridad Social y Laborales</h3>
+                        <div id="reg_seguridad_social" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>ISSS (Inscripción Patronal):</strong> A partir del primer empleado.</li>
+                                <li><strong>AFP (Inscripción Patronal):</strong> A partir del primer empleado.</li>
+                                <li><strong>Ministerio de Trabajo:</strong> Registro del Centro de Trabajo. Reglamento Interno si >10 empleados.</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.5</em></p>
+                        </div>
+                    </div>
+                     <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'reg_contable_fiscal')">3.6. Configuración de Cumplimiento Contable y Fiscal</h3>
+                        <div id="reg_contable_fiscal" class="expandable-content">
+                             <ul class="list-disc list-inside space-y-1">
+                                <li>Legalización de Libros Contables y de IVA.</li>
+                                <li>Implementar Sistema Contable Autorizado.</li>
+                                <li>Autorización de Papelería Fiscal (crucial antes de facturar).</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 3.6</em></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mt-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4">3.7. Lista de Verificación Interactiva: Registros Esenciales Post-Incorporación</h3>
+                    <p class="mb-4">Utilice esta lista para marcar los registros completados. Esto es solo una guía visual y no guarda el estado.</p>
+                    <div id="checklistRegistros" class="space-y-2">
+                    </div>
+                    <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Tabla 3.7</em></p>
+                </div>
+            </section>
+
+
+            <section id="adaptacion" class="content-section">
+                 <h2 class="text-3xl font-semibold text-green-700 mb-6">Adaptación Personal para Extranjeros</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    Esta sección cubre los aspectos legales y prácticos para la adaptación del personal extranjero (ej. canadienses) vinculado a VerdeVida, incluyendo residencia, trabajo, banca, conducción y servicios consulares. La correcta legalización de documentos mediante apostilla es crucial.
+                </p>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'adapt_residencia')">4.1. Opciones de Residencia</h3>
+                    <div id="adapt_residencia" class="expandable-content">
+                        <p class="mb-2">Los extranjeros necesitan un estatus migratorio adecuado. Opciones principales:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Residencia Temporal para Inversionistas:</strong> Para inversiones que superen umbral legal (aprox. 4,000 salarios mínimos). Permite permanecer y trabajar. Requiere registro de capital extranjero (ONI), solvencia fiscal de la sociedad, matrícula de empresa.</li>
+                            <li><strong>Residencia Temporal para Rentistas:</strong> Para quienes demuestren ingresos estables del exterior. Requiere pruebas de ingresos apostilladas y traducidas.</li>
+                            <li><strong>Requisitos de Apostilla (Documentos Canadienses):</strong> Esencial para validez legal en El Salvador (certificados, antecedentes penales, etc.). Proceso simplificado por Convenio de La Haya. Documentos en inglés requieren traducción oficial al español.</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 4.1</em></p>
+                    </div>
+                </div>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'adapt_trabajo')">4.2. Autorización de Trabajo</h3>
+                    <div id="adapt_trabajo" class="expandable-content">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Para Inversionistas con Residencia de Inversionista:</strong> La propia residencia puede conferir autorización para trabajar en la empresa invertida.</li>
+                            <li><strong>Para Representantes Legales:</strong> Similar al inversionista si está vinculado a inversión calificada.</li>
+                            <li><strong>Proceso General de Permiso de Trabajo:</strong> Si lo anterior no aplica, el empleador (VerdeVida) solicita al Ministerio de Trabajo. Costo: USD 140-260.</li>
+                            <li><strong>Trabajadores Independientes:</strong> Requieren declaración jurada y posibles permisos adicionales.</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 4.2</em></p>
+                    </div>
+                </div>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'adapt_banca')">4.3. Banca en El Salvador</h3>
+                    <div id="adapt_banca" class="expandable-content">
+                        <h4 class="text-xl font-medium text-stone-700 mt-2 mb-2">A. Cuentas Corporativas (VerdeVida S.A. de C.V.):</h4>
+                        <p class="mb-2">Requisitos generales: Escritura inscrita, NIT/NRC empresa, Poderes Rep. Legal, IDs Rep. Legal/firmantes, Comprobante domicilio, Monto mínimo (ej. USD 300 Banco Agrícola).</p>
+                        <h4 class="text-xl font-medium text-stone-700 mt-4 mb-2">B. Cuentas Personales (Extranjeros):</h4>
+                        <p class="mb-2">Requisitos generales: Pasaporte, NIT salvadoreño, Carné Residente (si aplica), Comprobante domicilio, Justificación ingresos. Monto mínimo (ej. USD 25 Banco Cuscatlán).</p>
+                        <h4 class="text-xl font-medium text-stone-700 mt-4 mb-2">Tabla Comparativa de Bancos Seleccionados (Resumen):</h4>
+                        <div class="overflow-x-auto mt-2">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Banco</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Dep. Mín. Corp. (USD)</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Dep. Mín. Pers. (USD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr><td class="px-4 py-2">Banco Agrícola</td><td class="px-4 py-2">300 (Cta. Corriente)</td><td class="px-4 py-2">0 (Ahorro Directo) / 25 (Libreta)</td></tr>
+                                    <tr><td class="px-4 py-2">Banco Cuscatlán</td><td class="px-4 py-2">No espec.</td><td class="px-4 py-2">25 (Ahorro)</td></tr>
+                                    <tr><td class="px-4 py-2">Davivienda</td><td class="px-4 py-2">Requerido</td><td class="px-4 py-2">Variable (ej. 100 Panamá)</td></tr>
+                                    <tr><td class="px-4 py-2">BAC Credomatic</td><td class="px-4 py-2">No espec.</td><td class="px-4 py-2">No espec.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 4.3 y Tabla 4.3.C</em></p>
+                    </div>
+                </div>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'adapt_conduccion')">4.4. Conducción en El Salvador</h3>
+                    <div id="adapt_conduccion" class="expandable-content">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Uso Licencia Canadiense:</strong> Válida por tiempo limitado (turista, 30-90 días). Aceptada por agencias de alquiler. PIC recomendado.</li>
+                            <li><strong>Homologación Licencia Canadiense (Obtención Licencia Salvadoreña):</strong> Necesaria para residencia a largo plazo. Requiere licencia canadiense APOSTILLADA, pasaporte, NIT, carné residente, examen visual (USD 3.39), grupo sanguíneo. Costo trámite: USD 54.43.</li>
+                            <li><strong>Importación Vehículos (Ej. Ford Escape 2014):</strong> NO PERMITIDA. Límite de antigüedad de 8 años para vehículos convencionales. Un Ford Escape 2014 excedería este límite en 2025.</li>
+                            <li><strong>Alquiler de Vehículos:</strong> Amplia oferta. SUVs disponibles. Costo diario promedio USD 33+ (SUV desde USD 28).</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 4.4</em></p>
+                    </div>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'adapt_consular')">4.5. Servicios Consulares Canadienses</h3>
+                    <div id="adapt_consular" class="expandable-content">
+                        <p class="mb-2">Embajada de Canadá en San Salvador (Colonia Escalón) ofrece servicios consulares: pasaportes, servicios notariales, asistencia en emergencias.</p>
+                        <p class="mb-2"><strong>Registro de Canadienses en el Extranjero (ROCA):</strong> Altamente recomendado para recibir información y asistencia en emergencias.</p>
+                        <p class="mb-2"><strong>Contacto:</strong> Tel: (503) 2133-1100, Email: ssal@international.gc.ca.</p>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 4.5</em></p>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="apoyos" class="content-section">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Potenciales Mecanismos de Apoyo e Incentivos</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    El Salvador ofrece diversos programas e incentivos para fomentar la inversión y el desarrollo de MIPYMES, especialmente aquellas con componentes tecnológicos o agrícolas como VerdeVida.
+                </p>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-stone-700 mb-3">Asistente IA: Identificar Apoyos Relevantes para VerdeVida</h4>
+                    <div class="mt-3 p-4 border border-green-200 rounded-md bg-green-50">
+                        <label for="apoyosKeywords" class="block text-sm font-medium text-stone-700 mb-1">Áreas de enfoque de VerdeVida (ej: agricultura de precisión, IoT en el campo, software agrícola, sostenibilidad):</label>
+                        <input type="text" id="apoyosKeywords" class="gemini-input" placeholder="Describa el enfoque de VerdeVida...">
+                        <button id="btnIdentificarApoyos" onclick="identificarApoyosRelevantes()" class="gemini-button">✨ Identificar Apoyos Relevantes</button>
+                        <div id="loadingApoyos" class="loading-spinner"></div>
+                        <div id="apoyosResult" class="gemini-result-area">
+                            <p class="text-xs text-gray-500">Describa el enfoque de su empresa y haga clic en identificar para obtener sugerencias.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'apoyo_mype')">5.1. Ley MYPE y CONAMYPE</h3>
+                        <div id="apoyo_mype" class="expandable-content">
+                            <p>CONAMYPE ejecuta políticas de apoyo a MIPYMES. Fondo para Emprendimiento y Capital de Trabajo (USD 5 millones iniciales). Ofrece capacitación, asistencia técnica, asesoría. Centro de Innovación en Emprendimiento Digital (CIED) apoya adopción de tecnologías.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 5.1</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'apoyo_fiscal')">5.2. Incentivos Fiscales</h3>
+                        <div id="apoyo_fiscal" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Generales a la Inversión:</strong> Exenciones de impuesto sobre transferencia de bienes inmuebles, ISR, impuestos municipales (hasta 15+ años), DAI para bienes de capital, impuesto ganancia de capital. Puede requerir % de I+D+i.</li>
+                                <li><strong>Ley de Fomento a la Innovación y Manufactura Tecnológica:</strong> Exoneración de retenciones, tributos municipales, DAI para maquinaria. Fomenta software, IA, ciberseguridad, manufactura tech. Para startups y multinacionales.</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 5.2</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'apoyo_financiamiento')">5.3. Opciones de Financiamiento</h3>
+                        <div id="apoyo_financiamiento" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>BANDESAL:</strong> FIREMPRESA (verificar vigencia), Líneas de Crédito (Fomento Agrícola, Banca Emprendes, Verde), Programa BID "Acceso al Crédito para la MIPYME".</li>
+                                <li><strong>Banco de Fomento Agropecuario (BFA):</strong> Especializado en sector agropecuario. Tasas competitivas. Temporada Agrícola 2025.</li>
+                                <li><strong>BCIE:</strong> Iniciativa DINAMICA II (capital semilla, asistencia técnica), Apoyo a MIPYMES Agrícolas (fondos climáticos).</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 5.3</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'apoyo_agritech')">5.4. Consideraciones AgriTech</h3>
+                        <div id="apoyo_agritech" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Ley sobre Control de Pesticidas, Fertilizantes:</strong> Cumplir regulaciones sobre insumos agrícolas, fomento de productos ecológicos.</li>
+                                <li><strong>Gobernanza de Datos para IA:</strong> Principios de proporcionalidad, seguridad de datos, privacidad, gobernanza colaborativa, responsabilidad. Esencial para AgriTech con uso intensivo de datos.</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 5.4</em></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="networking" class="content-section">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Networking y Ecosistema Empresarial</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    Conectarse con el ecosistema local es vital para el crecimiento de VerdeVida. Esta sección presenta instituciones clave y vías para el networking.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'net_camarasal')">6.1. Cámara de Comercio e Industria de El Salvador (CAMARASAL)</h3>
+                        <div id="net_camarasal" class="expandable-content">
+                            <p>Principal gremial empresarial. Ofrece capacitación (CFE), networking ("Negocios Entre Socios"), misiones comerciales, asesoría. Membresía otorga respaldo y acceso a red de >2,000 empresas. Contacto: servicios@camarasal.com, Tel: +503 2231-3000.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 6.1</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'net_asi')">6.2. Asociación Salvadoreña de Industriales (ASI)</h3>
+                        <div id="net_asi" class="expandable-content">
+                            <p>Agrupa empresas del sector industrial. Organiza foros (CRESA, Congreso Industrial Alimentos). Pertinente si VerdeVida tiene componentes de manufactura o sostenibilidad industrial. Contacto: asi@asi.com.sv, Tel: +503-2267-9200.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 6.2</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'net_mag')">6.3. Ministerio de Agricultura y Ganadería (MAG)</h3>
+                        <div id="net_mag" class="expandable-content">
+                            <p>Entidad rectora del sector agropecuario. Define políticas, implementa programas (ej. "Agrodrones"). Interlocutor clave para AgriTech. Contacto: info@mag.gob.sv, Tel: (503) 2210-1700.</p>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 6.3</em></p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-stone-800 mb-3 cursor-pointer expand-button" onclick="toggleExpand(this, 'net_comunidades')">6.4. Comunidades y Eventos AgriTech/Data Science</h3>
+                        <div id="net_comunidades" class="expandable-content">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Redes AgriTech Regionales/Internacionales:</strong> GSMA AgriTech, FAO, SEGIB AgTech.</li>
+                                <li><strong>Comunidades Data Science/Tech Local:</strong> Explorar plataformas globales con capítulos locales, comunidades (ej. HorchataJS), cursos (The Knowledge Academy).</li>
+                                <li><strong>Eventos de Networking (2025):</strong> Consultar Allconferencealert, Internationalconferencealerts, Eventbrite, Allevents.in para conferencias en negocios, tecnología, agricultura.</li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 6.4</em></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="conclusiones_recursos" class="content-section">
+                <h2 class="text-3xl font-semibold text-green-700 mb-6">Conclusiones y Recursos Adicionales</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    Esta sección final resume las recomendaciones estratégicas clave para VerdeVida y proporciona información sobre un tema de interés personal complementario: la caza deportiva.
+                </p>
+                <div class="mb-8 p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'conc_recomendaciones')">7. Conclusiones y Recomendaciones Estratégicas</h3>
+                    <div id="conc_recomendaciones" class="expandable-content">
+                        <p class="mb-3">El establecimiento de VerdeVida S.A. de C.V. en El Salvador es viable con planificación meticulosa. Se recomienda:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Planificación Integral y Asesoría Legal Local experimentada.</li>
+                            <li>Priorizar documentación y apostillas para extranjeros con antelación.</li>
+                            <li>Cumplimiento riguroso de pasos de constitución y todos los registros post-incorporación.</li>
+                            <li>Gestión proactiva de obligaciones fiscales/contables (especialmente autorización de papelería fiscal).</li>
+                            <li>Explorar incentivos (Ley de Inversiones, Ley Fomento Innovación Tecnológica) y apoyos (CONAMYPE, CIED).</li>
+                            <li>Evaluar financiamiento especializado (BANDESAL, BFA, BCIE).</li>
+                            <li>Gestionar adecuadamente residencia, conducción (licencia apostillada para homologar, considerar alquiler de vehículo ante imposibilidad de importar Ford Escape 2014 por antigüedad).</li>
+                            <li>Networking activo (CAMARASAL, ASI, MAG, eventos).</li>
+                            <li>Monitoreo legal y regulatorio continuo.</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Sección 7</em></p>
+                    </div>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-semibold text-stone-800 mb-4 cursor-pointer expand-button" onclick="toggleExpand(this, 'rec_caza')">Apéndice: Consideraciones sobre la Caza Deportiva</h3>
+                    <div id="rec_caza" class="expandable-content">
+                        <p class="mb-2">Regulada por el MARN (Ley de Conservación de Vida Silvestre).</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Licencia de Cacería Deportiva:</strong> Obligatoria (MARN). Costos varían (temporal USD 100, temporada residente USD 250, no residente USD 500). Requiere IDs, NIT, solvencia PNC, matrícula arma (si aplica).</li>
+                            <li><strong>Caza con Arco y Flecha:</strong> Requiere certificado de arquero. Arcos permitidos: recto, recurvado, poleas. Especies autorizadas: conejo, mapache, cotuza.</li>
+                            <li><strong>Especies y Temporadas:</strong> MARN publica acuerdos anuales. Verificar especies, temporadas, cuotas vigentes para 2025.</li>
+                            <li><strong>Zonas Autorizadas:</strong> Sitios específicos (ej. Embalse Cerrón Grande para aves acuáticas). Prohibido en áreas urbanas, protegidas, etc. Permiso de propietario para terrenos privados.</li>
+                            <li><strong>Importación Arcos de Caza:</strong> Sujeto a DGA. Declarar en equipaje. Consultar DGA/agente aduanal.</li>
+                            <li><strong>Recomendaciones:</strong> Verificar normativa vigente (MARN), obtener todos los permisos, respetar regulaciones.</li>
+                        </ul>
+                        <p class="mt-3 text-sm text-gray-600"><em>Referencia: Informe VerdeVida, Apéndice</em></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <script>
+        const navLinks = document.querySelectorAll('#sidebarNav a');
+        const contentSections = document.querySelectorAll('.content-section');
+        const modal = document.getElementById('infoModal');
+        const modalMessageText = document.getElementById('modalMessageText');
+
+
+        function showModal(message) {
+            modalMessageText.innerText = message;
+            modal.style.display = 'block';
+        }
+
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+
+        function updateActiveLink(targetId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${targetId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+
+        function showSection(targetId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === targetId) {
+                    section.classList.add('active');
+                }
+            });
+            updateActiveLink(targetId);
+            window.scrollTo(0, 0);
+        }
+
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                showSection(targetId);
+            });
+        });
+
+
+        const initialHash = window.location.hash.substring(1);
+        if (initialHash && document.getElementById(initialHash)) {
+            showSection(initialHash);
+        } else {
+            showSection('inicio');
+        }
+
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSection(hash);
+            } else {
+                showSection('inicio');
+            }
+        });
+
+
+        function toggleExpand(button, elementId) {
+            const content = document.getElementById(elementId);
+            button.classList.toggle('expanded');
+            content.classList.toggle('expanded');
+        }
+
+        const plazosData = {
+            labels: [
+                'Verificación Nombre (1-2d)',
+                'Cheque Certificado (1d)',
+                'Servicios Notariales (3-5d)',
+                'Balance Inicial (1-2d)',
+                'Inscripción Integral CNR (4-8d)'
+            ],
+            datasets: [{
+                label: 'Días Hábiles Estimados (Máximo)',
+                data: [2, 1, 5, 2, 8],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+
+        const plazosConfig = {
+            type: 'bar',
+            data: plazosData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Días Hábiles'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label = '';
+                                }
+                                const originalLabel = context.chart.data.labels[context.dataIndex];
+                                const daysMatch = originalLabel.match(/\(([\d-]+)d\)/);
+                                if (daysMatch) {
+                                   label += `Plazo: ${daysMatch[1]} días hábiles`;
+                                } else {
+                                   label += context.parsed.y + ' días hábiles (max)';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        function initCharts() {
+            const plazosCanvas = document.getElementById('plazosChart');
+            if (plazosCanvas && !Chart.getChart(plazosCanvas)) {
+                 new Chart(plazosCanvas, plazosConfig);
+            }
+        }
+
+         document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('constitucion').classList.contains('active')) {
+                initCharts();
+            }
+            const constitucionSection = document.getElementById('constitucion');
+            const observer = new MutationObserver((mutationsList, observer) => {
+                for(const mutation of mutationsList) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (constitucionSection.classList.contains('active')) {
+                            initCharts();
+                        }
+                    }
+                }
+            });
+            if(constitucionSection) observer.observe(constitucionSection, { attributes: true });
+
+
+            const checklistContainer = document.getElementById('checklistRegistros');
+            const checklistItems = [
+                { id: 'regNitSociedad', label: 'NIT de la Sociedad (Hacienda)' },
+                { id: 'regIvaNrc', label: 'Inscripción de IVA - NRC (Hacienda)' },
+                { id: 'regPermisoMunicipal', label: 'Permiso Municipal (Alcaldía)' },
+                { id: 'regOnec', label: 'Inscripción en ONEC (Estadísticas)' },
+                { id: 'regMatricula', label: 'Matrícula de Empresa y Establecimiento (CNR)' },
+                { id: 'regIsss', label: 'Inscripción Patronal ISSS' },
+                { id: 'regAfp', label: 'Inscripción Patronal AFP' },
+                { id: 'regCentroTrabajo', label: 'Registro de Centro de Trabajo (Ministerio de Trabajo)' },
+                { id: 'regLibrosContables', label: 'Legalización Libros Contables/IVA' },
+                { id: 'regPapeleriaFiscal', label: 'Autorización Papelería Fiscal (Hacienda)' }
+            ];
+
+
+            if (checklistContainer) {
+                checklistItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.classList.add('checklist-item', 'flex', 'items-center', 'p-2', 'hover:bg-gray-100', 'rounded');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = item.id;
+                    checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'text-green-600', 'rounded', 'border-gray-300', 'focus:ring-green-500');
+                    const label = document.createElement('label');
+                    label.htmlFor = item.id;
+                    label.textContent = item.label;
+                    label.classList.add('ml-2', 'text-stone-700');
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    checklistContainer.appendChild(div);
+                });
+            }
+        });
+
+
+        async function callGeminiApi(prompt, resultElementId, loadingElementId, buttonElementId) {
+            const resultElement = document.getElementById(resultElementId);
+            const loadingElement = document.getElementById(loadingElementId);
+            const buttonElement = document.getElementById(buttonElementId);
+
+
+            if (loadingElement) loadingElement.style.display = 'block';
+            if (buttonElement) buttonElement.disabled = true;
+            if (resultElement) resultElement.innerHTML = '';
+
+
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error Response:", errorData);
+                    throw new Error(`Error de API: ${response.status} ${response.statusText}. Detalles: ${errorData?.error?.message || JSON.stringify(errorData)}`);
+                }
+
+
+                const result = await response.json();
+
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    if (resultElement) resultElement.innerText = text;
+                } else {
+                    console.error("Respuesta inesperada de la API:", result);
+                    if (resultElement) resultElement.innerText = "No se pudo obtener una respuesta válida de la IA. Verifique la consola para más detalles.";
+                    showModal("Error: No se pudo obtener una respuesta válida de la IA.");
+                }
+            } catch (error) {
+                console.error('Error llamando a la API de Gemini:', error);
+                if (resultElement) resultElement.innerText = `Error al contactar la IA: ${error.message}`;
+                showModal(`Error al contactar la IA: ${error.message}`);
+            } finally {
+                if (loadingElement) loadingElement.style.display = 'none';
+                if (buttonElement) buttonElement.disabled = false;
+            }
+        }
+
+
+        async function generarObjetoSocial() {
+            const keywords = document.getElementById('objetoSocialKeywords').value;
+            if (!keywords.trim()) {
+                showModal("Por favor, ingrese algunas palabras clave para el objeto social.");
+                return;
+            }
+            const prompt = `Eres un asistente legal experto en El Salvador. Basándote en las siguientes palabras clave para una empresa AgriTech llamada VerdeVida S.A. de C.V.: '${keywords}', y considerando que la empresa se enfocará en soluciones tecnológicas para la agricultura sostenible en El Salvador, redacta un borrador conciso y profesional para el 'Objeto Social' de su escritura de constitución. El objeto social debe ser amplio pero específico, cubriendo actividades como desarrollo de software, hardware, IoT, consultoría, investigación, capacitación, importación/exportación de tecnología agrícola, y comercialización de productos y servicios relacionados. Limita la respuesta a un máximo de 3-4 párrafos.`;
+
+            await callGeminiApi(prompt, 'objetoSocialResult', 'loadingObjetoSocial', 'btnGenerarObjetoSocial');
+        }
+
+
+        async function identificarApoyosRelevantes() {
+            const focusAreas = document.getElementById('apoyosKeywords').value;
+            if (!focusAreas.trim()) {
+                showModal("Por favor, describa las áreas de enfoque de VerdeVida.");
+                return;
+            }
+
+
+            const listaApoyos = `
+1.  Ley MYPE y CONAMYPE:
+    * Fondo para Emprendimiento y Capital de Trabajo (CONAMYPE).
+    * Servicios de CONAMYPE: capacitación, asistencia técnica, asesoría, acceso a mercados.
+    * Centro de Innovación en Emprendimiento Digital (CIED) de CONAMYPE: apoyo en adopción de tecnologías digitales, formación, acceso a maquinaria (impresoras 3D, drones).
+2.  Incentivos Fiscales:
+    * Generales a la Inversión (Invest in El Salvador): Exenciones de impuesto sobre transferencia de bienes inmuebles, ISR, impuestos municipales (hasta 15+ años), DAI para bienes de capital, exención impuesto ganancia de capital. (Puede requerir % I+D+i).
+    * Ley de Fomento a la Innovación y Manufactura Tecnológica: Exoneración de retenciones fiscales, tributos municipales, DAI para maquinaria. Fomenta software, IA, ciberseguridad, análisis de datos, manufactura tech.
+3.  Opciones de Financiamiento:
+    * BANDESAL:
+        * FIREMPRESA (verificar vigencia).
+        * Línea de Crédito Fomento a Actividades Agrícolas y Agroindustriales.
+        * Línea de Crédito Banca Emprendes.
+        * Línea de Crédito Verde.
+        * Programa BID 'Acceso al Crédito para la MIPYME'.
+    * Banco de Fomento Agropecuario (BFA): Especializado en sector agropecuario.
+    * BCIE:
+        * Iniciativa DINAMICA II (capital semilla, asistencia técnica).
+        * Apoyo a MIPYMES Agrícolas (fondos climáticos).
+            `;
+
+            const prompt = `Eres un asesor de negocios especializado en el ecosistema de apoyo empresarial en El Salvador. Una empresa AgriTech llamada VerdeVida S.A. de C.V. se enfoca en '${focusAreas}'. Considerando los siguientes programas e incentivos disponibles en El Salvador (extraídos del informe de establecimiento de VerdeVida): \n\n${listaApoyos}\n\n Basándote en el enfoque de VerdeVida en '${focusAreas}', identifica y explica brevemente cuáles de estos programas o incentivos serían los MÁS relevantes y por qué. Limita la respuesta a los 2-3 apoyos más pertinentes y presenta la información de forma clara y concisa.`;
+
+
+            await callGeminiApi(prompt, 'apoyosResult', 'loadingApoyos', 'btnIdentificarApoyos');
+        }
+
+
+    </script>
+</body>
+</html>
+
+
+
