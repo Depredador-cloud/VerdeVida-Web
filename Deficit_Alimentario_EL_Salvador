@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Sector Agrícola y Seguridad Alimentaria El Salvador 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* slate-100 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            color: #0369a1; /* sky-700 */
+        }
+        .stat-value {
+            color: #0284c7; /* sky-600 */
+        }
+        .stat-label {
+            color: #475569; /* slate-600 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        /* Chosen Palette Name: Vibrant Economic Insights */
+        /* NEITHER Mermaid JS NOR SVG were used anywhere in this output. */
+
+        .flowchart-item {
+            border: 2px solid #0ea5e9; /* sky-500 */
+            background-color: #f0f9ff; /* sky-50 */
+            color: #0c4a6e; /* sky-800 */
+        }
+        .flowchart-arrow {
+            color: #0ea5e9; /* sky-500 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-sky-700 text-white py-8 px-4 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold">El Salvador: Panorama del Sector Agrícola y Seguridad Alimentaria 2025</h1>
+        <p class="mt-2 text-lg">Un análisis de las tendencias, desafíos y perspectivas.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="introduccion" class="mb-12">
+            <div class="card text-center">
+                <h2 class="text-2xl font-bold section-title mb-4">Déficit Agrícola Persistente y Desafíos en Seguridad Alimentaria</h2>
+                <p class="text-lg mb-4">El Salvador enfrenta un déficit agrícola estructural y una compleja situación de seguridad alimentaria. A pesar de algunos indicadores macro positivos, una parte significativa de la población, especialmente en zonas rurales, experimenta inseguridad alimentaria aguda o precariedad. La producción agrícola nacional muestra una tendencia a la baja, exacerbada por la vulnerabilidad climática y la falta de crédito.</p>
+                <div class="mt-6">
+                    <p class="text-4xl md:text-5xl font-bold stat-value">0.1 - 0.2 Millones</p>
+                    <p class="text-md stat-label">Personas en alta inseguridad alimentaria aguda (Fase 3+ IPC) proyectadas para 2025.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="demografia" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Demografía y Necesidades Alimentarias</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card text-center">
+                    <p class="text-4xl font-bold stat-value">6.37 Millones</p>
+                    <p class="text-md stat-label">Población Total Estimada (2025)</p>
+                </div>
+                <div class="card md:col-span-1 lg:col-span-1">
+                     <h3 class="text-xl font-semibold text-center mb-3 section-title">Distribución Poblacional 2025</h3>
+                    <div class="chart-container h-[250px] max-w-xs mx-auto">
+                        <canvas id="distribucionPoblacionChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2 text-center">La alta urbanización (79.89%) implica una creciente demanda de alimentos en ciudades, dependiendo de cadenas de suministro eficientes.</p>
+                </div>
+                <div class="card text-center">
+                    <p class="text-4xl font-bold stat-value">~6.26 Billones</p>
+                    <p class="text-md stat-label">Necesidad Calórica Anual Total (kcal)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="produccion-agricola" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Producción Agrícola Nacional: Un Sector en Declive</h2>
+            <p class="text-center mb-6 max-w-2xl mx-auto">La producción de cultivos básicos como maíz, arroz y sorgo muestra una tendencia a la baja, proyectando disminuciones para 2025/26 en comparación con el promedio de los últimos cinco años. Esto agrava el déficit y la dependencia externa.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Producción de Granos Básicos: Proyección 2025/26 vs. Promedio 5 Años</h3>
+                    <div class="chart-container h-[350px] max-w-lg">
+                        <canvas id="produccionGranosChart"></canvas>
+                    </div>
+                     <p class="text-sm text-slate-600 mt-2 text-center">Se proyectan pérdidas de hasta 6 millones de quintales de maíz y 800,000 de frijoles para 2025-2026.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Otros Cultivos y Contribución Económica</h3>
+                    <div class="space-y-4">
+                        <div class="text-center p-3 bg-sky-50 rounded-md">
+                            <p class="text-3xl font-bold stat-value">561,000</p>
+                            <p class="text-sm stat-label">Sacos (60kg) de Café (Producción 2024/25)</p>
+                        </div>
+                        <div class="text-center p-3 bg-sky-50 rounded-md">
+                            <p class="text-3xl font-bold stat-value">740,000</p>
+                            <p class="text-sm stat-label">Toneladas Métricas de Azúcar (Proy. 2025/26)</p>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-center mb-2 section-title">Caída Drástica: Contribución de la Agricultura al PIB (%)</h4>
+                        <div class="chart-container h-[250px] max-w-sm mx-auto">
+                            <canvas id="pibAgricolaChart"></canvas>
+                        </div>
+                         <p class="text-sm text-slate-600 mt-2 text-center">Además, se perdieron ~50,000 empleos en agricultura entre 2019-2023.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="desafios-estructurales" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Desafíos Estructurales que Ahogan al Agro</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Desplome del Crédito Agrícola</h3>
+                    <div class="chart-container h-[300px] max-w-sm mx-auto">
+                        <canvas id="creditoAgricolaChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2 text-center">Solo el 2% del crédito bancario nacional se destina a la agricultura.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Incremento de la Pobreza Rural (Hogares %)</h3>
+                     <div class="chart-container h-[300px] max-w-md mx-auto">
+                        <canvas id="pobrezaRuralChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2 text-center">El deterioro de las condiciones de vida es alarmante.</p>
+                </div>
+            </div>
+            <div class="card mt-8 md:col-span-2">
+                <h3 class="text-xl font-semibold text-center mb-4 section-title">El Ciclo Vicioso del Deterioro Agrícola</h3>
+                <p class="text-center mb-4">La combinación de choques climáticos (☀️ sequías, 💧 lluvias intensas), la falta de apoyo financiero y políticas inadecuadas crea un ciclo que reduce la productividad, aumenta la pobreza y exacerba la inseguridad alimentaria.</p>
+                <div class="flex flex-col items-center space-y-4 md:space-y-0 md:flex-row md:justify-around md:items-stretch flex-wrap">
+                    <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Choques Climáticos</div>
+                    <div class="flowchart-arrow text-2xl hidden md:block self-center mx-2">&rarr;</div>
+                    <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Baja Producción y Menos Ingresos</div>
+                    <div class="flowchart-arrow text-2xl hidden md:block self-center mx-2">&rarr;</div>
+                    <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Falta de Crédito y Menor Inversión</div>
+                </div>
+                <div class="flex justify-center my-2"><span class="flowchart-arrow text-2xl">&darr;</span></div>
+                <div class="flex flex-col items-center space-y-4 md:space-y-0 md:flex-row-reverse md:justify-around md:items-stretch flex-wrap">
+                     <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Mayor Dependencia de Importaciones</div>
+                     <div class="flowchart-arrow text-2xl hidden md:block self-center mx-2">&larr;</div>
+                     <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Inseguridad Alimentaria</div>
+                     <div class="flowchart-arrow text-2xl hidden md:block self-center mx-2">&larr;</div>
+                     <div class="flowchart-item p-3 rounded-md text-center w-full md:w-1/4 m-1">Aumento Pobreza Rural</div>
+                </div>
+                <p class="text-sm text-slate-600 mt-3 text-center">Este ciclo se auto-refuerza, requiriendo un enfoque integral para romperlo.</p>
+            </div>
+        </section>
+
+        <section id="comercio-exterior" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Balanza Comercial y Dependencia Externa</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card text-center lg:col-span-1">
+                    <p class="text-4xl font-bold stat-value">-$911.1 M</p>
+                    <p class="text-md stat-label">Déficit Balanza Comercial de Bienes (Abril 2025)</p>
+                </div>
+                <div class="card lg:col-span-2">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Principales Importaciones Agrícolas desde EE.UU. (2024, Millones USD)</h3>
+                    <div class="chart-container h-[300px]">
+                        <canvas id="importacionesAgricolasChart"></canvas>
+                    </div>
+                </div>
+                <div class="card lg:col-span-2">
+                     <h3 class="text-xl font-semibold text-center mb-3 section-title">Principales Exportaciones Agrícolas (2024, Millones USD)</h3>
+                    <div class="chart-container h-[250px]">
+                        <canvas id="exportacionesAgricolasChart"></canvas>
+                    </div>
+                </div>
+                <div class="card text-center lg:col-span-1">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Autosuficiencia y Dependencia</h3>
+                    <div class="chart-container h-[200px] max-w-xs mx-auto mb-4">
+                        <canvas id="autosuficienciaChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 bg-red-50 rounded-md">
+                        <p class="text-3xl font-bold text-red-600">96.7%</p>
+                        <p class="text-sm text-red-700">Dependencia de Importación de Cereales</p>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2">Esta alta dependencia, especialmente en cereales, es una vulnerabilidad crítica.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="seguridad-alimentaria-foco" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">La Lupa sobre la Seguridad Alimentaria</h2>
+            <p class="text-center mb-6 max-w-2xl mx-auto">A pesar de un Índice Global del Hambre (GHI) "bajo" y baja inflación alimentaria, la realidad en el terreno muestra una precariedad generalizada (IPC Fase 2 "Estresada") y bolsones de inseguridad aguda.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card text-center">
+                    <p class="text-3xl font-bold stat-value">0.1-0.2 M</p>
+                    <p class="text-sm stat-label">Personas en Inseguridad Alimentaria Aguda (IPC 3+, Proy. 2025)</p>
+                </div>
+                <div class="card text-center">
+                    <p class="text-3xl font-bold stat-value">8.0 ("Bajo")</p>
+                    <p class="text-sm stat-label">Índice Global del Hambre (GHI 2024)</p>
+                </div>
+                <div class="card text-center">
+                    <p class="text-3xl font-bold stat-value">-0.3%</p>
+                    <p class="text-sm stat-label">Inflación Alimentaria (Sept 2024)</p>
+                </div>
+                 <div class="card text-center">
+                    <p class="text-3xl font-bold text-amber-600">IPC Fase 2</p>
+                    <p class="text-sm text-amber-700">País clasificado como "Estresado" en seguridad alimentaria</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Malnutrición Infantil Persistente (%) (2019-2024)</h3>
+                    <div class="chart-container h-[300px] max-w-md mx-auto">
+                        <canvas id="malnutricionChart"></canvas>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-xl font-semibold text-center mb-3 section-title">Costo Canasta Básica Alimentaria (Mayo 2024)</h3>
+                    <div class="space-y-4 mt-8">
+                        <div class="p-4 bg-sky-50 rounded-md">
+                            <p class="text-3xl font-bold stat-value">$256</p>
+                            <p class="text-sm stat-label">Zona Urbana</p>
+                        </div>
+                        <div class="p-4 bg-sky-50 rounded-md">
+                            <p class="text-3xl font-bold stat-value">$179</p>
+                            <p class="text-sm stat-label">Zona Rural</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="swot" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Síntesis Estratégica: Retos y Oportunidades</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card border-t-4 border-emerald-500">
+                    <h3 class="text-xl font-bold text-emerald-600 mb-2">💪 Fortalezas</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Control relativo de la inflación alimentaria (agromercados).</li>
+                        <li>Índice Global del Hambre (GHI) clasificado como "bajo".</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-red-500">
+                    <h3 class="text-xl font-bold text-red-600 mb-2">📉 Debilidades</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Declive producción agrícola (maíz, frijol, arroz).</li>
+                        <li>Alta dependencia de importaciones (cereales 96.7%).</li>
+                        <li>Drástica reducción de crédito agrícola (-79%).</li>
+                        <li>Pérdida masiva de empleos en el sector.</li>
+                        <li>Aumento de la pobreza rural.</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-sky-500">
+                    <h3 class="text-xl font-bold text-sky-600 mb-2">🚀 Oportunidades</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Inversión para reactivar producción local.</li>
+                        <li>Mejora de resiliencia climática (prácticas sostenibles).</li>
+                        <li>Fortalecer agromercados y cadenas cortas.</li>
+                        <li>Potencial de diversificación de cultivos.</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-amber-500">
+                    <h3 class="text-xl font-bold text-amber-600 mb-2">⚠️ Amenazas</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Vulnerabilidad climática (sequías, lluvias).</li>
+                        <li>Volatilidad de precios globales de alimentos e insumos.</li>
+                        <li>Reducción proyectada de financiación humanitaria.</li>
+                        <li>Persistencia del "abandono sistemático" de la agricultura.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mt-12 text-center">
+             <div class="card">
+                <h2 class="text-2xl font-bold section-title mb-4">Conclusión y Llamada a la Acción</h2>
+                <p class="text-lg mb-4">El Salvador enfrenta un déficit agrícola estructural que requiere un compromiso sostenido y una visión integral. Es crucial reactivar el sector agrícola nacional, mejorar la resiliencia climática, fortalecer la seguridad alimentaria con programas focalizados y gestionar estratégicamente el comercio de alimentos.</p>
+                <p class="font-semibold">Solo a través de un enfoque coordinado y estratégico se podrá garantizar la seguridad alimentaria y el desarrollo sostenible para todos los salvadoreños.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 bg-slate-800 text-slate-300 text-sm">
+        <p>Infografía basada en el "Análisis del Déficit Agrícola y la Seguridad Alimentaria en El Salvador: Actualización 2025".</p>
+        <p>Generado en Mayo 2025.</p>
+    </footer>
+
+    <script>
+        const primaryColor = '#38bdf8'; // sky-500
+        const secondaryColor = '#f59e0b'; // amber-500
+        const tertiaryColor = '#ef4444'; // red-500
+        const quaternaryColor = '#10b981'; // emerald-500
+        const lightGrayColor = '#e2e8f0'; // slate-200
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string') return label; // Handle non-string labels (e.g., already arrays)
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            if (label.length <= maxWidth) {
+                return label;
+            }
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { size: 10 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { font: { size: 10 } }
+                },
+                x: {
+                    ticks: { font: { size: 10 } }
+                }
+            }
+        };
+
+        // Distribución Poblacional
+        const distribucionPoblacionCtx = document.getElementById('distribucionPoblacionChart').getContext('2d');
+        new Chart(distribucionPoblacionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Urbana (79.89%)', 'Rural (20.11%)'],
+                datasets: [{
+                    label: 'Distribución Poblacional',
+                    data: [79.89, 20.11],
+                    backgroundColor: [primaryColor, secondaryColor],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 plugins: {
+                    legend: { display: true, position: 'bottom', labels:{ font: {size: 10}}},
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Producción Granos
+        const produccionGranosCtx = document.getElementById('produccionGranosChart').getContext('2d');
+        const originalGranosLabels = ['Maíz', 'Arroz', 'Sorgo'];
+        new Chart(produccionGranosCtx, {
+            type: 'bar',
+            data: {
+                labels: originalGranosLabels.map(l => wrapLabels(l,10)),
+                datasets: [{
+                    label: 'Promedio 5 Años (Miles TM)',
+                    data: [805, 12, 98],
+                    backgroundColor: lightGrayColor,
+                    borderColor: '#94a3b8', //slate-400
+                    borderWidth: 1
+                }, {
+                    label: 'Proyección 2025/26 (Miles TM)',
+                    data: [790, 10, 95],
+                    backgroundColor: primaryColor,
+                    borderColor: '#0ea5e9', //sky-500
+                    borderWidth: 1
+                }]
+            },
+            options: defaultChartOptions
+        });
+
+        // PIB Agrícola
+        const pibAgricolaCtx = document.getElementById('pibAgricolaChart').getContext('2d');
+        new Chart(pibAgricolaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Promedio Histórico (1965-2023)', '2023'].map(l => wrapLabels(l,16)),
+                datasets: [{
+                    label: 'Contribución al PIB (%)',
+                    data: [19.04, 4.61],
+                    backgroundColor: [lightGrayColor, tertiaryColor],
+                }]
+            },
+            options: {...defaultChartOptions, indexAxis: 'y', scales: {x: {ticks:{font:{size:9}}}, y:{ticks:{font:{size:9}}}}}
+        });
+
+        // Crédito Agrícola
+        const creditoAgricolaCtx = document.getElementById('creditoAgricolaChart').getContext('2d');
+        new Chart(creditoAgricolaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2019', '2023'],
+                datasets: [{
+                    label: 'Crédito Agrícola y Ganadero (Millones USD)',
+                    data: [60.3, 12.7],
+                    backgroundColor: [primaryColor, tertiaryColor],
+                }]
+            },
+            options: defaultChartOptions
+        });
+
+        // Pobreza Rural
+        const pobrezaRuralCtx = document.getElementById('pobrezaRuralChart').getContext('2d');
+        new Chart(pobrezaRuralCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2019', '2023'],
+                datasets: [{
+                    label: 'Pobreza Rural Total (%)',
+                    data: [24.8, 28.3],
+                    backgroundColor: secondaryColor,
+                }, {
+                    label: 'Pobreza Extrema Rural (%)',
+                    data: [5.2, 11.1],
+                    backgroundColor: tertiaryColor,
+                }]
+            },
+            options: defaultChartOptions
+        });
+
+        // Importaciones Agrícolas
+        const importacionesAgricolasCtx = document.getElementById('importacionesAgricolasChart').getContext('2d');
+        const originalImportLabels = ['Maíz', 'Harina de Soja', 'Trigo', 'Arroz'];
+        new Chart(importacionesAgricolasCtx, {
+            type: 'bar',
+            data: {
+                labels: originalImportLabels.map(l => wrapLabels(l,16)),
+                datasets: [{
+                    label: 'Millones USD',
+                    data: [151.8, 97.87, 44.81, 29.04],
+                    backgroundColor: primaryColor,
+                }]
+            },
+            options: {...defaultChartOptions, indexAxis: 'y', plugins: {...defaultChartOptions.plugins, legend: {display: false}}}
+        });
+
+        // Exportaciones Agrícolas
+        const exportacionesAgricolasCtx = document.getElementById('exportacionesAgricolasChart').getContext('2d');
+        new Chart(exportacionesAgricolasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Azúcar', 'Café'],
+                datasets: [{
+                    label: 'Millones USD',
+                    data: [241.2, 137.1],
+                    backgroundColor: quaternaryColor,
+                }]
+            },
+            options: {...defaultChartOptions, indexAxis: 'y', plugins: {...defaultChartOptions.plugins, legend: {display: false}}}
+        });
+
+        // Autosuficiencia Alimentaria
+        const autosuficienciaCtx = document.getElementById('autosuficienciaChart').getContext('2d');
+        new Chart(autosuficienciaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Autoabastecido (64.2%)', 'Dependiente de Importación (35.8%)'].map(l => wrapLabels(l,16)),
+                datasets: [{
+                    data: [64.2, 35.8],
+                    backgroundColor: [quaternaryColor, tertiaryColor],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'bottom', labels:{ font: {size: 9}}},
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Malnutrición Infantil
+        const malnutricionCtx = document.getElementById('malnutricionChart').getContext('2d');
+        const originalMalnutricionLabels = ['Subalimentación', 'Retraso del Crecimiento', 'Emaciación Infantil'];
+        new Chart(malnutricionCtx, {
+            type: 'bar',
+            data: {
+                labels: originalMalnutricionLabels.map(l => wrapLabels(l,16)),
+                datasets: [{
+                    label: '% de Niños',
+                    data: [6.8, 10.0, 2.9],
+                    backgroundColor: [secondaryColor, tertiaryColor, primaryColor],
+                }]
+            },
+            options: {...defaultChartOptions, plugins: {...defaultChartOptions.plugins, legend: {display: false}}}
+        });
+
+    </script>
+</body>
+</html>
