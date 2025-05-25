@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-T">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerdeVida - Plan de Empresa Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: VerdeVida's mission, problem, solution. Goal: Inform & Engage. Viz/Method: Text, clear headings. Interaction: Navigation. Justification: Establishes context. Library/Method: HTML/CSS.
+        - Report Info: Value prop for MIPYMES (Tabla 1). Goal: Persuade MIPYMES. Viz/Method: HTML Table. Interaction: Reading. Justification: Clear, structured info. Library/Method: HTML/CSS.
+        - Report Info: Value prop for AgriTech Partners (Tabla 2). Goal: Persuade Partners. Viz/Method: HTML Table. Interaction: Reading. Justification: Clear, structured info. Library/Method: HTML/CSS.
+        - Report Info: Investment distribution ($532,908). Goal: Inform Investors. Viz/Method: Pie Chart. Interaction: Tooltips. Justification: Visual breakdown of funding. Library/Method: Chart.js (Canvas).
+        - Report Info: Revenue Projections (5 years). Goal: Inform Investors. Viz/Method: Bar Chart. Interaction: Tooltips. Justification: Shows growth potential. Library/Method: Chart.js (Canvas).
+        - Report Info: MIPYMES Attended Projections (5 years). Goal: Show Market Reach/Impact. Viz/Method: Bar Chart. Interaction: Tooltips. Justification: Demonstrates scalability. Library/Method: Chart.js (Canvas).
+        - Report Info: Contribution to ODS/Agenda Digital (Tabla 3). Goal: Show Strategic Alignment. Viz/Method: HTML Table. Interaction: Reading. Justification: Highlights broader impact. Library/Method: HTML/CSS.
+        - Report Info: AgriTech Glossary. Goal: Educate. Viz/Method: List. Interaction: Reading. Justification: Improves understanding. Library/Method: HTML/CSS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            border-bottom-color: #059669; /* emerald-600 */
+            color: #047857; /* emerald-700 */
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* Custom scrollbar for better aesthetics if needed, though Tailwind usually handles this well */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #059669; /* emerald-600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #047857; /* emerald-700 */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-lime-50 via-emerald-50 to-teal-50 text-slate-800">
+
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <span class="text-3xl font-bold text-emerald-700">VerdeVida</span>
+                </div>
+                <nav class="hidden md:flex space-x-1 lg:space-x-3">
+                    <a href="#inicio" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Inicio</a>
+                    <a href="#productores" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Para Productores</a>
+                    <a href="#socios" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Para Socios AgriTech</a>
+                    <a href="#impacto" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Nuestro Impacto</a>
+                    <a href="#nosotros" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Nosotros</a>
+                    <a href="#recursos" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Recursos</a>
+                    <a href="#contacto" class="nav-link text-slate-600 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Contacto</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-slate-600 hover:text-emerald-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a href="#inicio" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Inicio</a>
+            <a href="#productores" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Para Productores</a>
+            <a href="#socios" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Para Socios AgriTech</a>
+            <a href="#impacto" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Nuestro Impacto</a>
+            <a href="#nosotros" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Nosotros</a>
+            <a href="#recursos" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Recursos</a>
+            <a href="#contacto" class="block nav-link text-slate-600 hover:text-emerald-600 px-3 py-3 text-base font-medium border-b-2 border-transparent">Contacto</a>
+        </div>
+    </header>
+
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="inicio" class="content-section active pt-8">
+            <div class="text-center rounded-xl bg-white/70 backdrop-blur-md shadow-xl p-8 md:p-12">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-emerald-700 mb-6">Transformando el Agro Salvadoreño con AgriTech Integrada</h1>
+                <p class="text-lg sm:text-xl text-slate-700 mb-4 max-w-3xl mx-auto">
+                    VerdeVida es un catalizador de innovación, uniendo a productores agrícolas y empresas tecnológicas para impulsar la productividad, sostenibilidad y competitividad en El Salvador.
+                </p>
+                <p class="text-md sm:text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+                    Abordamos la fragmentación del sector AgriTech y las dificultades de las MIPYMES para adoptar tecnología, ofreciendo soluciones integrales, conocimiento local y un modelo de negocio colaborativo.
+                </p>
+                <a href="#productores" class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">Descubre Nuestras Soluciones</a>
+            </div>
+
+
+            <div class="mt-12 grid md:grid-cols-3 gap-8">
+                <div class="bg-white/70 backdrop-blur-md shadow-lg rounded-lg p-6 text-center">
+                    <h3 class="text-2xl font-semibold text-emerald-700 mb-3">🚜 Para Productores</h3>
+                    <p class="text-slate-600">Soluciones AgriTech a tu medida para optimizar tu finca, aumentar tu rentabilidad y enfrentar los desafíos del futuro.</p>
+                    <a href="#productores" class="mt-4 inline-block text-emerald-600 hover:text-emerald-800 font-semibold">Saber más &rarr;</a>
+                </div>
+                <div class="bg-white/70 backdrop-blur-md shadow-lg rounded-lg p-6 text-center">
+                    <h3 class="text-2xl font-semibold text-emerald-700 mb-3">🤝 Para Socios AgriTech</h3>
+                    <p class="text-slate-600">Únete a nuestra alianza estratégica para expandir tu alcance, acceder a nuevos mercados y co-crear el futuro de AgriTech.</p>
+                    <a href="#socios" class="mt-4 inline-block text-emerald-600 hover:text-emerald-800 font-semibold">Unirse a la alianza &rarr;</a>
+                </div>
+                <div class="bg-white/70 backdrop-blur-md shadow-lg rounded-lg p-6 text-center">
+                    <h3 class="text-2xl font-semibold text-emerald-700 mb-3">📈 Nuestro Impacto</h3>
+                    <p class="text-slate-600">Impulsamos el desarrollo económico, social y ambiental, alineados con los objetivos nacionales y globales.</p>
+                    <a href="#impacto" class="mt-4 inline-block text-emerald-600 hover:text-emerald-800 font-semibold">Ver impacto &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="productores" class="content-section pt-8">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Soluciones Innovadoras para Potenciar Tu Negocio Agrícola</h2>
+                <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    En VerdeVida, entendemos los desafíos únicos que enfrentan los productores agrícolas en El Salvador. Nuestro enfoque se centra en proporcionar soluciones AgriTech integradas y personalizadas que no solo resuelven problemas específicos, sino que también abren nuevas oportunidades de crecimiento y sostenibilidad. Te acompañamos en cada paso, desde el diagnóstico inicial hasta la implementación y el soporte continuo, asegurando que la tecnología trabaje para ti.
+                </p>
+
+
+                <div class="space-y-8 mb-12">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-3">Nuestros Servicios Detallados:</h3>
+                        <ul class="list-disc list-inside space-y-3 text-slate-700 pl-4">
+                            <li><strong>Diagnóstico Personalizado:</strong> Analizamos a fondo tu finca, tus cultivos y tus procesos para identificar áreas de mejora y oportunidades tecnológicas. Entendemos los desafíos únicos de tu operación para diseñar la solución perfecta.</li>
+                            <li><strong>Soluciones AgriTech a tu Medida:</strong> Integramos las mejores tecnologías (sensores IoT, drones, software de gestión, IA, etc.) de nuestra red de expertos para optimizar tus cultivos, el uso de recursos y la gestión general de tu finca.</li>
+                            <li><strong>Gestión de Proyectos Simplificada:</strong> Actuamos como tu único punto de contacto, coordinando toda la implementación de las soluciones AgriTech. Esto te permite enfocarte en tu producción mientras nosotros manejamos la complejidad tecnológica.</li>
+                            <li><strong>Capacitación Práctica y Soporte Continuo:</strong> Te capacitamos a ti y a tu equipo en el uso de las nuevas herramientas y tecnologías. Ofrecemos soporte continuo para asegurar que aproveches al máximo tu inversión y te adaptes a las innovaciones.</li>
+                            <li><strong>Facilitamos tu Acceso a Financiamiento:</strong> Te ayudamos a identificar y gestionar opciones de financiamiento para la adopción de tecnología, conectándote con líneas de crédito y programas de apoyo relevantes.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-3">Beneficios Clave para Tu Finca:</h3>
+                        <ul class="list-disc list-inside space-y-3 text-slate-700 pl-4">
+                            <li>Aumenta tu Productividad y Rentabilidad.</li>
+                            <li>Reduce Costos de Insumos (Agua, Fertilizantes, Pesticidas).</li>
+                            <li>Mejora la Calidad de tus Productos y el Acceso a Mejores Mercados.</li>
+                            <li>Fortalece la Resiliencia de tus Cultivos ante el Cambio Climático y Enfermedades.</li>
+                            <li>Toma Decisiones Basadas en Datos para una Gestión Más Eficiente.</li>
+                            <li>Contribuye a una Agricultura Más Sostenible y Amigable con el Medio Ambiente.</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Propuesta de Valor para MIPYMES Agrícolas</h3>
+                <div class="overflow-x-auto shadow-md rounded-lg">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-emerald-500 text-white">
+                            <tr>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Desafío de la MIPYME</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Solución/Servicio VerdeVida</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Beneficio Clave</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-700">
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Escasez de agua, uso ineficiente del riego</td>
+                                <td class="py-3 px-4">Implementación de sistema de riego inteligente integrado (sensores IoT, datos climáticos, válvulas automatizadas)</td>
+                                <td class="py-3 px-4">Reducción significativa del consumo de agua (ej. hasta un 30-35%), optimización de costos, mayor resiliencia.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Baja productividad en café, calidad inconsistente</td>
+                                <td class="py-3 px-4">Monitoreo con drones, análisis de datos para calidad, implementación de buenas prácticas agrícolas (BPA) con soporte digital</td>
+                                <td class="py-3 px-4">Aumento del rendimiento de café de especialidad, mejora de la calidad del grano, acceso a precios premium.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Dificultad para acceder a mercados de mayor valor</td>
+                                <td class="py-3 px-4">Plataforma de trazabilidad, conexión con compradores, asesoría en certificaciones (orgánicas, comercio justo).</td>
+                                <td class="py-3 px-4">Acceso a nuevos mercados nacionales e internacionales, mejora de precios, mayor transparencia.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Falta de datos para toma de decisiones, altos costos</td>
+                                <td class="py-3 px-4">Diagnóstico integral, software de gestión de finca, capacitación en análisis de datos.</td>
+                                <td class="py-3 px-4">Optimización del uso de insumos, reducción de costos operativos, mejora de la rentabilidad general.</td>
+                            </tr>
+                             <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Vulnerabilidad a plagas y enfermedades (ej. Roya)</td>
+                                <td class="py-3 px-4">Monitoreo con sensores/drones, sistemas de alerta temprana, recomendaciones de manejo integrado de plagas.</td>
+                                <td class="py-3 px-4">Detección temprana, reducción de pérdidas de cosecha, uso optimizado y reducido de pesticidas.</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Dificultad para acceder a financiamiento para tecnología</td>
+                                <td class="py-3 px-4">Asesoría en formulación de proyectos, conexión con líneas de crédito AgriTech (BFA, BCIE, FIDEAGRO).</td>
+                                <td class="py-3 px-4">Superación de barreras financieras para la adopción de tecnología, viabilidad de proyectos de modernización.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-10">
+                    <a href="#contacto" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">Solicita una Evaluación Gratuita</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="socios" class="content-section pt-8">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Únete a Nuestra Alianza AgriTech: Colabora y Crece con VerdeVida</h2>
+                 <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    VerdeVida está construyendo un ecosistema AgriTech robusto y colaborativo en El Salvador. Invitamos a empresas tecnológicas innovadoras a unirse a nuestra alianza estratégica. Juntos, podemos superar la fragmentación del mercado, ofrecer soluciones más potentes a las MIPYMES agrícolas y acelerar la transformación digital del sector. Ser socio de VerdeVida significa más que un canal de ventas; es una oportunidad para co-crear, acceder a inteligencia de mercado local y ser parte de un movimiento que fortalece el tejido empresarial AgriTech nacional.
+                </p>
+
+
+                <div class="space-y-6 mb-12">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-3">Propuesta de Valor para Socios Tecnológicos:</h3>
+                        <ul class="list-disc list-inside space-y-3 text-slate-700 pl-4">
+                            <li><strong>Acceso Estratégico al Mercado MIPYME:</strong> Conectamos tu tecnología con una amplia y creciente red de productores agrícolas salvadoreños, facilitando la entrada y expansión en este segmento.</li>
+                            <li><strong>Desarrollo de Negocios Conjunto:</strong> Impulsamos activamente la demanda de tus soluciones como parte de ofertas integradas y personalizadas, diseñadas para resolver las necesidades complejas de las MIPYMES.</li>
+                            <li><strong>Inteligencia de Mercado Local y Adaptación de Productos:</strong> Te proveemos insights valiosos sobre las necesidades específicas, tendencias y desafíos del agro en El Salvador, ayudándote a adaptar y optimizar tus productos para el mercado local.</li>
+                            <li><strong>Plataforma de Colaboración e Integración:</strong> Facilitamos la integración técnica de tus soluciones con otras tecnologías complementarias, y promovemos conjuntamente la oferta unificada de la alianza.</li>
+                            <li><strong>Reducción de Riesgos y Costos de Entrada al Mercado:</strong> Supera las barreras de la fragmentación del mercado y los altos costos de adquisición de clientes individuales al unirte a un esfuerzo coordinado y con visión de largo plazo.</li>
+                            <li><strong>Visibilidad y Fortalecimiento de Marca:</strong> Asocia tu marca con un proyecto innovador, con impacto social y ambiental positivo, y alineado con las estrategias de desarrollo de El Salvador.</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-3">¿Qué Buscamos en Nuestros Socios?</h3>
+                        <ul class="list-disc list-inside space-y-3 text-slate-700 pl-4">
+                            <li>Empresas con soluciones AgriTech probadas e innovadoras.</li>
+                            <li>Compromiso con la calidad, el servicio al cliente y la mejora continua.</li>
+                            <li>Un espíritu colaborativo y disposición para integrar soluciones.</li>
+                            <li>Interés en el mercado salvadoreño y en contribuir a su desarrollo sostenible.</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Beneficios de Unirse a la Alianza AgriTech de VerdeVida</h3>
+                <div class="overflow-x-auto shadow-md rounded-lg">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-emerald-500 text-white">
+                            <tr>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Necesidad/Objetivo del Socio AgriTech</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Soporte/Oferta de VerdeVida</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Resultado para el Socio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-700">
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Penetrar el mercado MIPYME en El Salvador de manera efectiva.</td>
+                                <td class="py-3 px-4">Acceso a red de clientes MIPYMES calificados y segmentados; fuerza de ventas y marketing local de VerdeVida.</td>
+                                <td class="py-3 px-4">Incremento en ventas y cuota de mercado en El Salvador; reducción de costos de adquisición de clientes.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Integrar su tecnología con otras soluciones para ofrecer un mayor valor.</td>
+                                <td class="py-3 px-4">Plataforma de integración de VerdeVida; gestión de proyectos multi-actor; co-diseño de soluciones integrales.</td>
+                                <td class="py-3 px-4">Nuevas aplicaciones y casos de uso para su tecnología; participación en proyectos de mayor envergadura y complejidad.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Obtener inteligencia de mercado local para adaptar productos.</td>
+                                <td class="py-3 px-4">Informes de tendencias y necesidades del agro salvadoreño; retroalimentación directa de los proyectos con MIPYMES.</td>
+                                <td class="py-3 px-4">Productos mejor adaptados y más competitivos para el mercado local; reducción del riesgo de desarrollo de productos.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Superar las barreras de la fragmentación del mercado.</td>
+                                <td class="py-3 px-4">VerdeVida actúa como un único punto de contacto y agregador de demanda para las MIPYMES.</td>
+                                <td class="py-3 px-4">Simplificación del acceso al mercado; mayor visibilidad y alcance.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Contar con soporte local para la implementación y el servicio postventa.</td>
+                                <td class="py-3 px-4">Equipo técnico de VerdeVida para soporte de Nivel 1; coordinación con el socio para soporte especializado (Nivel 2/3).</td>
+                                <td class="py-3 px-4">Mayor satisfacción del cliente final; reducción de la carga de soporte directo para el socio en un mercado geográficamente disperso.</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4">Participar en un ecosistema de innovación y crecimiento.</td>
+                                <td class="py-3 px-4">Red de colaboración con otros socios tecnológicos, entidades académicas y gubernamentales; promoción conjunta.</td>
+                                <td class="py-3 px-4">Oportunidades de co-innovación; fortalecimiento de la marca y reputación en el sector AgriTech salvadoreño.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="text-center mt-10">
+                    <a href="#contacto" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">Conviértete en Socio Tecnológico</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="impacto" class="content-section pt-8">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Nuestro Impacto: Transformando el Agro Salvadoreño</h2>
+                <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    VerdeVida está comprometida con generar un impacto tangible y positivo en El Salvador. Nuestro modelo de negocio no solo busca la rentabilidad, sino también contribuir al desarrollo económico, social y ambiental del país. Creemos firmemente que la adopción de AgriTech es clave para modernizar la agricultura, mejorar la calidad de vida de los productores y asegurar un futuro más sostenible. Esta sección destaca cómo nuestras actividades se alinean con objetivos de desarrollo más amplios y cómo visualizamos nuestro aporte a través de datos y proyecciones.
+                </p>
+
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-4">Impacto Estratégico y Alineación</h3>
+                        <div class="space-y-4 text-slate-700">
+                            <p><strong>Impacto Económico:</strong> Impulsamos la productividad y rentabilidad de las MIPYMES agrícolas, fortalecemos a nuestros socios AgriTech locales y contribuimos al crecimiento del Producto Interno Bruto (PIB) agrícola del país.</p>
+                            <p><strong>Impacto Social:</strong> Buscamos mejorar los ingresos y la calidad de vida de los agricultores y sus familias, fomentar la seguridad alimentaria y crear oportunidades de empleo especializado en el sector rural y tecnológico.</p>
+                            <p><strong>Impacto Ambiental:</strong> Promovemos activamente el uso eficiente de recursos naturales como el agua y la energía, apoyamos la adopción de prácticas de agricultura sostenible y contribuimos a la adaptación y mitigación del cambio climático en el sector agrícola.</p>
+                            <p><strong>Alineación con la Agenda Digital El Salvador 2020-2030:</strong> Somos un actor clave en la modernización agrícola, directamente alineados con el compromiso 2.1.7 de la Agenda: "Acompañar en la formulación e implementación de un plan nacional de innovación para la agricultura mediante el uso de nuevas tecnologías".</p>
+                            <p><strong>Contribución a los Objetivos de Desarrollo Sostenible (ODS):</strong> Nuestro trabajo impacta directamente en múltiples ODS, incluyendo Fin de la Pobreza (ODS 1), Hambre Cero (ODS 2), Trabajo Decente y Crecimiento Económico (ODS 8), Industria, Innovación e Infraestructura (ODS 9), Producción y Consumo Responsables (ODS 12), y Acción por el Clima (ODS 13).</p>
+                        </div>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-emerald-600 mb-3 text-center">Distribución de Inversión Requerida ($532,908 USD)</h3>
+                            <div class="chart-container h-64 sm:h-72 md:h-80">
+                                <canvas id="inversionChart"></canvas>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-2 text-center">Visualización de cómo se distribuirá la inversión inicial para impulsar las operaciones y el crecimiento de VerdeVida.</p>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                     <div>
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-3 text-center">Proyección de Ingresos (Próximos 5 Años)</h3>
+                        <div class="chart-container h-64 sm:h-72 md:h-80">
+                            <canvas id="ingresosChart"></canvas>
+                        </div>
+                        <p class="text-sm text-slate-500 mt-2 text-center">Estimación del crecimiento de ingresos, reflejando la adopción de nuestras soluciones y la expansión de la alianza.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-3 text-center">Proyección de MIPYMES Atendidas</h3>
+                        <div class="chart-container h-64 sm:h-72 md:h-80">
+                            <canvas id="mipymesChart"></canvas>
+                        </div>
+                        <p class="text-sm text-slate-500 mt-2 text-center">Crecimiento esperado en el número de MIPYMES agrícolas beneficiadas por las soluciones integradas de VerdeVida.</p>
+                    </div>
+                </div>
+
+
+
+
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Contribución de VerdeVida a los ODS y a la Agenda Digital El Salvador</h3>
+                <div class="overflow-x-auto shadow-md rounded-lg">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-emerald-500 text-white">
+                            <tr>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">ODS / Meta Agenda Digital</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Acción/Iniciativa de VerdeVida</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Impacto/KPI Esperado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-700">
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4"><strong>ODS 1:</strong> Fin de la Pobreza</td>
+                                <td class="py-3 px-4">Mejora de ingresos de MIPYMES agrícolas mediante aumento de productividad y acceso a mejores mercados.</td>
+                                <td class="py-3 px-4">X% de aumento en el ingreso neto promedio de las familias agricultoras participantes.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4"><strong>ODS 2:</strong> Hambre Cero</td>
+                                <td class="py-3 px-4">Incremento de la productividad de cultivos básicos y diversificados; reducción de pérdidas post-cosecha.</td>
+                                <td class="py-3 px-4">Aumento del Z% en rendimiento de granos básicos; reducción del W% en pérdidas post-cosecha.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4"><strong>ODS 8:</strong> Trabajo Decente y Crecimiento Económico</td>
+                                <td class="py-3 px-4">Fomento de la productividad agrícola; apoyo a MIPYMES; generación de empleo especializado.</td>
+                                <td class="py-3 px-4">Creación de B empleos directos e indirectos en el sector AgriTech.</td>
+                            </tr>
+                            <tr class="border-b hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4"><strong>ODS 13:</strong> Acción por el Clima</td>
+                                <td class="py-3 px-4">Promoción de prácticas agrícolas bajas en carbono y resilientes (riego eficiente).</td>
+                                <td class="py-3 px-4">H hectáreas bajo manejo agrícola climáticamente inteligente.</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50 transition duration-300">
+                                <td class="py-3 px-4"><strong>Agenda Digital 2.1.7:</strong> Plan nacional de innovación para la agricultura</td>
+                                <td class="py-3 px-4">VerdeVida actúa como implementador de soluciones AgriTech innovadoras en MIPYMES.</td>
+                                <td class="py-3 px-4">J número de MIPYMES agrícolas que adoptan nuevas tecnologías a través de la alianza.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="text-center mt-10">
+                    <a href="#contacto" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">Conoce Oportunidades de Inversión</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="nosotros" class="content-section pt-8">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Conoce a VerdeVida: Nuestra Esencia y Compromiso</h2>
+                <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    En VerdeVida, somos más que una empresa de tecnología; somos un equipo apasionado por la agricultura y la innovación, dedicado a crear un impacto positivo y duradero en El Salvador. Esta sección te invita a conocer más sobre quiénes somos, nuestra misión y visión, el enfoque único que aplicamos para integrar soluciones AgriTech, y el equipo de liderazgo que impulsa nuestra visión.
+                </p>
+
+
+                <div class="grid md:grid-cols-2 gap-10 mb-12">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-4">Quiénes Somos: Misión y Visión</h3>
+                        <p class="text-slate-700 mb-3"><strong>Misión:</strong> Catalizamos la transformación del agro salvadoreño, integrando soluciones AgriTech innovadoras y desarrollando negocios para fortalecer la competitividad y sostenibilidad de las MIPYMES agrícolas y nuestros socios tecnológicos.</p>
+                        <p class="text-slate-700 mb-3"><strong>Visión:</strong> Ser el referente y motor de la agricultura digital en El Salvador, impulsando un ecosistema AgriTech próspero, inclusivo y resiliente.</p>
+                        <p class="text-slate-700"><strong>Nuestra Historia:</strong> VerdeVida nace de la visión del Ing. Christian Luis Morales Paez y la identificación de una brecha crítica en el mercado: la necesidad de un integrador que facilite a las MIPYMES el acceso y la adopción de AgriTech, y que a la vez fortalezca a las empresas tecnológicas locales. Evolucionamos de un enfoque de consultoría a ser un centro de desarrollo de negocios e integración, actuando como un nexo estratégico en el ecosistema AgriTech.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-4">Nuestro Enfoque y Tecnología</h3>
+                        <p class="text-slate-700 mb-3">VerdeVida opera a través de un proceso colaborativo y centrado en el cliente:</p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700 pl-4 mb-3">
+                            <li><strong>Diagnóstico Profundo:</strong> Comprendemos las necesidades específicas de cada MIPYME.</li>
+                            <li><strong>Diseño de Soluciones Integradas:</strong> Combinamos las mejores tecnologías (IoT, SaaS, Drones, IA, GIS, VRT) de nuestra alianza de socios especializados. No nos limitamos a vender productos; creamos soluciones holísticas.</li>
+                            <li><strong>Implementación y Gestión de Proyectos:</strong> Coordinamos todos los aspectos técnicos y logísticos.</li>
+                            <li><strong>Capacitación y Soporte:</strong> Aseguramos la adopción efectiva y el máximo aprovechamiento de la tecnología.</li>
+                        </ul>
+                        <p class="text-slate-700">Un componente clave es nuestra futura <strong>Plataforma SaaS VerdeVida Connect</strong>, diseñada para la gestión de la alianza, la interacción con clientes y la provisión de análisis de productividad, comparativas de rendimiento y recomendaciones personalizadas para las MIPYMES.</p>
+                    </div>
+                </div>
+
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Nuestro Equipo de Liderazgo</h3>
+                    <div class="max-w-4xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="w-32 h-32 rounded-full mx-auto bg-emerald-100 flex items-center justify-center mb-4">
+                                <span class="text-4xl text-emerald-600">CM</span>
+                            </div>
+                            <h4 class="text-xl font-semibold text-emerald-700">Ing. Christian Luis Morales Paez</h4>
+                            <p class="text-amber-600 font-medium">Fundador y Director Ejecutivo</p>
+                            <p class="text-slate-600 mt-2 text-sm">Con una profunda experiencia en agronomía, desarrollo de negocios y tecnología aplicada al sector agrícola, el Ing. Morales Paez lidera VerdeVida con una visión clara de transformación e impacto. Su conocimiento del contexto salvadoreño y su pasión por la innovación son el motor de la empresa.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="w-32 h-32 rounded-full mx-auto bg-emerald-100 flex items-center justify-center mb-4">
+                                <span class="text-4xl text-emerald-600">EA</span>
+                            </div>
+                            <h4 class="text-xl font-semibold text-emerald-700">Equipo Central (Próximamente)</h4>
+                            <p class="text-amber-600 font-medium">Expertos Multidisciplinarios</p>
+                            <p class="text-slate-600 mt-2 text-sm">VerdeVida se apoya en un equipo central con experiencia combinada en agronomía, tecnología de la información, desarrollo de negocios, finanzas y gestión de proyectos. Estamos comprometidos con la excelencia y la entrega de valor a nuestros clientes y socios. (Más detalles sobre los miembros clave del equipo se añadirán pronto).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="recursos" class="content-section pt-8">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Recursos e Información Adicional</h2>
+                <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    En VerdeVida, creemos en el poder del conocimiento compartido. Esta sección está diseñada para ofrecerte recursos valiosos que te ayudarán a comprender mejor el mundo de AgriTech y las iniciativas que estamos impulsando. Aquí encontrarás nuestro glosario de términos AgriTech para familiarizarte con el lenguaje de la innovación agrícola, y próximamente, una sección de noticias y perspectivas con artículos, estudios de caso y actualizaciones relevantes.
+                </p>
+
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-4">Glosario AgriTech</h3>
+                        <p class="text-slate-700 mb-4">El sector AgriTech utiliza una variedad de términos técnicos. Hemos compilado un glosario para ayudarte a entender los conceptos clave:</p>
+                        <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">MIPYMES</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Micro, Pequeñas y Medianas Empresas. En el contexto agrícola, se refiere a unidades productivas de diversos tamaños que son el foco principal de VerdeVida.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">IoT (Internet of Things)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Internet de las Cosas. Red de dispositivos físicos (sensores, actuadores) conectados que recopilan e intercambian datos para optimizar procesos agrícolas (ej. riego inteligente, monitoreo de condiciones).</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">SaaS (Software as a Service)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Software como Servicio. Modelo de entrega de software donde las aplicaciones están alojadas por un proveedor y disponibles para los usuarios a través de internet (ej. plataformas de gestión de fincas).</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">IA (Inteligencia Artificial)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Capacidad de las máquinas para imitar la inteligencia humana, utilizada en AgriTech para análisis predictivo, reconocimiento de imágenes (plagas, enfermedades), optimización de decisiones.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">GIS (Geographic Information System)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Sistema de Información Geográfica. Herramienta para capturar, almacenar, analizar y visualizar datos georreferenciados, útil para mapeo de fincas, análisis de suelos, etc.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">VRT (Variable Rate Technology)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Tecnología de Aplicación Variable. Permite aplicar insumos (fertilizantes, pesticidas, semillas) en cantidades diferentes según las necesidades específicas de cada zona del campo, optimizando su uso.</p>
+                            </details>
+                             <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">Drones Agrícolas</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Vehículos aéreos no tripulados equipados con cámaras y sensores para monitoreo de cultivos, mapeo, fumigación de precisión y análisis de la salud de las plantas.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">NDVI (Normalized Difference Vegetation Index)</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Índice de Vegetación de Diferencia Normalizada. Indicador gráfico que se utiliza para analizar mediciones de detección remota y evaluar si el objetivo observado contiene vegetación viva y saludable.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">MAG</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Ministerio de Agricultura y Ganadería de El Salvador.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-md hover:bg-slate-100 transition">
+                                <summary class="font-semibold text-emerald-700 cursor-pointer">CENTA</summary>
+                                <p class="text-slate-600 mt-1 text-sm">Centro Nacional de Tecnología Agropecuaria y Forestal "Enrique Álvarez Córdova" de El Salvador.</p>
+                            </details>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-4">Noticias y Perspectivas (Próximamente)</h3>
+                        <p class="text-slate-700 mb-3">Estamos trabajando en una sección de noticias y blog donde compartiremos: </p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700 pl-4">
+                            <li>Estudios de caso de nuestros proyectos piloto y colaboraciones exitosas.</li>
+                            <li>Artículos sobre las últimas tendencias y avances en AgriTech.</li>
+                            <li>Actualizaciones sobre los proyectos e iniciativas de VerdeVida.</li>
+                            <li>Perspectivas y análisis sobre el sector agrícola salvadoreño y su transformación digital.</li>
+                        </ul>
+                        <p class="text-slate-700 mt-4">¡Vuelve pronto para descubrir contenido valioso y mantenerte al día con el futuro de la agricultura en El Salvador!</p>
+                        <div class="mt-6 text-center">
+                            <span class="text-6xl">📰</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="contacto" class="content-section pt-8 pb-12">
+            <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-xl p-8 md:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-emerald-700 mb-8 text-center">Contáctanos y Únete a la Transformación</h2>
+                <p class="text-lg text-slate-700 mb-10 text-center max-w-3xl mx-auto">
+                    Estamos listos para escuchar tus ideas, responder tus preguntas y explorar cómo podemos colaborar. Ya seas un productor agrícola buscando modernizar tu finca, una empresa AgriTech interesada en nuestra alianza, o un inversor que comparte nuestra visión de impacto, te invitamos a ponerte en contacto con nosotros.
+                </p>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                    <form id="contactFormMIPYME" class="bg-white p-6 rounded-lg shadow-lg space-y-4">
+                        <h3 class="text-xl font-semibold text-emerald-700">Productores Agrícolas:</h3>
+                        <p class="text-sm text-slate-600">¿Interesado en una evaluación o en saber más sobre nuestras soluciones?</p>
+                        <div>
+                            <label for="nombreMIPYME" class="block text-sm font-medium text-slate-700">Nombre Completo</label>
+                            <input type="text" name="nombreMIPYME" id="nombreMIPYME" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="fincaMIPYME" class="block text-sm font-medium text-slate-700">Nombre de Finca/Empresa</label>
+                            <input type="text" name="fincaMIPYME" id="fincaMIPYME" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="emailMIPYME" class="block text-sm font-medium text-slate-700">Correo Electrónico</label>
+                            <input type="email" name="emailMIPYME" id="emailMIPYME" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="mensajeMIPYME" class="block text-sm font-medium text-slate-700">Mensaje</label>
+                            <textarea name="mensajeMIPYME" id="mensajeMIPYME" rows="3" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">Enviar Consulta</button>
+                    </form>
+
+
+                    <div class="space-y-6">
+                        <form id="contactFormSocio" class="bg-white p-6 rounded-lg shadow-lg space-y-4">
+                            <h3 class="text-xl font-semibold text-emerald-700">Empresas AgriTech:</h3>
+                            <p class="text-sm text-slate-600">¿Interesado en unirte a nuestra alianza?</p>
+                            <div>
+                                <label for="empresaSocio" class="block text-sm font-medium text-slate-700">Nombre de Empresa</label>
+                                <input type="text" name="empresaSocio" id="empresaSocio" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="emailSocio" class="block text-sm font-medium text-slate-700">Correo Electrónico de Contacto</label>
+                                <input type="email" name="emailSocio" id="emailSocio" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                            </div>
+                            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">Solicitar Información de Alianza</button>
+                        </form>
+
+
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold text-emerald-700">Inversores y Consultas Generales:</h3>
+                            <p class="text-sm text-slate-600 mb-2">Para oportunidades de inversión o cualquier otra consulta:</p>
+                            <p class="text-slate-700"><strong>Email:</strong> <a href="mailto:info@verdevida.com.sv" class="text-emerald-600 hover:underline">info@verdevida.com.sv</a> (ejemplo)</p>
+                            <p class="text-slate-700"><strong>Teléfono:</strong> +503 XXXX-XXXX (ejemplo)</p>
+                            <p class="text-slate-700"><strong>Dirección:</strong> San Salvador, El Salvador (ejemplo)</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="form-submission-message" class="mt-6 text-center text-emerald-700 font-semibold hidden"></div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="bg-slate-800 text-slate-300 py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="currentYear"></span> VerdeVida. Todos los derechos reservados.</p>
+            <p class="text-sm">Impulsando el futuro de la agricultura en El Salvador.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+
+            function setActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                setActiveLink(targetId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    if (mobileMenu.classList.contains('block')) {
+                        mobileMenu.classList.remove('block');
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('block');
+                });
+            }
+           
+            const initialSection = window.location.hash ? window.location.hash.substring(1) : 'inicio';
+            const sectionExists = document.getElementById(initialSection);
+            if (sectionExists && Array.from(contentSections).some(s => s.id === initialSection)) {
+                 showSection(initialSection);
+            } else {
+                 showSection('inicio');
+            }
+
+
+
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+            const investmentData = {
+                labels: ['Desarrollo Tecnológico/Activos', 'Capital Humano', 'Marketing y Ventas'],
+                datasets: [{
+                    label: 'Distribución de Inversión',
+                    data: [180000, 232908, 120000],
+                    backgroundColor: ['#34D399', '#FBBF24', '#60A5FA'],
+                    hoverOffset: 4
+                }]
+            };
+            const investmentConfig = {
+                type: 'pie',
+                data: investmentData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            const inversionChartCtx = document.getElementById('inversionChart');
+            if (inversionChartCtx) new Chart(inversionChartCtx, investmentConfig);
+
+
+
+
+            const revenueData = {
+                labels: ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                datasets: [{
+                    label: 'Ingresos Proyectados (USD)',
+                    data: [250000, 450000, 750000, 1000000, 1250000],
+                    backgroundColor: '#34D399',
+                    borderColor: '#10B981',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+            const revenueConfig = {
+                type: 'bar',
+                data: revenueData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { callback: value => '$' + (value/1000) + 'K' } } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Ingresos: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            const ingresosChartCtx = document.getElementById('ingresosChart');
+            if(ingresosChartCtx) new Chart(ingresosChartCtx, revenueConfig);
+
+
+
+
+            const mipymesData = {
+                labels: ['Año 1 (Piloto)', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                datasets: [{
+                    label: 'MIPYMES Atendidas',
+                    data: [15, 40, 75, 120, 180],
+                    backgroundColor: '#FBBF24',
+                    borderColor: '#F59E0B',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+            const mipymesConfig = {
+                type: 'bar',
+                data: mipymesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: {
+                        legend: { display: false },
+                         tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `MIPYMES: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            const mipymesChartCtx = document.getElementById('mipymesChart');
+            if(mipymesChartCtx) new Chart(mipymesChartCtx, mipymesConfig);
+
+
+            const formSubmissionMessage = document.getElementById('form-submission-message');
+            function handleFormSubmit(formId, message) {
+                const form = document.getElementById(formId);
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        if (formSubmissionMessage) {
+                            formSubmissionMessage.textContent = message;
+                            formSubmissionMessage.classList.remove('hidden');
+                            setTimeout(() => {
+                                formSubmissionMessage.classList.add('hidden');
+                            }, 3000);
+                        }
+                        form.reset();
+                    });
+                }
+            }
+
+
+            handleFormSubmit('contactFormMIPYME', 'Gracias por tu consulta. Nos pondremos en contacto contigo pronto.');
+            handleFormSubmit('contactFormSocio', 'Gracias por tu interés. Te contactaremos con información sobre la alianza.');
+
+
+        });
+    </script>
+</body>
+</html>
+
+
+
