@@ -1,0 +1,405 @@
+&lt;!DOCTYPE html>
+
+&lt;html lang="es">
+&lt;head>
+&lt;meta charset="UTF-8">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+&lt;title>El Salvador Digital: Oportunidades de Inversión Tecnológica&lt;/title>
+&lt;script src="[suspicious link removed]">&lt;/script>
+&lt;script src="[suspicious link removed]">&lt;/script>
+&lt;link href="[suspicious link removed]" rel="stylesheet">
+&lt;style>
+body {
+font-family: 'Inter', sans-serif;
+background-color: #F3F4F6;
+color: #111827;
+}
+.chart-container {
+position: relative;
+width: 100%;
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
+height: 350px;
+max-height: 400px;
+}
+@media (max-width: 768px) {
+.chart-container {
+height: 300px;
+max-height: 350px;
+}
+}
+.stat-card {
+background-color: #FFFFFF;
+border-radius: 0.5rem;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+padding: 1.5rem;
+text-align: center;
+}
+.section-title {
+color: #2F4B7C;
+}
+.accent-color {
+color: #FFA600;
+}
+.primary-bg {
+background-color: #2F4B7C;
+}
+.accent-bg {
+background-color: #FFA600;
+}
+.secondary-color {
+color: #665191;
+}
+.flowchart-step {
+background-color: white;
+border: 2px solid #2F4B7C;
+color: #2F4B7C;
+padding: 1rem;
+border-radius: 0.5rem;
+text-align: center;
+font-weight: 600;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.flowchart-arrow {
+font-size: 2rem;
+color: #FFA600;
+margin: 0 0.5rem;
+align-self: center;
+}
+.skill-card {
+border: 2px solid #665191;
+}
+.project-card {
+background-color: #FFFFFF;
+border-radius: 0.75rem;
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+&lt;/style>
+&lt;/head>
+&lt;body>
+
+<header class="primary-bg text-white py-8 text-center">
+    <div class="container mx-auto px-6">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">El Salvador Digital:</h1>
+        <p class="text-xl md:text-2xl accent-color font-semibold">Una Frontera de Oportunidades para Inversores Tecnológicos</p>
+    </div>
+</header>
+
+<main class="container mx-auto px-6 py-8">
+
+    <section id="introduccion" class="mb-12">
+        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="text-3xl font-bold section-title mb-4 text-center">Transformación Digital en Marcha</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                El Salvador ha iniciado una ambiciosa transformación digital, impulsada por la <strong class="secondary-color">Agenda Digital 2020-2030</strong>. Esta iniciativa estratégica busca modernizar el Estado, fomentar la innovación y la competitividad, y mejorar la calidad de vida de sus ciudadanos mediante el uso intensivo de las Tecnologías de la Información y Comunicación (TIC).
+            </p>
+            <p class="text-lg text-gray-700 leading-relaxed">
+                Este contexto crea un ecosistema vibrante y lleno de oportunidades para inversores y profesionales con visión de futuro y experiencia en el sector tecnológico, ofreciendo un terreno fértil para proyectos de alto impacto y rentabilidad.
+            </p>
+        </div>
+    </section>
+
+    <section id="por-que-invertir" class="mb-12">
+        <h2 class="text-3xl font-bold section-title mb-6 text-center">¿Por Qué Invertir en Tecnología en El Salvador?</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="stat-card">
+                <div class="text-5xl accent-color mb-3">💰</div>
+                <h3 class="text-xl font-semibold secondary-color mb-2">Incentivos Fiscales Atractivos</h3>
+                <p class="text-gray-600">La Ley de Fomento a la Innovación y Manufactura de Tecnologías ofrece hasta <strong class="accent-color">15 años de exenciones fiscales</strong>, incluyendo Impuesto sobre la Renta y aranceles de importación para proyectos calificados.</p>
+            </div>
+            <div class="stat-card">
+                <div class="text-5xl accent-color mb-3">⚖️</div>
+                <h3 class="text-xl font-semibold secondary-color mb-2">Marco Legal Favorable</h3>
+                <p class="text-gray-600">Leyes como la Ley de Inversiones y la Ley de Estabilidad Jurídica brindan <strong class="accent-color">seguridad y garantías</strong> a los inversionistas, creando un entorno de negocios predecible.</p>
+            </div>
+            <div class="stat-card">
+                <div class="text-5xl accent-color mb-3">📈</div>
+                <h3 class="text-xl font-semibold secondary-color mb-2">Mercado en Crecimiento</h3>
+                <p class="text-gray-600">La decidida apuesta del país por la digitalización impulsa una <strong class="accent-color">creciente demanda</strong> de soluciones tecnológicas innovadoras en diversos sectores.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="perfil-inversionista" class="mb-12">
+        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="text-3xl font-bold section-title mb-6 text-center">Su Perfil: La Llave del Éxito</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center">
+                Un perfil multidisciplinario que combine experiencia técnica, gestión de proyectos y conocimiento tecno-jurídico es ideal para capitalizar las oportunidades en El Salvador.
+            </p>
+            <div class="flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 md:space-x-6">
+                <div class="stat-card skill-card w-full md:w-1/3">
+                    <div class="text-4xl secondary-color mb-2">💻</div>
+                    <h3 class="text-xl font-semibold section-title">Ingeniería Informática</h3>
+                    <p class="text-gray-600">Diseño y desarrollo de soluciones tecnológicas robustas y escalables.</p>
+                </div>
+                <div class="hidden md:block text-5xl accent-color font-bold">&rarr;</div>
+                <div class="stat-card skill-card w-full md:w-1/3">
+                    <div class="text-4xl secondary-color mb-2">📊</div>
+                    <h3 class="text-xl font-semibold section-title">Gestión de Proyectos</h3>
+                    <p class="text-gray-600">Liderazgo en la ejecución de iniciativas complejas, cumpliendo plazos y presupuestos.</p>
+                </div>
+                 <div class="hidden md:block text-5xl accent-color font-bold">&rarr;</div>
+                <div class="stat-card skill-card w-full md:w-1/3">
+                    <div class="text-4xl secondary-color mb-2">📜</div>
+                    <h3 class="text-xl font-semibold section-title">Técnico Jurídico Tecnológico</h3>
+                    <p class="text-gray-600">Navegación del marco legal y regulatorio de la transformación digital.</p>
+                </div>
+            </div>
+            <p class="text-center mt-6 text-lg text-gray-700">Estas habilidades son <strong class="accent-color">cruciales</strong> para abordar los desafíos y materializar los proyectos de la Agenda Digital.</p>
+        </div>
+    </section>
+
+    <section id="proyectos-estrategicos" class="mb-12">
+        <h2 class="text-3xl font-bold section-title mb-8 text-center">Proyectos Estratégicos de Alto Impacto (&gt; $1M USD)</h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+            La Agenda Digital abre la puerta a diversas iniciativas transformadoras. A continuación, se presentan ejemplos de proyectos alineados con sus ejes estratégicos, donde su perfil como gestor de proyectos tecnológicos puede brillar.
+        </p>
+        <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="project-card p-6">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🆔</span>
+                    <h3 class="text-2xl font-semibold section-title">Plataforma Nacional de Identidad Digital</h3>
+                </div>
+                <p class="text-gray-600 mb-2"><strong class="secondary-color">Eje:</strong> Identidad Digital</p>
+                <p class="text-gray-700 leading-relaxed">Desarrollo de un sistema seguro para la gestión de la identidad ciudadana, incluyendo cédula electrónica y firma digital. Un proyecto fundacional para la modernización del Estado.</p>
+            </div>
+            <div class="project-card p-6">
+                 <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">💡</span>
+                    <h3 class="text-2xl font-semibold section-title">Centro de Excelencia en Fintech y Ciberseguridad</h3>
+                </div>
+                <p class="text-gray-600 mb-2"><strong class="secondary-color">Eje:</strong> Innovación y Competitividad</p>
+                <p class="text-gray-700 leading-relaxed">Establecer una empresa de desarrollo de software de alta especialización para exportación, aprovechando incentivos y la creciente demanda global en estos sectores.</p>
+            </div>
+            <div class="project-card p-6">
+                 <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🏛️</span>
+                    <h3 class="text-2xl font-semibold section-title">Plataforma Nacional de Interoperabilidad</h3>
+                </div>
+                <p class="text-gray-600 mb-2"><strong class="secondary-color">Eje:</strong> Modernización del Estado</p>
+                <p class="text-gray-700 leading-relaxed">Creación de un sistema para conectar registros administrativos y ofrecer servicios públicos integrados a través de un portal único, simplificando trámites.</p>
+            </div>
+            <div class="project-card p-6">
+                 <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🛡️</span>
+                    <h3 class="text-2xl font-semibold section-title">Centro Nacional de Respuesta a Incidentes Cibernéticos (CSIRT)</h3>
+                </div>
+                <p class="text-gray-600 mb-2"><strong class="secondary-color">Eje:</strong> Gobernanza Digital</p>
+                <p class="text-gray-700 leading-relaxed">Implementación de un SOC nacional y programas de capacitación para fortalecer la resiliencia del país ante ciberamenazas, una necesidad crítica en la era digital.</p>
+            </div>
+        </div>
+         <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-2xl font-bold section-title mb-4 text-center">Visualizando los Ejes de la Agenda Digital</h3>
+            <p class="text-center text-gray-700 mb-4">La Agenda Digital se estructura en ejes clave que guían la transformación tecnológica del país. Los proyectos de inversión pueden enfocarse en uno o varios de estos pilares.</p>
+            <div class="chart-container">
+                <canvas id="ejesAgendaChart"></canvas>
+            </div>
+            <p class="text-sm text-gray-600 mt-4 text-center">Este gráfico representa la importancia relativa y la interconexión de los ejes temáticos dentro de la Agenda Digital, donde se pueden desarrollar proyectos de inversión tecnológica.</p>
+        </div>
+    </section>
+
+    <section id="camino-inversionista" class="mb-12">
+        <h2 class="text-3xl font-bold section-title mb-8 text-center">El Camino del Inversionista: De la Idea a la Residencia</h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center">
+            El proceso para invertir y establecerse en El Salvador, aunque requiere diligencia, es claro y cuenta con apoyo institucional.
+        </p>
+        <div class="flex flex-col md:flex-row justify-between items-stretch space-y-4 md:space-y-0 md:space-x-2">
+            <div class="flowchart-step flex-1">1. Preparación y Validación</div>
+            <div class="flowchart-arrow hidden md:block">&rarr;</div>
+            <div class="flowchart-step flex-1">2. Estructuración de Inversión y Solicitudes Clave (ONI, MINEC)</div>
+            <div class="flowchart-arrow hidden md:block">&rarr;</div>
+            <div class="flowchart-step flex-1">3. Solicitud de Residencia (DGME)</div>
+            <div class="flowchart-arrow hidden md:block">&rarr;</div>
+            <div class="flowchart-step flex-1">4. Implementación y Cumplimiento</div>
+        </div>
+        <p class="text-center mt-6 text-gray-600">Cada fase implica la interacción con entidades específicas y el cumplimiento de requisitos documentales. La asesoría legal local es altamente recomendable.</p>
+    </section>
+
+    <section id="requisitos-residencia" class="mb-12">
+        <h2 class="text-3xl font-bold section-title mb-6 text-center">Requisitos Clave para la Residencia de Inversionista</h2>
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="stat-card p-8 primary-bg text-white">
+                <h3 class="text-2xl font-semibold mb-3">Inversión Mínima Requerida</h3>
+                <div class="text-6xl font-bold accent-color mb-3">$1,460,000 <span class="text-3xl">USD</span></div>
+                <p class="text-lg">(Equivalente a 4,000 salarios mínimos mensuales vigentes, según Ley de Inversiones)</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold secondary-color mb-4">Otros Requisitos Fundamentales:</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li><strong class="section-title">Registro de la Inversión:</strong> Obtener resolución de la Oficina Nacional de Inversiones (ONI - MINEC).</li>
+                    <li><strong class="section-title">Documentación Personal:</strong> Pasaporte vigente, antecedentes penales apostillados y traducidos.</li>
+                    <li><strong class="section-title">Solvencia Económica Adicional:</strong> Demostrar capacidad para costear la estancia (ej. extracto bancario >5000 USD apostillado).</li>
+                    <li><strong class="section-title">Acuerdo de Calificación (Recomendado):</strong> Para proyectos bajo la Ley de Fomento a la Innovación, obtenerlo del MINEC para acceder a incentivos.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="entidades-apoyo" class="mb-12">
+        <h2 class="text-3xl font-bold section-title mb-6 text-center">Entidades Gubernamentales de Apoyo</h2>
+         <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center">
+            El Salvador cuenta con instituciones dedicadas a facilitar y promover la inversión extranjera.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="stat-card">
+                <div class="text-4xl mb-3">🏢</div>
+                <h3 class="text-xl font-semibold secondary-color">Ministerio de Economía (MINEC)</h3>
+                <p class="text-gray-600">A través de la Oficina Nacional de Inversiones (ONI) y unidades para la Ley de Fomento a la Innovación.</p>
+            </div>
+            <div class="stat-card">
+                <div class="text-4xl mb-3">🛂</div>
+                <h3 class="text-xl font-semibold secondary-color">Dirección General de Migración y Extranjería (DGME)</h3>
+                <p class="text-gray-600">Encargada de todos los trámites de visas y residencias.</p>
+            </div>
+            <div class="stat-card">
+                <div class="text-4xl mb-3">🤝</div>
+                <h3 class="text-xl font-semibold secondary-color">Organismo Promotor de Exportaciones e Inversiones (PROESA)</h3>
+                <p class="text-gray-600">Brinda asistencia general, información y facilitación a inversionistas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="conclusion" class="text-center primary-bg text-white py-10 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-bold mb-4">El Salvador le Espera:</h2>
+        <p class="text-xl mb-6 accent-color font-semibold">Innove, Invierta y Crezca en el Corazón Digital de Centroamérica.</p>
+        <p class="text-lg max-w-2xl mx-auto mb-6">
+            Con una visión clara, un marco legal favorable y un ecosistema en desarrollo, El Salvador ofrece una plataforma única para que su experiencia y capital impulsen la siguiente ola de innovación tecnológica.
+        </p>
+        <button class="accent-bg text-gray-900 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-opacity-80 transition duration-300 text-lg">
+            ¡Explore las Oportunidades Hoy!
+        </button>
+    </section>
+</main>
+
+<footer class="text-center py-6 mt-8 border-t border-gray-300">
+    <p class="text-gray-600">&copy; 2025 Infografía de Oportunidades en El Salvador. Contenido basado en análisis de la Agenda Digital y marco de inversión.</p>
+</footer>
+
+<script>
+    function wrapText(text, maxWidth) {
+        if (typeof text !== 'string') return text;
+        if (text.length <= maxWidth) return text;
+
+        const words = text.split(' ');
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if (currentLine.length + words[i].length + 1 <= maxWidth) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    const ctxEjes = document.getElementById('ejesAgendaChart');
+    if (ctxEjes) {
+        const originalLabels = [
+            'Identidad Digital Nacional',
+            'Innovación, Educación y Competitividad',
+            'Modernización del Estado y Servicios Públicos',
+            'Gobernanza Digital y Ciberseguridad'
+        ];
+
+        const wrappedLabels = originalLabels.map(label => wrapText(label, 16));
+
+        new Chart(ctxEjes, {
+            type: 'doughnut',
+            data: {
+                labels: wrappedLabels,
+                datasets: [{
+                    label: 'Ejes Estratégicos',
+                    data: [25, 30, 25, 20], 
+                    backgroundColor: [
+                        '#2F4B7C', 
+                        '#665191', 
+                        '#A05195', 
+                        '#D45087'  
+                    ],
+                    borderColor: [
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF',
+                        '#FFFFFF'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 12
+                            },
+                            color: '#111827',
+                             boxWidth: 20,
+                            padding: 15,
+                             generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map(function(label, i) {
+                                        const meta = chart.getDatasetMeta(0);
+                                        const style = meta.controller.getStyle(i);
+                                        const displayLabel = Array.isArray(label) ? label.join(' ') : label;
+                                        return {
+                                            text: displayLabel,
+                                            fillStyle: style.backgroundColor,
+                                            strokeStyle: style.borderColor,
+                                            lineWidth: style.borderWidth,
+                                            hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+&lt;/body>
+&lt;/html>
