@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Transformando la Ganadería Salvadoreña con AgriTech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light grayish blue background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Adjusted for better fit in grid */
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; /* Base height */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            text-align: center;
+            border-left: 5px solid; /* Accent border */
+        }
+        .stat-value {
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.875rem; /* 14px */
+            color: #4A5568; /* Gray-700 */
+            margin-top: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.875rem; /* 30px */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #073B4C; /* Dark Navy */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .text-coral-red { color: #FF6B6B; }
+        .border-coral-red { border-color: #FF6B6B; }
+        .bg-coral-red { background-color: #FF6B6B; }
+
+        .text-sunny-yellow { color: #FFD166; }
+        .border-sunny-yellow { border-color: #FFD166; }
+        .bg-sunny-yellow { background-color: #FFD166; }
+
+        .text-tealish-green { color: #06D6A0; }
+        .border-tealish-green { border-color: #06D6A0; }
+        .bg-tealish-green { background-color: #06D6A0; }
+
+        .text-cerulean-blue { color: #118AB2; }
+        .border-cerulean-blue { border-color: #118AB2; }
+        .bg-cerulean-blue { background-color: #118AB2; }
+
+        .text-dark-navy { color: #073B4C; }
+        .border-dark-navy { border-color: #073B4C; }
+        .bg-dark-navy { background-color: #073B4C; }
+
+        .swot-quadrant {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-cerulean-blue text-white py-8 shadow-lg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold">Transformando la Ganadería Salvadoreña con AgriTech</h1>
+            <p class="mt-2 text-lg">Un análisis de desafíos, oportunidades y el futuro tecnológico del sector.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+
+        <section id="panorama" class="mb-12">
+            <h2 class="section-title text-center">Panorama Actual del Sector Ganadero en El Salvador</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">El sector agrícola, incluyendo la ganadería, es vital para la economía y el sustento rural en El Salvador, aunque enfrenta tendencias preocupantes en producción y empleo.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="stat-card border-cerulean-blue">
+                    <div class="stat-value text-cerulean-blue">4.88%</div>
+                    <div class="stat-label">Contribución del Sector Agrícola al PIB Nacional</div>
+                </div>
+                <div class="stat-card border-tealish-green">
+                    <div class="stat-value text-tealish-green">18.49%</div>
+                    <div class="stat-label">Empleo Generado por el Sector Agrícola</div>
+                </div>
+                <div class="stat-card border-coral-red">
+                    <div class="stat-value text-coral-red">&gt;60,000</div>
+                    <div class="stat-label">Empleos Perdidos en Agricultura y Ganadería (2019-2023)</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="font-semibold text-xl mb-3 text-dark-navy">Producción de Carne (Proyección 2024/2025)</h3>
+                    <p class="text-sm text-gray-600 mb-4">La producción de carne bovina muestra una disminución, mientras la porcina se mantiene estable.</p>
+                    <div class="chart-container h-72 md:h-80">
+                        <canvas id="produccionCarneChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-xl mb-3 text-dark-navy">Producción Láctea y Comercio</h3>
+                     <p class="text-sm text-gray-600 mb-4">El sector lácteo enfrenta una tendencia a la baja en producción, y el país es un importador neto significativo de productos ganaderos.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-red-50 border-l-4 border-coral-red rounded">
+                            <p class="font-semibold text-coral-red">Producción Láctea en Descenso</p>
+                            <p class="text-sm text-gray-700">-2.7% disminución anual proyectada hasta 2026.</p>
+                            <p class="text-sm text-gray-700">-15% caída ya registrada por altos costos.</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 border-l-4 border-sunny-yellow rounded">
+                            <p class="font-semibold text-sunny-yellow">Importaciones Significativas (2024, vs EE.UU.)</p>
+                            <p class="text-sm text-gray-700">Carne de Cerdo: $57.39M (18,134 MT)</p>
+                            <p class="text-sm text-gray-700">Lácteos: $49.96M (13,842 MT) (+105% en queso)</p>
+                        </div>
+                         <div class="p-4 bg-blue-50 border-l-4 border-cerulean-blue rounded">
+                            <p class="font-semibold text-cerulean-blue">Balanza Comercial</p>
+                            <p class="text-sm text-gray-700">Exportaciones Lácteas: ~$20M anuales (principalmente a Centroamérica).</p>
+                            <p class="text-sm text-gray-700">Aumento valor importaciones agrícolas (2019-2023): 37% (de $591M a $811M).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="desafios" class="mb-12">
+            <h2 class="section-title text-center">Desafíos Críticos del Sector</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">El sector ganadero salvadoreño enfrenta una compleja red de desafíos económicos, ambientales e institucionales que limitan su crecimiento y sostenibilidad.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <h3 class="font-semibold text-xl mb-3 text-coral-red">Económicos y de Mercado</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li>Acceso al crédito: Caída del 79% en financiación (2019-2023). Solo 2% del crédito bancario nacional.</li>
+                        <li>Incremento costos de insumos (maíz, soya).</li>
+                        <li>Fuerte competencia de importaciones.</li>
+                        <li>Ineficiencias en acceso a mercados formales.</li>
+                    </ul>
+                    <div class="mt-4 chart-container h-72 md:h-80">
+                        <canvas id="pobrezaRuralChart"></canvas>
+                    </div>
+                     <p class="text-xs text-gray-500 mt-2 text-center">Cambio en Pobreza Rural y Extrema (2019 vs 2023)</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-xl mb-3 text-sunny-yellow">Ambientales y Climáticos</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li>Alta vulnerabilidad climática: Pérdidas anuales 2.5% del PIB.</li>
+                        <li>Eventos extremos frecuentes (sequías, inundaciones).</li>
+                        <li>Degradación de la tierra (desertificación, erosión).</li>
+                    </ul>
+                    <div class="mt-4 chart-container h-72 md:h-80">
+                         <canvas id="geiGanaderiaChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Contribución de la Ganadería a Emisiones GEI Agrícolas</p>
+                    <p class="text-sm text-gray-700 mt-2">La ganadería es responsable del 10.4% de las emisiones GEI totales del país.</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-xl mb-3 text-tealish-green">Institucionales y Políticos</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li>Percepción de "abandono gubernamental sistemático".</li>
+                        <li>Servicios de investigación y extensión agrícola inadecuados (CENTA con recursos limitados).</li>
+                        <li>Preocupaciones por la seguridad alimentaria nacional.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="oportunidades" class="mb-12">
+            <h2 class="section-title text-center">Oportunidades Estratégicas con AgriTech</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">A pesar de los desafíos, existen oportunidades significativas para la modernización y el crecimiento del sector, impulsadas por la AgriTech y el apoyo institucional emergente.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card border-l-4 border-tealish-green">
+                    <h3 class="font-semibold text-xl mb-2 text-tealish-green">📈 Potencial Productivo y Eficiencia</h3>
+                    <p class="text-sm text-gray-700 mb-1">AgriTech puede mejorar uso de recursos hasta en <strong>30%</strong>.</p>
+                    <p class="text-sm text-gray-700 mb-1">Incrementar productividad general en <strong>~20%</strong>.</p>
+                    <p class="text-sm text-gray-700">Pilotos en LatAm: <strong>+50-80%</strong> producción, <strong>-20-40%</strong> costos.</p>
+                </div>
+                <div class="card border-l-4 border-cerulean-blue">
+                    <h3 class="font-semibold text-xl mb-2 text-cerulean-blue">🛡️ Resiliencia Climática y Sostenibilidad</h3>
+                    <p class="text-sm text-gray-700">Agricultura Climáticamente Inteligente (ACI) potenciada por AgriTech para reducir vulnerabilidad y emisiones GEI.</p>
+                </div>
+                <div class="card border-l-4 border-sunny-yellow">
+                    <h3 class="font-semibold text-xl mb-2 text-sunny-yellow">🐄 Salud Animal y Calidad</h3>
+                    <p class="text-sm text-gray-700">Monitoreo continuo y diagnóstico temprano (IA, sensores) para elevar estándares sanitarios y calidad de productos.</p>
+                </div>
+                <div class="card border-l-4 border-coral-red">
+                    <h3 class="font-semibold text-xl mb-2 text-coral-red">🔗 Alineación con Iniciativas Nacionales</h3>
+                    <p class="text-sm text-gray-700 mb-1">Agenda Digital El Salvador 2020-2030: Plan nacional de innovación agrícola con nuevas tecnologías.</p>
+                    <p class="text-sm text-gray-700">Programas gubernamentales: Mejora genética, Agromercados.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="soluciones" class="mb-12">
+            <h2 class="section-title text-center">Soluciones AgriTech Clave para la Ganadería</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Un portafolio diverso de tecnologías AgriTech ofrece herramientas para transformar el sector ganadero, desde el monitoreo individual hasta la optimización de la cadena de suministro.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-cerulean-blue mb-2">📡 Ganadería de Precisión (PLF)</h3>
+                    <p class="text-sm text-gray-600">Sensores IoT, IA/ML para monitoreo individual de salud, reproducción y optimización de recursos.</p>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-tealish-green mb-2">🤖 Automatización y Robótica</h3>
+                    <p class="text-sm text-gray-600">Sistemas de alimentación automática, ordeño robótico, drones para monitoreo de hatos y pasturas.</p>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-sunny-yellow mb-2">🌾 Optimización de Alimentación</h3>
+                    <p class="text-sm text-gray-600">Modelado matemático e IA para formular raciones de mínimo costo/máximo rendimiento y gestión personalizada.</p>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-coral-red mb-2">❤️ Tecnologías para Salud Animal</h3>
+                    <p class="text-sm text-gray-600">Sistemas de detección temprana de enfermedades, IA para diagnóstico, modelado epidemiológico.</p>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-purple-500 mb-2">🧬 Mejora Genética Asistida por IA</h3>
+                    <p class="text-sm text-gray-600">Análisis genómico y optimización de programas de inseminación artificial para acelerar el progreso genético.</p>
+                </div>
+                <div class="card hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-semibold text-lg text-indigo-500 mb-2">🔗 Cadena de Suministro y Mercados</h3>
+                    <p class="text-sm text-gray-600">Blockchain para trazabilidad y transparencia, plataformas digitales para conexión productor-comprador.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="foda" class="mb-12">
+            <h2 class="section-title text-center">Análisis FODA del Sector Ganadero Salvadoreño</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Un resumen de las Fortalezas, Oportunidades, Debilidades y Amenazas que configuran el presente y futuro del sector.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="swot-quadrant bg-tealish-green bg-opacity-10 border-l-4 border-tealish-green">
+                    <h3 class="font-bold text-xl text-tealish-green mb-2">👍 Fortalezas</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li>Base productiva nacional existente.</li>
+                        <li>Iniciativas gubernamentales incipientes (mejora genética, Agromercados).</li>
+                        <li>Conocimiento tradicional de los productores.</li>
+                    </ul>
+                </div>
+                <div class="swot-quadrant bg-sunny-yellow bg-opacity-10 border-l-4 border-sunny-yellow">
+                    <h3 class="font-bold text-xl text-sunny-yellow mb-2">💡 Oportunidades</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li>Considerable demanda interna de productos ganaderos.</li>
+                        <li>Potencial transformador de AgriTech (productividad, eficiencia, resiliencia).</li>
+                        <li>Alineación con Agenda Digital Nacional para apoyo tecnológico.</li>
+                        <li>Desarrollo de un ecosistema AgriTech local y sostenible.</li>
+                        <li>Acceso a mercados diferenciados por calidad y sostenibilidad.</li>
+                    </ul>
+                </div>
+                <div class="swot-quadrant bg-coral-red bg-opacity-10 border-l-4 border-coral-red">
+                    <h3 class="font-bold text-xl text-coral-red mb-2">👎 Debilidades</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li>Baja productividad y altos costos de producción.</li>
+                        <li>Fuerte dependencia de importaciones.</li>
+                        <li>Acceso catastróficamente limitado al crédito.</li>
+                        <li>Brecha de conocimiento técnico y adopción tecnológica.</li>
+                        <li>Infraestructura digital rural deficiente.</li>
+                        <li>Servicios de investigación y extensión débiles.</li>
+                    </ul>
+                </div>
+                <div class="swot-quadrant bg-gray-500 bg-opacity-10 border-l-4 border-gray-500">
+                    <h3 class="font-bold text-xl text-gray-600 mb-2">⚠️ Amenazas</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li>Fuerte competencia de importaciones a precios bajos.</li>
+                        <li>Alta vulnerabilidad al cambio climático y eventos extremos.</li>
+                        <li>Degradación continua de la tierra y recursos naturales.</li>
+                        <li>Volatilidad de precios de insumos importados.</li>
+                        <li>Riesgo de inseguridad alimentaria si no se fortalece producción local.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+         <section id="hoja-ruta" class="mb-12">
+            <h2 class="section-title text-center">Hacia un Futuro Sostenible: Recomendaciones Clave</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Una acción concertada es esencial para la transformación del sector. Algunas recomendaciones prioritarias incluyen:</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card">
+                    <h3 class="font-semibold text-lg text-dark-navy mb-2">🏛️ Gobierno y Políticas</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li>Priorizar inversión en infraestructura digital rural.</li>
+                        <li>Facilitar acceso a financiamiento para AgriTech.</li>
+                        <li>Fortalecer investigación y extensión (CENTA).</li>
+                        <li>Implementar Plan Nacional de Innovación Agrícola.</li>
+                        <li>Promover Gestión Sostenible de la Tierra (GST) y ACI.</li>
+                        <li>Desarrollar marco regulatorio moderno.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-lg text-dark-navy mb-2">👥 Productores y Sector Privado</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li>Fomentar modelos asociativos para adopción tecnológica.</li>
+                        <li>Liderar programas de capacitación y demostración.</li>
+                        <li>Participar activamente en diálogo político y regulatorio.</li>
+                        <li>Impulsar estándares de calidad y trazabilidad (Blockchain).</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-lg text-dark-navy mb-2">🔬 Academia y Proveedores Tech</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li>Desarrollar/adaptar soluciones AgriTech apropiadas y asequibles.</li>
+                        <li>Validar tecnologías en condiciones locales.</li>
+                        <li>Ofrecer soporte técnico y formación integral.</li>
+                        <li>Priorizar investigación aplicada a desafíos locales.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark-navy text-white py-8 text-center">
+        <p>&copy; 2024 Análisis del Sector Ganadero y AgriTech en El Salvador. Infografía generada con fines informativos.</p>
+        <p class="text-xs mt-1">Basado en el informe "Informe Exhaustivo del Sector Ganadero y Bovino".</p>
+    </footer>
+
+    <script>
+        function wrapLabels(label, maxLength = 16) {
+            if (typeof label !== 'string') return label; // Return as is if not a string (e.g., already an array)
+            if (label.length <= maxLength) return label;
+
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines.length > 0 ? lines : [label]; // Ensure it returns at least the original label if splitting fails
+        }
+
+        const defaultTooltipCallbacks = {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                if (!item || !item.chart || !item.chart.data || !item.chart.data.labels) return '';
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                } else {
+                  return label;
+                }
+            }
+        };
+
+        // Datos para los gráficos
+        const produccionCarneData = {
+            labels: [wrapLabels('Carne Bovina (17,000 TM, -6%)'), wrapLabels('Carne Porcina (8,000 TM, Estable)')],
+            datasets: [{
+                label: 'Producción Estimada (TM)',
+                data: [17000, 8000],
+                backgroundColor: ['#118AB2', '#06D6A0'], // Cerulean Blue, Tealish Green
+                borderColor: ['#073B4C', '#073B4C'],
+                borderWidth: 1
+            }]
+        };
+
+        const pobrezaRuralData = {
+            labels: [wrapLabels('Pobreza Rural'), wrapLabels('Pobreza Extrema Rural')],
+            datasets: [
+                {
+                    label: '2019',
+                    data: [24.8, 5.2],
+                    backgroundColor: '#FFD166', // Sunny Yellow
+                    borderColor: '#073B4C',
+                    borderWidth: 1
+                },
+                {
+                    label: '2023',
+                    data: [28.3, 11.1],
+                    backgroundColor: '#FF6B6B', // Coral Red
+                    borderColor: '#073B4C',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        const geiGanaderiaData = {
+            labels: [wrapLabels('Ganadería (48.4%)'), wrapLabels('Otros Agrícolas (51.6%)')],
+            datasets: [{
+                label: 'Contribución GEI Sector Agrícola',
+                data: [48.4, 51.6],
+                backgroundColor: ['#FF6B6B', '#FFD166'], // Coral Red, Sunny Yellow
+                hoverOffset: 4
+            }]
+        };
+
+        // Configuración común para gráficos
+        const commonChartOptions = (titleText) => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: titleText,
+                    font: { size: 16, weight: '600' },
+                    color: '#073B4C',
+                    padding: { top: 10, bottom: 20 }
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#073B4C' }
+                },
+                tooltip: {
+                    callbacks: defaultTooltipCallbacks,
+                    backgroundColor: '#073B4C',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: '#118AB2',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#073B4C' },
+                    grid: { color: '#e2e8f0' }
+                },
+                x: {
+                    ticks: { color: '#073B4C', maxRotation: 0, minRotation: 0, callback: function(value, index, values) {
+                        const label = this.getLabelForValue(value);
+                        return wrapLabels(label, 10); // Shorter wrap for x-axis for better fit
+                    }},
+                    grid: { display: false }
+                }
+            }
+        });
+         const commonPieDonutOptions = (titleText) => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: titleText,
+                    font: { size: 16, weight: '600' },
+                    color: '#073B4C',
+                    padding: { top: 10, bottom: 20 }
+                },
+                legend: {
+                    position: 'bottom',
+                     labels: { color: '#073B4C' }
+                },
+                tooltip: {
+                    callbacks: defaultTooltipCallbacks,
+                    backgroundColor: '#073B4C',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: '#118AB2',
+                    borderWidth: 1
+                }
+            }
+        });
+
+
+        // Inicializar gráficos
+        window.onload = function() {
+            const produccionCarneCtx = document.getElementById('produccionCarneChart');
+            if (produccionCarneCtx) new Chart(produccionCarneCtx, { type: 'bar', data: produccionCarneData, options: commonChartOptions('Producción Anual de Carne (TM)') });
+
+            const pobrezaRuralCtx = document.getElementById('pobrezaRuralChart');
+            if (pobrezaRuralCtx) new Chart(pobrezaRuralCtx, { type: 'bar', data: pobrezaRuralData, options: commonChartOptions('% de Pobreza en Zonas Rurales') });
+            
+            const geiGanaderiaCtx = document.getElementById('geiGanaderiaChart');
+            if (geiGanaderiaCtx) new Chart(geiGanaderiaCtx, { type: 'doughnut', data: geiGanaderiaData, options: commonPieDonutOptions('Ganadería en Emisiones GEI Agrícolas') });
+        };
+    </script>
+</body>
+</html>
