@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Transformando el Cultivo de Arroz en El Salvador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0077B6;
+        }
+        .stat-label {
+            font-size: 1rem;
+            color: #4A5568;
+            margin-top: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #0077B6;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #2D3748;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #FFC300;
+        }
+        .flowchart-step {
+            border: 2px solid #00B4D8;
+            background-color: #CAF0F8;
+            color: #0077B6;
+        }
+        .flowchart-arrow {
+            color: #0077B6;
+        }
+        .tech-card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            text-align: center;
+            height: 100%;
+        }
+        .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #0077B6;
+        }
+        .tech-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2D3748;
+            margin-bottom: 0.5rem;
+        }
+        .tech-description {
+            font-size: 0.875rem;
+            color: #4A5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- PALETA DE COLORES ELEGIDA: "Brilliant Blues con Acento Amarillo"
+        Principal: #0077B6 (Azul Oscuro)
+        Secundario: #00B4D8 (Azul Medio)
+        Terciario/Fondo Claro Gráficos: #CAF0F8 (Azul Claro)
+        Acento: #FFC300 (Amarillo)
+        Texto Principal: #2D3748
+        Texto Secundario: #4A5568
+        Fondo General: #F9FAFB (Gris muy claro)
+    -->
+
+    <!-- PLAN DE NARRATIVA Y ESTRUCTURA:
+    1.  Título: "Revolucionando el Cultivo de Arroz en El Salvador: Hacia un Futuro Rentable y Sostenible con Costo Marginal Cero"
+    2.  Introducción: El Arroz en El Salvador: Un Cultivo Esencial con Potencial de Transformación.
+    3.  El Desafío Actual: Costos y Riesgos en la Producción Tradicional.
+    4.  La Propuesta Innovadora: El Modelo de Costo Marginal Cero (CMC).
+    5.  Oportunidades Tecnológicas y Agronómicas Clave.
+    6.  Zonas Estratégicas: ¿Dónde Invertir?
+    7.  Proyección Económica del Modelo CMC: Potencial de Rentabilidad.
+    8.  Financiando la Innovación: Vías de Apoyo en El Salvador.
+    9.  Conclusión: El Camino Hacia un Sector Arrocero Resiliente y Competitivo.
+    -->
+
+    <!-- SELECCIÓN DE VISUALIZACIONES (Confirmando NO SVG y NO MERMAID JS):
+    * Importancia del Arroz (Consumo): Single Big Number (HTML/Tailwind). Goal: Inform.
+    * Producción Nacional vs. Importación: Donut Chart (Chart.js). Goal: Compare.
+    * Costos Secano vs. Riego: Bar Chart (Chart.js). Goal: Compare.
+    * Principales Riesgos (Plagas/Enfermedades): Listado con Iconos Unicode (HTML/Tailwind). Goal: Organize.
+    * Modelo CMC (Concepto): Diagrama de Flujo simple (HTML/Tailwind). Goal: Organize.
+    * Palancas Tecnológicas CMC: Tarjetas con Iconos Unicode (HTML/Tailwind). Goal: Organize.
+    * Rendimiento Variedades CENTA: Bar Chart (Chart.js). Goal: Compare.
+    * Potencial Ahorro Energía Solar: Single Big Number (HTML/Tailwind). Goal: Inform.
+    * Distritos de Riego: Tabla simple (HTML/Tailwind). Goal: Organize.
+    * Proyección Ganancias Modelo CMC: Line Chart (Chart.js). Goal: Change.
+    * Fuentes de Financiamiento: Tarjetas (HTML/Tailwind). Goal: Organize.
+    -->
+
+    <header class="bg-[#0077B6] text-white p-6 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold">Arroz en El Salvador: Innovación y Sostenibilidad</h1>
+            <nav class="mt-4 md:mt-0">
+                <ul class="flex space-x-4 md:space-x-6">
+                    <li><a href="#introduccion" class="nav-link hover:text-[#FFC300]">Inicio</a></li>
+                    <li><a href="#desafio" class="nav-link hover:text-[#FFC300]">Desafío</a></li>
+                    <li><a href="#cmc" class="nav-link hover:text-[#FFC300]">Modelo CMC</a></li>
+                    <li><a href="#oportunidades" class="nav-link hover:text-[#FFC300]">Oportunidades</a></li>
+                    <li><a href="#zonas" class="nav-link hover:text-[#FFC300]">Zonas</a></li>
+                    <li><a href="#proyeccion" class="nav-link hover:text-[#FFC300]">Proyección</a></li>
+                    <li><a href="#financiamiento" class="nav-link hover:text-[#FFC300]">Financiamiento</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 pt-24">
+
+        <section id="introduccion" class="mb-16">
+            <h2 class="section-title">El Arroz en El Salvador: Un Cultivo Esencial con Potencial de Transformación</h2>
+            <p class="section-subtitle">
+                El arroz es un pilar en la dieta salvadoreña, siendo el tercer grano básico más consumido. Su producción es vital para la seguridad alimentaria, aunque el país aún depende de importaciones para cubrir la demanda total. Este panorama presenta una oportunidad para innovar y fortalecer el sector arrocero nacional.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="stat-card">
+                    <div class="stat-value">3er</div>
+                    <p class="stat-label">Grano básico más consumido en El Salvador (después del maíz y el frijol).</p>
+                </div>
+                <div class="chart-container h-[300px] md:h-[350px]">
+                    <canvas id="produccionImportacionChart"></canvas>
+                </div>
+            </div>
+             <p class="text-sm text-center mt-4 text-gray-600">El gráfico ilustra la proporción estimada entre la producción nacional de arroz y las importaciones necesarias para satisfacer la demanda interna, destacando la oportunidad de crecimiento para la producción local.</p>
+        </section>
+
+        <section id="desafio" class="mb-16 bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="section-title">El Desafío Actual: Costos y Riesgos en la Producción Tradicional</h2>
+            <p class="section-subtitle">
+                La producción de arroz enfrenta desafíos significativos, incluyendo altos costos variables, especialmente en sistemas de riego, y una considerable exposición a riesgos climáticos, plagas y enfermedades que pueden mermar la rentabilidad.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-center text-[#0077B6]">Costos de Producción por Manzana (2020-2021)</h3>
+                    <div class="chart-container h-[350px] md:h-[400px]">
+                        <canvas id="costosProduccionChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-4 text-gray-600">Comparativa de los costos totales estimados por manzana entre el sistema de secano tradicional y el sistema tecnificado bajo riego, evidenciando la mayor inversión en riego pero también su potencial de mayor rendimiento.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-center text-[#0077B6]">Principales Riesgos del Cultivo</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start p-3 bg-gray-100 rounded-md">
+                            <span class="text-2xl mr-3 text-[#FFC300]">🐛</span>
+                            <div>
+                                <h4 class="font-semibold text-[#0077B6]">Plagas Destacadas:</h4>
+                                <p class="text-sm text-gray-700">Ácaro del Arroz (*Steneotarsonemus spinki*), Barrenadores del Tallo, Chinche de la Espiga, Sogata.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start p-3 bg-gray-100 rounded-md">
+                            <span class="text-2xl mr-3 text-[#FFC300]">🍂</span>
+                            <div>
+                                <h4 class="font-semibold text-[#0077B6]">Enfermedades Comunes:</h4>
+                                <p class="text-sm text-gray-700">Piricularia o Quemazón, Pudrición de la Vaina, Añublo Bacteriano de la Panícula, Helmintosporiosis.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start p-3 bg-gray-100 rounded-md">
+                            <span class="text-2xl mr-3 text-[#FFC300]">☀️</span>
+                            <div>
+                                <h4 class="font-semibold text-[#0077B6]">Riesgos Climáticos:</h4>
+                                <p class="text-sm text-gray-700">Sequías (especialmente en secano), tormentas tropicales, inundaciones, altas temperaturas.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start p-3 bg-gray-100 rounded-md">
+                            <span class="text-2xl mr-3 text-[#FFC300]">🌿</span>
+                            <div>
+                                <h4 class="font-semibold text-[#0077B6]">Malezas:</h4>
+                                <p class="text-sm text-gray-700">Compiten por recursos y pueden hospedar plagas. *Echinochloa spp.* y Arroz Rojo son problemáticas.</p>
+                            </div>
+                        </li>
+                    </ul>
+                     <p class="text-sm text-center mt-4 text-gray-600">Un manejo integrado y proactivo es crucial para mitigar estas amenazas y asegurar la viabilidad del cultivo.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="cmc" class="mb-16">
+            <h2 class="section-title">La Propuesta Innovadora: El Modelo de Costo Marginal Cero (CMC)</h2>
+            <p class="section-subtitle">
+                El modelo CMC busca transformar la estructura de costos en la agricultura. Mediante una inversión inicial significativa en tecnología, se persigue minimizar drásticamente los costos variables de producir cada unidad adicional, haciendo la operación más escalable y resiliente a largo plazo.
+            </p>
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-center text-[#0077B6]">Del Costo Variable al Costo Fijo Dominante</h3>
+                <div class="flex flex-col md:flex-row items-center justify-around space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/3">
+                        <h4 class="font-bold text-lg">Modelo Tradicional</h4>
+                        <p class="text-sm">Altos costos variables (mano de obra, insumos, energía externa).</p>
+                    </div>
+                    <div class="text-4xl flowchart-arrow hidden md:block">&rarr;</div>
+                     <div class="text-4xl flowchart-arrow md:hidden self-center">&darr;</div>
+                    <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/3">
+                        <h4 class="font-bold text-lg">Inversión Tecnológica</h4>
+                        <p class="text-sm">Automatización, Energía Renovable, Agricultura de Precisión.</p>
+                    </div>
+                    <div class="text-4xl flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="text-4xl flowchart-arrow md:hidden self-center">&darr;</div>
+                    <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/3">
+                        <h4 class="font-bold text-lg">Modelo CMC</h4>
+                        <p class="text-sm">Costos fijos dominantes (depreciación, mantenimiento), costos variables cercanos a cero.</p>
+                    </div>
+                </div>
+                <p class="text-sm text-center mt-4 text-gray-600">Este cambio estructural busca una mayor eficiencia y predictibilidad en los costos de producción a largo plazo.</p>
+            </div>
+
+            <h3 class="text-xl font-semibold mb-6 text-center text-[#0077B6]">Palancas Tecnológicas Clave para el CMC en Arroz</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="tech-card">
+                    <div class="tech-icon">☀️</div>
+                    <h4 class="tech-title">Energía Renovable Integrada</h4>
+                    <p class="tech-description">Uso de energía solar fotovoltaica para bombeo, riego y operaciones, reduciendo la dependencia de combustibles fósiles y costos energéticos variables.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🤖</div>
+                    <h4 class="tech-title">Automatización y Agricultura de Precisión</h4>
+                    <p class="tech-description">Sensores, IoT, IA, drones y maquinaria autónoma para optimizar siembra, riego, fertilización, control de plagas y cosecha, minimizando mano de obra e insumos.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🌱</div>
+                    <h4 class="tech-title">Técnicas Agrícolas Sostenibles</h4>
+                    <p class="tech-description">Manejo Integrado de Plagas (MIP), agricultura de conservación, uso de variedades resilientes y biofertilizantes para reducir la dependencia de agroquímicos y mejorar la salud del suelo.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="oportunidades" class="mb-16 bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="section-title">Oportunidades Tecnológicas y Agronómicas Clave</h2>
+            <p class="section-subtitle">
+                La combinación de variedades de arroz mejoradas, tecnologías de energía limpia y prácticas de agricultura de precisión abre nuevas avenidas para incrementar la productividad y la sostenibilidad del cultivo en El Salvador.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-center text-[#0077B6]">Potencial de Rendimiento: Variedades CENTA</h3>
+                    <div class="chart-container h-[350px] md:h-[400px]">
+                        <canvas id="rendimientoVariedadesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-4 text-gray-600">Comparativa del potencial de rendimiento de variedades mejoradas por CENTA (como A-Nutremás y A-8) frente al promedio nacional, mostrando el impacto de la genética avanzada.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="stat-card">
+                        <div class="stat-value">~70%</div>
+                        <p class="stat-label">Reducción potencial en costos de energía para riego con sistemas de bombeo solar fotovoltaico.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon">💧</div>
+                        <h4 class="tech-title">Agricultura de Precisión: Optimización de Recursos</h4>
+                        <ul class="list-disc list-inside text-left tech-description space-y-1">
+                            <li>Uso eficiente del agua mediante riego basado en sensores.</li>
+                            <li>Aplicación variable de fertilizantes y fitosanitarios según necesidad.</li>
+                            <li>Reducción del desperdicio de insumos.</li>
+                            <li>Monitoreo temprano de plagas y enfermedades con drones e IA.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="zonas" class="mb-16">
+            <h2 class="section-title">Zonas Estratégicas: ¿Dónde Invertir?</h2>
+            <p class="section-subtitle">
+                La disponibilidad de agua es crucial. Los Distritos de Riego establecidos por el gobierno son las áreas más prometedoras para una producción arrocera comercial, estable y de alto rendimiento, gracias a su infraestructura y gestión hídrica.
+            </p>
+            <div class="overflow-x-auto bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4 text-center text-[#0077B6]">Principales Distritos de Riego para el Cultivo de Arroz</h3>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-[#00B4D8]">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Distrito de Riego</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Ubicación Principal</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Superficie Regable Aprox. (ha)</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Fuente Principal de Agua</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">N°1 Zapotitán</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">La Libertad, Santa Ana, Sonsonate</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3,500</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Pozos profundos, Ríos (ej. Sucio)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">N°2 Atiocoyo</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">La Libertad, Chalatenango</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4,000</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Río Lempa</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">N°3 Lempa Acahuapa</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Usulután, San Vicente</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4,500</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Embalse San Lorenzo (Río Lempa)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-sm text-center mt-4 text-gray-600">Zapotitán destaca por su historial productivo, organizaciones de regantes y actual enfoque de inversión gubernamental para rehabilitación.</p>
+            </div>
+        </section>
+
+        <section id="proyeccion" class="mb-16 bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="section-title">Proyección Económica del Modelo CMC: Potencial de Rentabilidad</h2>
+            <p class="section-subtitle">
+                Aunque requiere una alta inversión inicial, el modelo CMC proyecta una rentabilidad atractiva a mediano y largo plazo, gracias a la drástica reducción de costos operativos y la capacidad de escalar la producción eficientemente. Las cifras son ilustrativas y dependen de múltiples factores.
+            </p>
+            <div class="chart-container mx-auto h-[400px] md:h-[450px]">
+                <canvas id="proyeccionGananciasChart"></canvas>
+            </div>
+            <p class="text-sm text-center mt-4 text-gray-600">Proyección ilustrativa de ingresos, costos y ganancia neta para un proyecto de 100 ha bajo el modelo CMC durante 10 años. Se asume un rendimiento de 6.5 t/ha y un precio de $45/qq. La rentabilidad es sensible al rendimiento, precio y costos de financiamiento.</p>
+        </section>
+
+        <section id="financiamiento" class="mb-16">
+            <h2 class="section-title">Financiando la Innovación: Vías de Apoyo en El Salvador</h2>
+            <p class="section-subtitle">
+                Existen diversas instituciones financieras y programas en El Salvador que pueden apoyar proyectos agrícolas innovadores y sostenibles, ofreciendo líneas de crédito para tecnología, energía renovable y adaptación al cambio climático.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="tech-card">
+                    <div class="tech-icon">🏦</div>
+                    <h4 class="tech-title">Banco de Fomento Agropecuario (BFA)</h4>
+                    <p class="tech-description">Ofrece créditos agropecuarios generales y líneas específicas "Crédito Verde" y "Crédito para Sistemas de Producción Sostenible". Potencial de tasas subsidiadas vía FIDEAGRO.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🏛️</div>
+                    <h4 class="tech-title">Banco Agrícola</h4>
+                    <p class="tech-description">Cuenta con "Créditos para el Desarrollo Sostenible", incluyendo financiamiento para Energía Renovable (hasta $35M, 15 años) y Medidas Ambientales.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🌍</div>
+                    <h4 class="tech-title">BCIE (Iniciativa CAMBio II)</h4>
+                    <p class="tech-description">Fondos del Banco Centroamericano de Integración Económica y Fondo Verde para el Clima, canalizados vía IFIs locales (ej. Banco Hipotecario) para adaptación climática en MIPYMES agrícolas.</p>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-gray-700">Es crucial contactar directamente a estas instituciones para conocer tasas de interés, montos y requisitos específicos actualizados.</p>
+        </section>
+
+        <section id="conclusion" class="text-center py-12 bg-[#0077B6] text-white rounded-lg shadow-xl">
+            <h2 class="text-3xl font-bold mb-4">El Camino Hacia un Sector Arrocero Resiliente y Competitivo</h2>
+            <p class="text-lg max-w-3xl mx-auto mb-6">
+                La adopción de un modelo cercano al Costo Marginal Cero, apalancado en tecnología, energía renovable y prácticas sostenibles, ofrece una vía prometedora para transformar el cultivo de arroz en El Salvador. Si bien la inversión inicial es considerable, el potencial de rentabilidad a largo plazo, la reducción de riesgos y la contribución a la seguridad alimentaria y la sostenibilidad ambiental justifican su exploración y desarrollo.
+            </p>
+            <p class="text-lg max-w-3xl mx-auto">
+                Una planificación detallada, un enfoque por fases comenzando con proyectos piloto, y una estrategia de financiamiento diversificada son claves para el éxito.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-6 mt-16">
+        <p>&copy; <span id="currentYear"></span> Infografía sobre Producción de Arroz en El Salvador. Todos los derechos reservados.</p>
+        <p class="text-sm">Datos basados en los informes "Cultivo de Arroz en El Salvador" y "Análisis de Viabilidad para la Producción de Arroz con Costo Marginal Cercano a Cero en El Salvador".</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#2D3748',
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { 
+                        color: '#4A5568',
+                        font: { size: 10 }
+                    },
+                    grid: { color: '#E2E8F0' }
+                },
+                x: {
+                    ticks: { 
+                        color: '#4A5568',
+                        font: { size: 10 },
+                        callback: function(value, index, values) {
+                            const label = this.getLabelForValue(value);
+                            return wrapLabels(label, 10); // Ajustar el 10 según necesidad visual
+                        }
+                    },
+                    grid: { display: false }
+                }
+            }
+        };
+        
+        const commonPieDonutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#2D3748',
+                        font: { size: 12 },
+                         boxWidth: 20,
+                         padding: 15,
+                         generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const meta = chart.getDatasetMeta(0);
+                                    const style = meta.controller.getStyle(i);
+                                    const labelWrapped = wrapLabels(label, 16);
+                                    return {
+                                        text: Array.isArray(labelWrapped) ? labelWrapped.join(' ') : labelWrapped,
+                                        fillStyle: style.backgroundColor,
+                                        strokeStyle: style.borderColor,
+                                        lineWidth: style.borderWidth,
+                                        hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+
+        const produccionImportacionCtx = document.getElementById('produccionImportacionChart').getContext('2d');
+        new Chart(produccionImportacionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Producción Nacional Estimada', 'Importaciones Necesarias'],
+                datasets: [{
+                    label: 'Participación en el Consumo',
+                    data: [40, 60], // Datos ilustrativos: 40% producción nacional, 60% importaciones
+                    backgroundColor: ['#00B4D8', '#FFC300'],
+                    borderColor: ['#FFFFFF', '#FFFFFF'],
+                    borderWidth: 2
+                }]
+            },
+            options: commonPieDonutOptions
+        });
+
+        const costosProduccionCtx = document.getElementById('costosProduccionChart').getContext('2d');
+        new Chart(costosProduccionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Arroz Tradicional Secano', 'Arroz Tecnificado Riego'],
+                datasets: [{
+                    label: 'Costo Total por Manzana ($)',
+                    data: [1068.97, 1524.14],
+                    backgroundColor: ['#00B4D8', '#0077B6'],
+                    borderColor: ['#009ACD', '#005A8D'],
+                    borderWidth: 1
+                }]
+            },
+            options: commonChartOptions
+        });
+
+        const rendimientoVariedadesCtx = document.getElementById('rendimientoVariedadesChart').getContext('2d');
+        new Chart(rendimientoVariedadesCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabels('Promedio Nacional (FAOSTAT 2022)',16), wrapLabels('CENTA A-8 (Potencial)',16), wrapLabels('CENTA A-Nutremás (Potencial)',16)],
+                datasets: [{
+                    label: 'Rendimiento (qq/mz)',
+                    data: [41, 100, 224], // Promedio ~2.66 t/ha, A-8 ~6.5 t/ha, A-Nutremas ~14.5 t/ha
+                    backgroundColor: ['#FFC300', '#00B4D8', '#0077B6'],
+                    borderColor: ['#E0A800', '#009ACD', '#005A8D'],
+                    borderWidth: 1
+                }]
+            },
+            options: commonChartOptions
+        });
+        
+        const proyeccionGananciasCtx = document.getElementById('proyeccionGananciasChart').getContext('2d');
+        new Chart(proyeccionGananciasCtx, {
+            type: 'line',
+            data: {
+                labels: ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5', 'Año 6', 'Año 7', 'Año 8', 'Año 9', 'Año 10'],
+                datasets: [{
+                    label: 'Ingreso Bruto Estimado ($)',
+                    data: [391200, 537900, 635700, 635700, 635700, 635700, 635700, 635700, 635700, 635700],
+                    borderColor: '#0077B6',
+                    backgroundColor: 'rgba(0, 119, 182, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }, {
+                    label: 'Costo OPEX Total Estimado ($)',
+                    data: [320000, 320000, 320000, 315000, 310000, 305000, 300000, 295000, 290000, 285000],
+                    borderColor: '#FFC300',
+                    backgroundColor: 'rgba(255, 195, 0, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }, {
+                    label: 'Ganancia Neta Estimada (Antes Imp.) ($)',
+                    data: [71200, 217900, 315700, 320700, 325700, 330700, 335700, 340700, 345700, 350700],
+                    borderColor: '#00B4D8',
+                    backgroundColor: 'rgba(0, 180, 216, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        ticks: {Cul
+                            callback: function(value, index, values) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
