@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía AgriTech 2025: Desafíos y Soluciones Agrícolas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            color: #008080; 
+        }
+        .card-title {
+            color: #FF8C00; 
+        }
+        .brand-orange { color: #FF8C00; }
+        .brand-teal { color: #008080; }
+        .brand-yellow { color: #FFD700; }
+        .brand-pink { color: #FF69B4; }
+        .brand-light-blue { color: #ADD8E6; }
+
+        .brand-bg-orange { background-color: #FF8C00; }
+        .brand-bg-teal { background-color: #008080; }
+        .brand-bg-yellow { background-color: #FFD700; }
+        .brand-bg-pink { background-color: #FF69B4; }
+        .brand-bg-light-blue { background-color: #ADD8E6; }
+
+        .flowchart-step {
+            background-color: #E0F2F7; 
+            border-left: 4px solid #008080; 
+        }
+        .flowchart-arrow {
+            color: #008080; 
+        }
+        .table-header {
+            background-color: #008080; 
+            color: white;
+        }
+        .table-cell {
+            border: 1px solid #ADD8E6; 
+            padding: 0.75rem;
+            font-size: 0.875rem;
+        }
+        .stat-big-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FF8C00; 
+        }
+        .icon-style {
+            font-size: 1.75rem;
+            margin-right: 0.5rem;
+            color: #008080; 
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-teal-100 hover:text-teal-700 transition-colors;
+        }
+    </style>
+    <!-- 
+        PLANIFICACIÓN DE LA INFOGRAFÍA (v2 - Sin "Mathematical Modeling in Agriculture"):
+        1. Título Principal y Resumen Ejecutivo (Basado en Análisis AgriTech para El Salvador y Plan VerdeVida).
+        2. Sección: Panorama de Desafíos Agrícolas (Baja Productividad, Impacto Climático, Acceso Limitado a Recursos y Financiamiento, Plagas/Pérdidas, Barreras Socioeconómicas e Infraestructura).
+        3. Sección: Potencial Transformador de AgriTech (Agricultura de Precisión - IoT, GIS, Drones; IA y ML; Blockchain para Trazabilidad).
+        4. Sección: Beneficios Estratégicos de AgriTech (Incremento Productividad/Rentabilidad, Optimización Recursos/Costos, Calidad/Inocuidad, Sostenibilidad/Resiliencia).
+        5. Sección: Superando Barreras para la Adopción (Costo, Brecha Conocimiento, Infraestructura, Sociocultural, Políticas).
+        6. Sección: Estrategias para Fomentar la Adopción (Modelos de Negocio Innovadores, Rol de Integradores como VerdeVida, Alianzas Público-Privadas, Alineación con Agenda Digital SV y ODS).
+        7. Sección: Tablas Clave (Matriz Desafíos-Soluciones AgriTech, Análisis Barreras-Mitigación).
+        8. Sección: Conclusiones y Recomendaciones Estratégicas para 2025.
+        9. Pie de página.
+
+        SELECCIÓN DE VISUALIZACIONES (Confirmando NO SVG, NO MERMAID JS):
+        - MIPYMES sin herramientas digitales (15% en El Salvador): Chart.js Donut Chart (Canvas). Objetivo: Informar. Justificación: Proporción simple.
+        - MYPES inician con recursos propios (67.5% en El Salvador): Chart.js Donut Chart (Canvas). Objetivo: Informar. Justificación: Proporción simple.
+        - Pérdidas globales por plagas (20-40%): Chart.js Bar Chart (Canvas) mostrando rango. Objetivo: Informar. Justificación: Visualización clara de un rango.
+        - Ahorro de agua con riego inteligente (hasta 30%): Chart.js Bar Chart (Canvas). Objetivo: Informar. Justificación: Dato puntual de beneficio.
+        - Reducción de fertilizantes con IA (hasta 30%): Chart.js Bar Chart (Canvas). Objetivo: Informar. Justificación: Dato puntual de beneficio.
+        - Incremento de rendimiento (10-20% con Ag. Precisión): Chart.js Bar Chart (Canvas) mostrando rango. Objetivo: Informar/Comparar.
+        - Reducción de costos de insumos (15-30% con Ag. Precisión): Chart.js Bar Chart (Canvas) mostrando rango. Objetivo: Informar/Comparar.
+        - Diagrama Trazabilidad con Blockchain: HTML/CSS con Tailwind. Objetivo: Organizar. Justificación: Visualizar un proceso.
+        - Diagrama Rol del Integrador (Modelo VerdeVida): HTML/CSS con Tailwind (hub-spoke o similar). Objetivo: Organizar. Justificación: Mostrar relaciones.
+        - Listas para ODS y recomendaciones: HTML estándar.
+        - Tablas: HTML estándar con Tailwind (Matriz Desafíos-Soluciones, Barreras-Mitigación).
+
+        PALETA DE COLORES SELECCIONADA: Energetic & Playful
+        - Naranja: #FF8C00
+        - Teal: #008080
+        - Amarillo: #FFD700
+        - Rosa: #FF69B4
+        - Azul Claro: #ADD8E6
+
+        CONFIRMACIÓN: NI MERMAID JS NI SVG FUERON UTILIZADOS. TODOS LOS GRÁFICOS SON MEDIANTE CHART.JS (CANVAS), LOS DIAGRAMAS MEDIANTE HTML/CSS.
+    -->
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="brand-bg-teal text-white p-6 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">AgriTech 2025: Transformando la Agricultura</h1>
+            <p class="text-lg md:text-xl mt-2">Desafíos, Soluciones y Oportunidades para El Salvador y Naciones en Desarrollo</p>
+        </div>
+    </header>
+    
+    <nav class="sticky top-0 bg-white shadow-md z-50 print:hidden">
+        <div class="container mx-auto flex flex-wrap justify-center items-center p-2">
+            <a href="#resumen" class="nav-link">Resumen</a>
+            <a href="#desafios" class="nav-link">Desafíos</a>
+            <a href="#potencial" class="nav-link">Potencial AgriTech</a>
+            <a href="#beneficios" class="nav-link">Beneficios</a>
+            <a href="#barreras" class="nav-link">Barreras</a>
+            <a href="#estrategias" class="nav-link">Estrategias</a>
+            <a href="#tablas" class="nav-link">Tablas Clave</a>
+            <a href="#conclusion" class="nav-link">Conclusión</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="resumen" class="bg-white rounded-lg shadow-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-title">I. Resumen Ejecutivo</h2>
+            <p class="text-gray-700 leading-relaxed mb-3">
+                El sector agrícola en naciones en desarrollo, incluyendo El Salvador, enfrenta desafíos críticos como baja productividad, impacto climático y acceso limitado a recursos, afectando especialmente a las MIPYMES. AgriTech (IA, IoT, Big Data) ofrece soluciones para optimizar insumos, mejorar decisiones y fortalecer la resiliencia. Sin embargo, la adopción es limitada por barreras de costo, conocimiento e infraestructura.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                Este informe analiza estos desafíos y el potencial transformador de AgriTech, destacando la necesidad de un enfoque integral con alianzas público-privadas, modelos de negocio innovadores como el de VerdeVida, y políticas habilitantes alineadas con agendas nacionales (ej. Agenda Digital El Salvador) y los Objetivos de Desarrollo Sostenible (ODS) para una agricultura productiva, sostenible e inclusiva hacia 2025.
+            </p>
+        </section>
+
+        <section id="desafios" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">II. Panorama de Desafíos Agrícolas</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Las MIPYMES agrícolas en El Salvador y otras naciones en desarrollo luchan contra una compleja red de obstáculos que frenan su progreso y sostenibilidad. Comprender estos desafíos es el primer paso hacia la implementación de soluciones efectivas.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">📉</span>Baja Productividad y Brecha Tecnológica</h3>
+                    <p class="text-sm text-gray-600 mb-3">Prácticas tradicionales y escasa adopción tecnológica limitan el rendimiento. En El Salvador, solo el 15% de MIPYMES agrícolas usa herramientas digitales.</p>
+                    <div class="chart-container h-56 max-w-xs mx-auto">
+                        <canvas id="usoHerramientasDigitalesChart"></canvas>
+                    </div>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador (Basado en Plan de Negocios VerdeVida).</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">☀️</span>Impacto Climático y Escasez de Recursos</h3>
+                    <p class="text-sm text-gray-600 mb-3">Sequías, inundaciones y degradación del suelo amenazan la producción, especialmente en regiones vulnerables como El Salvador. La eficiencia en el uso de agua y tierra es crucial.</p>
+                    <div class="text-center my-4 flex justify-around">
+                        <span class="text-4xl" title="Sequía">💧</span>
+                        <span class="text-4xl" title="Degradación Suelo">🍂</span>
+                        <span class="text-4xl" title="Inundación">🌊</span>
+                    </div>
+                     <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">💰</span>Acceso Limitado a Financiamiento y Mercados</h3>
+                    <p class="text-sm text-gray-600 mb-3">MIPYMES luchan por crédito y mercados justos. En El Salvador, el 67.5% de MYPES inician con recursos propios, limitando su inversión en tecnología.</p>
+                    <div class="chart-container h-56 max-w-xs mx-auto">
+                        <canvas id="financiamientoPropioChart"></canvas>
+                    </div>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador (Basado en Plan de Negocios VerdeVida).</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🐛</span>Plagas, Enfermedades y Pérdidas Post-Cosecha</h3>
+                    <p class="text-sm text-gray-600 mb-3">Pérdidas globales por plagas y enfermedades alcanzan el 20-40% (FAO). El manejo inadecuado y las deficiencias en post-cosecha agravan el problema.</p>
+                     <div class="chart-container h-56 max-w-sm mx-auto">
+                        <canvas id="perdidasPlagasChart"></canvas>
+                    </div>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador.</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🏘️</span>Barreras Socioeconómicas e Infraestructura</h3>
+                    <p class="text-sm text-gray-600">Mentalidad tradicional, falta de habilidades digitales y escepticismo. Infraestructura deficiente (internet <span class="icon-style text-base">🚫📶</span>, energía <span class="icon-style text-base">🚫💡</span>) en zonas rurales es crítica.</p>
+                    <p class="text-sm text-gray-600 mt-2">Pequeño tamaño de fincas y heterogeneidad dificultan soluciones estándar.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="potencial" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">III. El Potencial Transformador de AgriTech</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">AgriTech ofrece un arsenal de herramientas para modernizar la agricultura, optimizando la producción y mejorando la eficiencia en el uso de recursos, abriendo nuevas vías hacia la sostenibilidad.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🎯</span>Agricultura de Precisión (IoT, GIS, Drones)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Sensores IoT, GIS y drones optimizan insumos. Riego inteligente puede reducir consumo de agua hasta 30%.</p>
+                    <div class="chart-container h-56 max-w-sm mx-auto">
+                        <canvas id="ahorroAguaPrecisionChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Plataformas SaaS y Big Data mejoran decisiones (ej. +15% rentabilidad).</p>
+                     <p class="text-center mt-3 text-xs text-gray-500">Fuentes: Análisis AgriTech (IoT, GIS, Drones), Plan VerdeVida.</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🤖</span>IA y Aprendizaje Automático (ML)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Optimización de siembra, riego y fertilización. IA puede reducir uso de fertilizantes hasta 30%.</p>
+                     <div class="chart-container h-56 max-w-sm mx-auto">
+                        <canvas id="reduccionFertilizantesIAChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Detección temprana de plagas, modelos predictivos y robótica.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuentes: Análisis AgriTech (IA/ML), Plan VerdeVida.</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-xl p-6 md:col-span-2 lg:col-span-1">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🔗</span>Blockchain para Trazabilidad y Confianza</h3>
+                    <p class="text-sm text-gray-600 mb-4">Crea registros inmutables para transparencia en cadena de suministro (ej. AgroChain), facilitando acceso a mercados premium y finanzas verdes.</p>
+                    <div class="p-3 border border-dashed brand-border-teal rounded-lg">
+                        <p class="text-center font-semibold brand-teal mb-2">Flujo Simplificado con Blockchain</p>
+                        <div class="space-y-2 text-xs">
+                            <div class="flowchart-step p-2 rounded text-center">Productor registra datos (siembra, insumos)</div>
+                            <div class="text-center flowchart-arrow font-bold text-2xl">&darr;</div>
+                            <div class="flowchart-step p-2 rounded text-center">Datos en Blockchain (Seguro e Inmutable)</div>
+                            <div class="text-center flowchart-arrow font-bold text-2xl">&darr;</div>
+                            <div class="flowchart-step p-2 rounded text-center">Distribuidor/Retailer verifica origen y calidad</div>
+                            <div class="text-center flowchart-arrow font-bold text-2xl">&darr;</div>
+                            <div class="flowchart-step p-2 rounded text-center">Consumidor accede al historial del producto</div>
+                        </div>
+                    </div>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech (Blockchain).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="beneficios" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">IV. Beneficios Estratégicos de AgriTech</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">La adopción inteligente de AgriTech no solo resuelve problemas, sino que desbloquea una serie de ventajas competitivas y contribuye a un desarrollo agrícola más robusto y sostenible.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">📈</span>Incremento Productividad y Rentabilidad</h3>
+                    <p class="text-sm text-gray-600 mb-2">Agricultura de precisión puede aumentar rendimientos 10-20%.</p>
+                    <div class="chart-container h-56 max-w-sm mx-auto">
+                        <canvas id="incrementoRendimientoChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Mejora ingresos de MIPYMES y seguridad alimentaria.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Plan de Negocios VerdeVida.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">💧</span>Optimización de Recursos y Costos</h3>
+                    <p class="text-sm text-gray-600 mb-2">Reducción de uso de insumos (agua, fertilizantes) en 15-30%.</p>
+                    <div class="chart-container h-56 max-w-sm mx-auto">
+                        <canvas id="reduccionCostosInsumosChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Menor dependencia de insumos caros y volátiles.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Plan de Negocios VerdeVida.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🛡️</span>Mejora de Calidad e Inocuidad</h3>
+                    <p class="text-sm text-gray-600">Menos agroquímicos resultan en alimentos más sanos. Blockchain asegura trazabilidad y confianza, abriendo mercados premium.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title flex items-center"><span class="icon-style">🌍</span>Sostenibilidad y Resiliencia Climática</h3>
+                    <p class="text-sm text-gray-600">Menor presión en ecosistemas, conservación de recursos, y adaptación al cambio climático. Potencial para monetizar servicios ecosistémicos.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="barreras" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">V. Superando Barreras para la Adopción</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">A pesar de sus beneficios, la adopción de AgriTech enfrenta obstáculos. Identificarlos es clave para diseñar estrategias efectivas que permitan su superación y la democratización de la tecnología en el campo.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-2 card-title">💰 Costo de Adquisición</h3>
+                    <p class="text-sm text-gray-600">Alto costo inicial y acceso limitado a financiamiento. Incertidumbre sobre ROI.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-2 card-title">🧠 Brecha de Conocimiento</h3>
+                    <p class="text-sm text-gray-600">Falta de habilidades digitales y técnicas. Necesidad de capacitación y mentalidad digital.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-2 card-title">🔌 Infraestructura Limitada</h3>
+                    <p class="text-sm text-gray-600">Conectividad a internet y energía deficientes en zonas rurales.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-2 card-title">🔄 Factores Socioculturales</h3>
+                    <p class="text-sm text-gray-600">Resistencia al cambio, desconfianza, aversión al riesgo. Necesidad de confianza y adopción gradual.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6 sm:col-span-2 lg:col-span-1">
+                    <h3 class="text-xl font-semibold mb-2 card-title">📜 Políticas y Regulación</h3>
+                    <p class="text-sm text-gray-600">Necesidad de políticas de apoyo, marcos regulatorios claros (datos, ciberseguridad) y enfoque ecosistémico.</p>
+                </div>
+            </div>
+             <p class="text-center mt-6 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador.</p>
+        </section>
+
+        <section id="estrategias" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">VI. Estrategias para Fomentar la Adopción (Ej. Modelo VerdeVida)</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Para que AgriTech prospere, se necesitan modelos innovadores, alianzas estratégicas y un fuerte apoyo institucional, como el ejemplificado por el enfoque integrador de VerdeVida en El Salvador.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title">Modelos de Negocio Innovadores y Rol de Integradores</h3>
+                    <p class="text-sm text-gray-600 mb-4">"AgriTech como Servicio" (AtaS), pago por uso, y centros de alquiler facilitan acceso. Integradores como VerdeVida actúan como nexo estratégico:</p>
+                    <div class="mt-4 p-4 border border-dashed brand-border-teal rounded-lg">
+                        <p class="text-center font-semibold brand-teal mb-3">Rol del Integrador (Ej. VerdeVida)</p>
+                        <ol class="list-decimal list-inside space-y-1 text-xs text-gray-700">
+                            <li>Entender necesidades de MIPYMES.</li>
+                            <li>Diseñar soluciones AgriTech integradas.</li>
+                            <li>Captar clientes y gestionar implementación.</li>
+                            <li>Facilitar acceso a financiamiento.</li>
+                            <li>Generar demanda para alianza AgriTech.</li>
+                        </ol>
+                    </div>
+                     <p class="text-sm text-gray-600 mt-3">Reducen riesgo financiero y técnico para pequeños productores.</p>
+                     <p class="text-center mt-3 text-xs text-gray-500">Fuente: Plan de Negocios VerdeVida.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 card-title">Alianzas y Alineación Estratégica</h3>
+                    <p class="text-sm text-gray-600 mb-2">Alianzas Público-Privadas (APP) y colaboración multisectorial son cruciales para ecosistemas de innovación sostenibles.</p>
+                    <p class="text-sm text-gray-600 mb-3">Alineación con agendas nacionales (ej. Agenda Digital El Salvador) y ODS fortalece iniciativas:</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-700">
+                        <li><strong class="brand-teal">ODS 1:</strong> Fin Pobreza</li>
+                        <li><strong class="brand-teal">ODS 2:</strong> Hambre Cero</li>
+                        <li><strong class="brand-teal">ODS 8:</strong> Trabajo Decente</li>
+                        <li><strong class="brand-teal">ODS 9:</strong> Innovación</li>
+                        <li><strong class="brand-teal">ODS 13:</strong> Acción Climática</li>
+                    </ul>
+                    <p class="text-sm text-gray-600 mt-3">Desbloquea financiamiento y apoyo político.</p>
+                    <p class="text-center mt-3 text-xs text-gray-500">Fuentes: Análisis AgriTech, Agenda Digital El Salvador.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="tablas" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 section-title">VII. Tablas Clave del Análisis</h2>
+             <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Las siguientes tablas resumen los principales desafíos agrícolas, las soluciones AgriTech prioritarias, y un análisis comparativo de las barreras para su adopción junto con estrategias de mitigación, proporcionando un marco claro para la acción.</p>
+            <div class="bg-white rounded-lg shadow-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4 card-title">Tabla 1: Matriz de Desafíos Agrícolas y Soluciones AgriTech Prioritarias</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="table-header table-cell">Desafío Agrícola</th>
+                                <th class="table-header table-cell">Solución AgriTech</th>
+                                <th class="table-header table-cell">Tecnologías</th>
+                                <th class="table-header table-cell">Beneficio Esperado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-cell">Baja productividad por manejo ineficiente de nutrientes</td>
+                                <td class="table-cell">Fertilización de precisión</td>
+                                <td class="table-cell">Sensores suelo, GIS, Drones, IA</td>
+                                <td class="table-cell">Reducción fertilizantes (15-30%), Aumento rendimiento (10-20%)</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Estrés hídrico y uso ineficiente del agua</td>
+                                <td class="table-cell">Riego inteligente</td>
+                                <td class="table-cell">Sensores humedad, IoT, IA</td>
+                                <td class="table-cell">Reducción agua (hasta 30%), Aumento rendimientos</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Detección tardía de plagas/enfermedades</td>
+                                <td class="table-cell">Detección temprana y monitoreo</td>
+                                <td class="table-cell">Drones, Visión Computadora, IA/ML</td>
+                                <td class="table-cell">Reducción pesticidas, Minimización pérdidas</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Pérdidas post-cosecha elevadas</td>
+                                <td class="table-cell">Optimización cadena suministro</td>
+                                <td class="table-cell">Sensores IoT, Blockchain</td>
+                                <td class="table-cell">Reducción pérdidas, Mejora calidad</td>
+                            </tr>
+                             <tr>
+                                <td class="table-cell">Acceso limitado a información de mercado</td>
+                                <td class="table-cell">Plataformas inteligencia mercado</td>
+                                <td class="table-cell">Big Data, IA/ML</td>
+                                <td class="table-cell">Mejor toma decisiones, Optimización oferta</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Falta de acceso a financiamiento tecnológico</td>
+                                <td class="table-cell">Soluciones Fintech y modelos innovadores</td>
+                                <td class="table-cell">Crowdfunding, Microcréditos AgriTech, Blockchain</td>
+                                <td class="table-cell">Mayor acceso a capital, Modernización</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador (Tabla 1 y contenido general).</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-xl p-6">
+                <h3 class="text-xl font-semibold mb-4 card-title">Tabla 2: Barreras para Adopción AgriTech y Estrategias de Mitigación</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="table-header table-cell">Barrera</th>
+                                <th class="table-header table-cell">Estrategia de Mitigación</th>
+                                <th class="table-header table-cell">Actores Clave</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-cell">Alto costo inicial</td>
+                                <td class="table-cell">Modelos flexibles (AtaS, leasing), créditos AgriTech, subsidios</td>
+                                <td class="table-cell">Integradores, Bancos, Gobierno, Proveedores</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Brecha de conocimiento técnico</td>
+                                <td class="table-cell">Capacitación integral, asistencia técnica, UI intuitivas</td>
+                                <td class="table-cell">Integradores, Instituciones Educativas, Gobierno</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Limitaciones de infraestructura</td>
+                                <td class="table-cell">Inversión conectividad/energía rural, soluciones offline</td>
+                                <td class="table-cell">Gobierno, Empresas Telco/Energía</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Resistencia al cambio</td>
+                                <td class="table-cell">Demos, casos de éxito, adopción gradual, seguros</td>
+                                <td class="table-cell">Integradores, Líderes Comunitarios, Extensionistas</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell">Ausencia de políticas adecuadas</td>
+                                <td class="table-cell">Estrategia nacional AgriTech, marcos regulatorios claros</td>
+                                <td class="table-cell">Gobierno, Agencias Reguladoras, Sector Privado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador (Tabla 2 y contenido general).</p>
+            </div>
+        </section>
+
+        <section id="conclusion" class="bg-white rounded-lg shadow-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-title">VIII. Conclusiones y Recomendaciones Estratégicas para 2025</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                La transformación del sector agrícola mediante AgriTech es vital. Superar barreras de costo, conocimiento e infraestructura requiere un esfuerzo concertado. Modelos de negocio innovadores, alianzas público-privadas y entidades integradoras son clave. La alineación con agendas nacionales y ODS moviliza recursos.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h4 class="font-semibold brand-orange mb-2">A. Para Productores y MIPYMES:</h4>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
+                        <li>Adoptar aprendizaje continuo.</li>
+                        <li>Iniciar con soluciones adaptadas y escalables.</li>
+                        <li>Fortalecer asociatividad.</li>
+                        <li>Exigir transparencia y soporte.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold brand-orange mb-2">B. Para Proveedores e Integradores:</h4>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
+                        <li>Diseñar con el usuario en mente (asequible, fácil).</li>
+                        <li>Priorizar capacitación y acompañamiento.</li>
+                        <li>Fomentar interoperabilidad y colaboración.</li>
+                        <li>Desarrollar modelos de negocio flexibles (AtaS).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold brand-orange mb-2">C. Para Hacedores de Políticas e Instituciones:</h4>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
+                        <li>Invertir en infraestructura rural (digital, energía).</li>
+                        <li>Impulsar alfabetización digital y formación técnica.</li>
+                        <li>Crear entorno regulatorios favorables y ágiles.</li>
+                        <li>Facilitar acceso a financiamiento específico.</li>
+                        <li>Promover I+D+i localizada.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-gray-700 leading-relaxed mt-4">
+                Una agricultura moderna y sostenible es alcanzable con colaboración, innovación y adaptación, centrados en el agricultor y la sostenibilidad.
+            </p>
+            <p class="text-center mt-3 text-xs text-gray-500">Fuente: Análisis AgriTech para El Salvador (Sección 7 y Conclusiones).</p>
+        </section>
+    </main>
+
+    <footer class="brand-bg-teal text-white text-center p-6 mt-12">
+        <p>&copy; 2025 Análisis AgriTech. Infografía basada en investigación para El Salvador y naciones en desarrollo.</p>
+        <p class="text-xs mt-1">Los datos son extractos y generalizaciones de los informes fuente. No se utilizó el documento "Mathematical Modeling in Agriculture".</p>
+    </footer>
+
+    <script>
+        const CHART_FONT_COLOR = '#374151'; 
+        const CHART_GRID_COLOR = '#E5E7EB'; 
+        const PALETTE = {
+            orange: '#FF8C00',
+            teal: '#008080',
+            yellow: '#FFD700',
+            pink: '#FF69B4',
+            lightBlue: '#ADD8E6'
+        };
+
+        function wrapLabel(label, maxWidth = 16) {
+            if (typeof label !== 'string' || label.length <= maxWidth) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: CHART_FONT_COLOR, boxWidth:12, padding:10, font: {size: 10} }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback }
+                },
+                title: {
+                    display: false, 
+                    color: CHART_FONT_COLOR,
+                    font: {size: 12}
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: CHART_FONT_COLOR, stepSize: 10, font: {size: 10} },
+                    grid: { color: CHART_GRID_COLOR }
+                },
+                x: {
+                    ticks: { color: CHART_FONT_COLOR, font: {size: 10} },
+                    grid: { display: false }
+                }
+            }
+        };
+
+        const donutChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: CHART_FONT_COLOR, boxWidth:12, padding:10, font: {size: 10} } },
+                tooltip: { callbacks: { title: tooltipTitleCallback } },
+                title: { display: true, text: '', color: CHART_FONT_COLOR, font: {size: 12} }
+            }
+        };
+
+        new Chart(document.getElementById('usoHerramientasDigitalesChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('MIPYMES sin herramientas digitales (85%)'), wrapLabel('MIPYMES con herramientas digitales (15%)')],
+                datasets: [{ data: [85, 15], backgroundColor: [PALETTE.lightBlue, PALETTE.orange]}]
+            },
+            options: {...donutChartOptions, plugins: {...donutChartOptions.plugins, title: {...donutChartOptions.plugins.title, text:'Uso de Herramientas Digitales (El Salvador)'}}}
+        });
+
+        new Chart(document.getElementById('financiamientoPropioChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('MYPES con recursos propios (67.5%)'), wrapLabel('MYPES con otro financiamiento (32.5%)')],
+                datasets: [{ data: [67.5, 32.5], backgroundColor: [PALETTE.orange, PALETTE.teal]}]
+            },
+            options: {...donutChartOptions, plugins: {...donutChartOptions.plugins, title: {...donutChartOptions.plugins.title, text:'Financiamiento Inicial MYPES (El Salvador)'}}}
+        });
+        
+        new Chart(document.getElementById('perdidasPlagasChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Pérdidas Globales por Plagas y Enfermedades (FAO)')],
+                datasets: [{ label: 'Mínimo Estimado (%)', data: [20], backgroundColor: PALETTE.pink }, 
+                           { label: 'Máximo Estimado (%)', data: [40], backgroundColor: PALETTE.orange }]
+            },
+            options: { ...defaultChartOptions, indexAxis: 'y', scales: { ...defaultChartOptions.scales, x: {...defaultChartOptions.scales.x, suggestedMax: 50, ticks: { color: CHART_FONT_COLOR, stepSize: 10 } }, y: {...defaultChartOptions.scales.y, grid: {display:false}} }, plugins: {...defaultChartOptions.plugins, title: {...defaultChartOptions.plugins.title, display: true, text:'Rango de Pérdidas Globales'}}}
+        });
+
+        new Chart(document.getElementById('ahorroAguaPrecisionChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Ahorro de Agua con Riego Inteligente')],
+                datasets: [{ label: 'Ahorro Máximo Estimado (%)', data: [30], backgroundColor: PALETTE.lightBlue, maxBarThickness: 60 }]
+            },
+            options: { ...defaultChartOptions, scales: { ...defaultChartOptions.scales, y: {...defaultChartOptions.scales.y, suggestedMax: 40}}, plugins: {...defaultChartOptions.plugins, title: {...defaultChartOptions.plugins.title, display: true, text:'Eficiencia Hídrica'}}}
+        });
+
+        new Chart(document.getElementById('reduccionFertilizantesIAChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Reducción de Fertilizantes con IA')],
+                datasets: [{ label: 'Reducción Máxima Estimada (%)', data: [30], backgroundColor: PALETTE.yellow, maxBarThickness: 60 }]
+            },
+            options: { ...defaultChartOptions, scales: { ...defaultChartOptions.scales, y: {...defaultChartOptions.scales.y, suggestedMax: 40}}, plugins: {...defaultChartOptions.plugins, title: {...defaultChartOptions.plugins.title, display: true, text:'Optimización de Insumos con IA'}}}
+        });
+        
+        new Chart(document.getElementById('incrementoRendimientoChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Incremento Rendimiento (Ag. Precisión)')],
+                datasets: [{ label: 'Mínimo (%)', data: [10], backgroundColor: PALETTE.lightBlue }, 
+                           { label: 'Máximo (%)', data: [20], backgroundColor: PALETTE.teal }]
+            },
+            options: { ...defaultChartOptions, scales: { ...defaultChartOptions.scales, y: {...defaultChartOptions.scales.y, suggestedMax: 25}}, plugins: {...defaultChartOptions.plugins, title: {...defaultChartOptions.plugins.title, display: true, text:'Aumento de Productividad'}}}
+        });
+
+        new Chart(document.getElementById('reduccionCostosInsumosChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('Reducción Insumos (Ag. Precisión)')],
+                 datasets: [{ label: 'Mínimo (%)', data: [15], backgroundColor: PALETTE.yellow }, 
+                            { label: 'Máximo (%)', data: [30], backgroundColor: PALETTE.orange }]
+            },
+            options: { ...defaultChartOptions, scales: { ...defaultChartOptions.scales, y: {...defaultChartOptions.scales.y, suggestedMax: 35}}, plugins: {...defaultChartOptions.plugins, title: {...defaultChartOptions.plugins.title, display: true, text:'Ahorro de Insumos'}}}
+        });
+
+    </script>
+</body>
+</html>
